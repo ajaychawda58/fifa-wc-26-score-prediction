@@ -1513,7 +1513,7 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 | 21 | 4FW | Mikel Oyarzabal | 29 | 53 | 25 | Real Sociedad |
 | 22 | 2DF | Pau Cubarsí | 19 | 12 | 0 | Barcelona |
 | 23 | 1GK | Unai Simón | 29 | 58 | 0 | Athletic Bilbao |
-| 24 | 2DF | Marc Cucurella | 27 | 24 | 1 | Real Madrid |
+| 24 | 2DF | Marc Cucurella | 27 | 24 | 1 | Chelsea |
 | 25 | 4FW | Víctor Muñoz | 22 | 2 | 1 | Osasuna |
 | 26 | 4FW | Borja Iglesias | 33 | 8 | 0 | Celta Vigo |
 
