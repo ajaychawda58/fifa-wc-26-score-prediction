@@ -5,48 +5,33 @@ import json
 import os
 import math
 
+# --- 1. Bayesian Dixon-Coles Model ---
 class BayesianDixonColesModel:
     def __init__(self, team_list, team_ranks, team_formations, prior_sigma=0.3):
-        """
-        Initialize the model.
-        - team_list: List of all 48 team names.
-        - team_ranks: Dict mapping team name -> FIFA rank (1 to 50+).
-        - team_formations: Dict mapping team name -> preferred tactical formation.
-        - prior_sigma: Standard deviation of the log-normal priors for team strengths.
-        """
         self.teams = sorted(team_list)
         self.team_to_idx = {team: idx for idx, team in enumerate(self.teams)}
         self.num_teams = len(self.teams)
-        
         self.ranks = team_ranks
         self.formations = team_formations
         self.prior_sigma = prior_sigma
         
-        # Calculate prior means in log-space
-        # A higher rank number (worse team) means lower attack strength and higher defense vulnerability
-        self.prior_a = np.zeros(self.num_teams) # log attack strength prior mean
-        self.prior_d = np.zeros(self.num_teams) # log defense vulnerability prior mean
+        self.prior_a = np.zeros(self.num_teams)
+        self.prior_d = np.zeros(self.num_teams)
         
         for team in self.teams:
             idx = self.team_to_idx[team]
             rank = self.ranks.get(team, 30)
-            
-            # Simple prior mapping: rank 1 has mean attack = 1.6, rank 50 has mean attack = 0.6
             mean_att = 1.7 * math.exp(-0.018 * rank)
-            # Rank 1 has mean def = 0.5, rank 50 has mean def = 1.3
             mean_def = 0.55 * math.exp(0.018 * rank)
-            
             self.prior_a[idx] = math.log(mean_att)
             self.prior_d[idx] = math.log(mean_def)
             
-        # Fitted parameters (will be filled during fit)
         self.log_attack = np.copy(self.prior_a)
         self.log_defense = np.copy(self.prior_d)
-        self.log_home_adv = 0.15 # log home advantage default (HA = ~1.16)
-        self.rho = -0.05         # Dixon-Coles adjustment parameter
+        self.log_home_adv = 0.15
+        self.rho = -0.05
         
     def _dixon_coles_tau(self, x, y, lmbda, mu, rho):
-        """Computes the Dixon-Coles tau adjustment factor for low-scoring matches."""
         if x == 0 and y == 0:
             return 1.0 - rho * lmbda * mu
         elif x == 1 and y == 0:
@@ -59,30 +44,20 @@ class BayesianDixonColesModel:
             return 1.0
             
     def _loss_function(self, params, home_idxs, away_idxs, home_goals, away_goals, weights, is_home_adv):
-        """Negative log-posterior function to minimize."""
-        # Unpack parameters
-        # params: [log_attack (num_teams), log_defense (num_teams), log_home_adv, rho]
         log_att = params[:self.num_teams]
         log_def = params[self.num_teams:2*self.num_teams]
         log_ha = params[2*self.num_teams]
         rho = params[2*self.num_teams + 1]
         
-        # 1. Likelihood loss
-        # Expected goals lambda and mu
-        # lambda = exp(att_home + def_away + ha * is_home_adv)
-        # mu = exp(att_away + def_home)
         att_h = log_att[home_idxs]
         def_a = log_def[away_idxs]
         att_a = log_att[away_idxs]
         def_h = log_def[home_idxs]
         
-        # Calculate expected goals
         lmbda = np.exp(att_h + def_a + log_ha * is_home_adv)
         mu = np.exp(att_a + def_h)
         
-        # Dixon-Coles adjustment tau
         tau = np.ones_like(lmbda)
-        # Apply adjustment where home_goals and away_goals are <= 1
         cond_00 = (home_goals == 0) & (away_goals == 0)
         cond_10 = (home_goals == 1) & (away_goals == 0)
         cond_01 = (home_goals == 0) & (away_goals == 1)
@@ -93,135 +68,68 @@ class BayesianDixonColesModel:
         tau[cond_01] = 1.0 + rho * lmbda[cond_01]
         tau[cond_11] = 1.0 - rho
         
-        # Clip tau to avoid negative/zero values
         tau = np.clip(tau, 1e-10, None)
-        
-        # Weighted Negative Log-Likelihood
-        # nll = -w * [log(tau) + x*log(lambda) - lambda + y*log(mu) - mu]
         nll = -weights * (np.log(tau) + home_goals * np.log(lmbda) - lmbda + away_goals * np.log(mu) - mu)
         likelihood_loss = np.sum(nll)
         
-        # 2. Prior loss (regularization)
-        # a_i ~ N(prior_a_i, sigma^2)
-        # d_i ~ N(prior_d_i, sigma^2)
         prior_loss_att = np.sum(((log_att - self.prior_a) ** 2) / (2 * self.prior_sigma ** 2))
         prior_loss_def = np.sum(((log_def - self.prior_d) ** 2) / (2 * self.prior_sigma ** 2))
-        
-        # Prior loss on home advantage: centered around 0.18 (about 20% boost)
         prior_loss_ha = ((log_ha - 0.18) ** 2) / (2 * 0.1 ** 2)
-        
-        # Prior loss on rho: centered around -0.05
         prior_loss_rho = ((rho - (-0.05)) ** 2) / (2 * 0.05 ** 2)
         
-        total_loss = likelihood_loss + prior_loss_att + prior_loss_def + prior_loss_ha + prior_loss_rho
-        return total_loss
+        return likelihood_loss + prior_loss_att + prior_loss_def + prior_loss_ha + prior_loss_rho
         
     def fit(self, df_matches):
-        """Fits the model parameters to the matches DataFrame using Polars."""
-        print("Fitting Bayesian Dixon-Coles model...")
-        
-        # Convert team names to indexes, skipping matches with teams not in tournament if any
-        # But we filter df_matches to only teams that are in our team list
         df_filtered = df_matches.filter(
             (pl.col("home_team").is_in(self.teams)) & 
             (pl.col("away_team").is_in(self.teams))
         )
-        
         home_idxs = np.array([self.team_to_idx[name] for name in df_filtered["home_team"]])
         away_idxs = np.array([self.team_to_idx[name] for name in df_filtered["away_team"]])
         home_goals = df_filtered["home_score"].to_numpy().astype(int)
         away_goals = df_filtered["away_score"].to_numpy().astype(int)
         weights = df_filtered["weight"].to_numpy().astype(float)
         
-        # Home advantage logic: if not neutral, OR if home team is USA/Canada/Mexico (host team playing at WC)
         neutral_val = df_filtered["neutral"].to_numpy().astype(bool)
         home_names = df_filtered["home_team"].to_numpy()
         is_host = np.array([name in ["USA", "Canada", "Mexico"] for name in home_names])
         is_home_adv = (~neutral_val) | is_host
         is_home_adv = is_home_adv.astype(float)
         
-        # Initial parameters: log_attack, log_defense, log_home_adv, rho
-        initial_params = np.concatenate([
-            self.log_attack,
-            self.log_defense,
-            [self.log_home_adv],
-            [self.rho]
-        ])
-        
-        # Bounds to keep parameters stable:
-        # log_attack: no bounds (log space)
-        # log_defense: no bounds
-        # log_home_adv: -1.0 to 1.0
-        # rho: -0.3 to 0.3 (to keep Dixon-Coles adjustment valid)
+        initial_params = np.concatenate([self.log_attack, self.log_defense, [self.log_home_adv], [self.rho]])
         bounds = [(None, None)] * (2 * self.num_teams) + [(-1.0, 1.0), (-0.3, 0.3)]
         
-        # Run optimization
-        res = minimize(
-            self._loss_function,
-            initial_params,
-            args=(home_idxs, away_idxs, home_goals, away_goals, weights, is_home_adv),
-            method='L-BFGS-B',
-            bounds=bounds
-        )
-        
-        if not res.success:
-            print(f"Warning: Optimization did not converge: {res.message}")
-        else:
-            print("Model optimization successfully converged.")
+        res = minimize(self._loss_function, initial_params, args=(home_idxs, away_idxs, home_goals, away_goals, weights, is_home_adv), method='L-BFGS-B', bounds=bounds)
+        if res.success:
+            self.log_attack = res.x[:self.num_teams]
+            self.log_defense = res.x[self.num_teams:2*self.num_teams]
+            self.log_home_adv = float(res.x[2*self.num_teams])
+            self.rho = float(res.x[2*self.num_teams + 1])
             
-        # Extract fitted parameters
-        self.log_attack = res.x[:self.num_teams]
-        self.log_defense = res.x[self.num_teams:2*self.num_teams]
-        self.log_home_adv = float(res.x[2*self.num_teams])
-        self.rho = float(res.x[2*self.num_teams + 1])
-        
-        # Log summary of fitted model
-        print(f"Fitted Home Advantage Multiplier: {math.exp(self.log_home_adv):.3f}")
-        print(f"Fitted Dixon-Coles Rho: {self.rho:.4f}")
-        
-    def predict_match(self, home_team, away_team, max_goals=10):
-        """
-        Predicts goals probability distribution and win probabilities for a match.
-        Returns:
-        - expected_goals_home: float
-        - expected_goals_away: float
-        - win_prob_home: float
-        - win_prob_away: float
-        - draw_prob: float
-        - score_grid: 2D numpy array of probabilities
-        """
+    def predict_match(self, home_team, away_team, max_goals=5):
         home_idx = self.team_to_idx[home_team]
         away_idx = self.team_to_idx[away_team]
-        
-        # Home advantage multiplier applies if home_team is a co-host (USA, Canada, Mexico)
         is_home_adv = home_team in ["USA", "Canada", "Mexico"]
         ha_mult = math.exp(self.log_home_adv) if is_home_adv else 1.0
         
         lmbda = math.exp(self.log_attack[home_idx] + self.log_defense[away_idx]) * ha_mult
         mu = math.exp(self.log_attack[away_idx] + self.log_defense[home_idx])
         
-        # Calculate goal probability distributions
         p_home = np.array([self._poisson_pmf(g, lmbda) for g in range(max_goals + 1)])
         p_away = np.array([self._poisson_pmf(g, mu) for g in range(max_goals + 1)])
-        
-        # Outer product to get match grid
         score_grid = np.outer(p_home, p_away)
         
-        # Apply Dixon-Coles adjustment to the grid
         for x in [0, 1]:
             for y in [0, 1]:
-                tau = self._dixon_coles_tau(x, y, lmbda, mu, self.rho)
-                score_grid[x, y] *= tau
+                score_grid[x, y] *= self._dixon_coles_tau(x, y, lmbda, mu, self.rho)
                 
-        # Normalize grid to make sure probabilities sum to 1.0
         grid_sum = np.sum(score_grid)
         if grid_sum > 0:
             score_grid /= grid_sum
             
-        # Calculate outcome probabilities
-        win_home = np.sum(np.tril(score_grid, -1)) # home goals > away goals
-        draw = np.sum(np.diag(score_grid))         # home goals == away goals
-        win_away = np.sum(np.triu(score_grid, 1))  # away goals > home goals
+        win_home = np.sum(np.tril(score_grid, -1))
+        draw = np.sum(np.diag(score_grid))
+        win_away = np.sum(np.triu(score_grid, 1))
         
         return {
             "home_xG": lmbda,
@@ -233,28 +141,463 @@ class BayesianDixonColesModel:
         }
         
     def _poisson_pmf(self, k, lmbda):
-        """Poisson PMF."""
         return (lmbda ** k) * math.exp(-lmbda) / math.factorial(k)
+
+
+# --- 2. Bivariate Poisson Model ---
+class BivariatePoissonModel:
+    def __init__(self, team_list, team_ranks, prior_sigma=0.3):
+        self.teams = sorted(team_list)
+        self.team_to_idx = {team: idx for idx, team in enumerate(self.teams)}
+        self.num_teams = len(self.teams)
+        self.ranks = team_ranks
+        self.prior_sigma = prior_sigma
         
-    def export_parameters(self, file_path):
-        """Exports team ratings and model parameters to a JSON file."""
-        parameters = {
-            "rho": self.rho,
-            "home_advantage_multiplier": math.exp(self.log_home_adv),
-            "teams": {}
-        }
-        
+        self.prior_a = np.zeros(self.num_teams)
+        self.prior_d = np.zeros(self.num_teams)
         for team in self.teams:
             idx = self.team_to_idx[team]
-            att = math.exp(self.log_attack[idx])
-            dfn = math.exp(self.log_defense[idx])
-            parameters["teams"][team] = {
-                "attack": att,
-                "defense": dfn,
-                "formation": self.formations.get(team, "4-3-3"),
-                "rank": self.ranks.get(team, 30)
-            }
+            rank = self.ranks.get(team, 30)
+            self.prior_a[idx] = math.log(1.7 * math.exp(-0.018 * rank))
+            self.prior_d[idx] = math.log(0.55 * math.exp(0.018 * rank))
             
-        with open(file_path, "w", encoding="utf-8") as f:
-            json.dump(parameters, f, indent=2)
-        print(f"Exported model parameters to {file_path}")
+        self.log_attack = np.copy(self.prior_a)
+        self.log_defense = np.copy(self.prior_d)
+        self.log_home_adv = 0.15
+        self.log_covariance = math.log(0.05) # Shared covariance parameter lambda_3
+        
+    def _bivariate_poisson_pmf(self, x, y, l1, l2, l3):
+        ans = 0.0
+        for k in range(min(x, y) + 1):
+            term = (l1 ** (x - k)) * (l2 ** (y - k)) * (l3 ** k) / (math.factorial(x - k) * math.factorial(y - k) * math.factorial(k))
+            ans += term
+        return ans * math.exp(-(l1 + l2 + l3))
+        
+    def _loss_function(self, params, home_idxs, away_idxs, home_goals, away_goals, weights, is_home_adv):
+        log_att = params[:self.num_teams]
+        log_def = params[self.num_teams:2*self.num_teams]
+        log_ha = params[2*self.num_teams]
+        log_l3 = params[2*self.num_teams + 1]
+        
+        l1 = np.exp(log_att[home_idxs] + log_def[away_idxs] + log_ha * is_home_adv)
+        l2 = np.exp(log_att[away_idxs] + log_def[home_idxs])
+        l3 = np.exp(log_l3)
+        
+        # Calculate pmf for each match
+        pmfs = []
+        for i in range(len(home_goals)):
+            pmf = self._bivariate_poisson_pmf(home_goals[i], away_goals[i], l1[i], l2[i], l3)
+            pmfs.append(max(1e-10, pmf))
+            
+        likelihood_loss = -np.sum(weights * np.log(pmfs))
+        prior_loss_att = np.sum(((log_att - self.prior_a) ** 2) / (2 * self.prior_sigma ** 2))
+        prior_loss_def = np.sum(((log_def - self.prior_d) ** 2) / (2 * self.prior_sigma ** 2))
+        prior_loss_ha = ((log_ha - 0.18) ** 2) / (2 * 0.1 ** 2)
+        prior_loss_l3 = ((log_l3 - math.log(0.05)) ** 2) / (2 * 0.5 ** 2)
+        
+        return likelihood_loss + prior_loss_att + prior_loss_def + prior_loss_ha + prior_loss_l3
+        
+    def fit(self, df_matches):
+        df_filtered = df_matches.filter((pl.col("home_team").is_in(self.teams)) & (pl.col("away_team").is_in(self.teams)))
+        home_idxs = np.array([self.team_to_idx[name] for name in df_filtered["home_team"]])
+        away_idxs = np.array([self.team_to_idx[name] for name in df_filtered["away_team"]])
+        home_goals = df_filtered["home_score"].to_numpy().astype(int)
+        away_goals = df_filtered["away_score"].to_numpy().astype(int)
+        weights = df_filtered["weight"].to_numpy().astype(float)
+        
+        neutral_val = df_filtered["neutral"].to_numpy().astype(bool)
+        home_names = df_filtered["home_team"].to_numpy()
+        is_host = np.array([name in ["USA", "Canada", "Mexico"] for name in home_names])
+        is_home_adv = ((~neutral_val) | is_host).astype(float)
+        
+        initial_params = np.concatenate([self.log_attack, self.log_defense, [self.log_home_adv], [self.log_covariance]])
+        bounds = [(None, None)] * (2 * self.num_teams) + [(-1.0, 1.0), (-4.0, -1.0)]
+        
+        res = minimize(self._loss_function, initial_params, args=(home_idxs, away_idxs, home_goals, away_goals, weights, is_home_adv), method='L-BFGS-B', bounds=bounds)
+        if res.success:
+            self.log_attack = res.x[:self.num_teams]
+            self.log_defense = res.x[self.num_teams:2*self.num_teams]
+            self.log_home_adv = float(res.x[2*self.num_teams])
+            self.log_covariance = float(res.x[2*self.num_teams + 1])
+            
+    def predict_match(self, home_team, away_team, max_goals=5):
+        home_idx = self.team_to_idx[home_team]
+        away_idx = self.team_to_idx[away_team]
+        is_home_adv = home_team in ["USA", "Canada", "Mexico"]
+        ha_mult = math.exp(self.log_home_adv) if is_home_adv else 1.0
+        
+        l1 = math.exp(self.log_attack[home_idx] + self.log_defense[away_idx]) * ha_mult
+        l2 = math.exp(self.log_attack[away_idx] + self.log_defense[home_idx])
+        l3 = math.exp(self.log_covariance)
+        
+        grid = np.zeros((max_goals + 1, max_goals + 1))
+        for x in range(max_goals + 1):
+            for y in range(max_goals + 1):
+                grid[x, y] = self._bivariate_poisson_pmf(x, y, l1, l2, l3)
+                
+        grid_sum = np.sum(grid)
+        if grid_sum > 0:
+            grid /= grid_sum
+            
+        win_home = np.sum(np.tril(grid, -1))
+        draw = np.sum(np.diag(grid))
+        win_away = np.sum(np.triu(grid, 1))
+        
+        return {
+            "home_xG": l1 + l3,
+            "away_xG": l2 + l3,
+            "home_win": float(win_home),
+            "away_win": float(win_away),
+            "draw": float(draw),
+            "score_probabilities": grid.tolist()
+        }
+
+
+# --- 3. Elo Rating and Elo-Poisson Model ---
+class EloModel:
+    def __init__(self, team_list):
+        self.teams = sorted(team_list)
+        self.elo_ratings = {team: 1500.0 for team in self.teams}
+        
+        # Regression coefficients for Expected Goals
+        self.beta_0 = -0.15
+        self.beta_1 = 0.0012
+        self.beta_ha = 0.18
+        
+    def fit_elo_history(self, results_csv_path):
+        """Walks matches chronologically to estimate Elo ratings."""
+        print("Calculating historical Elo ratings...")
+        
+        # Read historical results sorted by date ascending
+        df_hist = pl.read_csv(results_csv_path, null_values="NA").sort("date")
+        
+        # Clean team mappings
+        from src.data_collector import NAME_MAP
+        
+        for row in df_hist.iter_rows(named=True):
+            home_raw = row['home_team']
+            away_raw = row['away_team']
+            
+            # Standardize names
+            home = NAME_MAP.get(home_raw, home_raw)
+            away = NAME_MAP.get(away_raw, away_raw)
+            
+            # Skip if either team is not tracked
+            if home not in self.elo_ratings or away not in self.elo_ratings:
+                continue
+                
+            h_score = row['home_score']
+            a_score = row['away_score']
+            if h_score is None or a_score is None:
+                continue
+                
+            # Compute match outcome
+            h_goals = int(h_score)
+            a_goals = int(a_score)
+            
+            w_h = 1.0 if h_goals > a_goals else 0.5 if h_goals == a_goals else 0.0
+            
+            # Standard Elo update
+            r_h = self.elo_ratings[home]
+            r_a = self.elo_ratings[away]
+            
+            e_h = 1.0 / (1.0 + 10.0 ** ((r_a - r_h) / 400.0))
+            
+            # K-factor scaling based on goal difference and match weight
+            gd = abs(h_goals - a_goals)
+            k_mult = 1.0
+            if gd > 1:
+                k_mult = 1.5 + (gd - 2) * 0.25
+                
+            k = 30.0 * k_mult
+            
+            self.elo_ratings[home] += k * (w_h - e_h)
+            self.elo_ratings[away] += k * ((1.0 - w_h) - (1.0 - e_h))
+            
+        print("Finished calculating Elo ratings.")
+        
+    def _loss_function(self, params, elo_diffs, home_goals, away_goals, weights, is_home_adv):
+        b0, b1, bha = params
+        l1 = np.exp(b0 + b1 * elo_diffs + bha * is_home_adv)
+        l2 = np.exp(b0 - b1 * elo_diffs)
+        
+        nll_h = -weights * (home_goals * np.log(l1) - l1)
+        nll_a = -weights * (away_goals * np.log(l2) - l2)
+        
+        return np.sum(nll_h) + np.sum(nll_a)
+        
+    def fit_poisson_regression(self, df_matches):
+        """Fits Poisson parameters relating Elo difference to expected goals."""
+        print("Fitting Elo-Poisson goal regression parameters...")
+        df_filtered = df_matches.filter((pl.col("home_team").is_in(self.teams)) & (pl.col("away_team").is_in(self.teams)))
+        
+        elo_h = np.array([self.elo_ratings[name] for name in df_filtered["home_team"]])
+        elo_a = np.array([self.elo_ratings[name] for name in df_filtered["away_team"]])
+        elo_diffs = elo_h - elo_a
+        
+        home_goals = df_filtered["home_score"].to_numpy().astype(int)
+        away_goals = df_filtered["away_score"].to_numpy().astype(int)
+        weights = df_filtered["weight"].to_numpy().astype(float)
+        
+        neutral_val = df_filtered["neutral"].to_numpy().astype(bool)
+        home_names = df_filtered["home_team"].to_numpy()
+        is_host = np.array([name in ["USA", "Canada", "Mexico"] for name in home_names])
+        is_home_adv = ((~neutral_val) | is_host).astype(float)
+        
+        initial_params = [self.beta_0, self.beta_1, self.beta_ha]
+        bounds = [(-2.0, 1.0), (0.0, 0.01), (-1.0, 1.0)]
+        
+        res = minimize(self._loss_function, initial_params, args=(elo_diffs, home_goals, away_goals, weights, is_home_adv), method='L-BFGS-B', bounds=bounds)
+        if res.success:
+            self.beta_0, self.beta_1, self.beta_ha = res.x
+            print(f"Fitted Elo-Poisson: beta_0={self.beta_0:.4f}, beta_1={self.beta_1:.6f}, beta_ha={self.beta_ha:.4f}")
+            
+    def predict_match(self, home_team, away_team, max_goals=5):
+        r_h = self.elo_ratings[home_team]
+        r_a = self.elo_ratings[away_team]
+        elo_diff = r_h - r_a
+        
+        is_home_adv = home_team in ["USA", "Canada", "Mexico"]
+        ha_val = 1.0 if is_home_adv else 0.0
+        
+        lmbda = math.exp(self.beta_0 + self.beta_1 * elo_diff + self.beta_ha * ha_val)
+        mu = math.exp(self.beta_0 - self.beta_1 * elo_diff)
+        
+        # Predict Poisson scores
+        p_home = np.array([(lmbda ** g) * math.exp(-lmbda) / math.factorial(g) for g in range(max_goals + 1)])
+        p_away = np.array([(mu ** g) * math.exp(-mu) / math.factorial(g) for g in range(max_goals + 1)])
+        grid = np.outer(p_home, p_away)
+        
+        grid_sum = np.sum(grid)
+        if grid_sum > 0:
+            grid /= grid_sum
+            
+        win_home = np.sum(np.tril(grid, -1))
+        draw = np.sum(np.diag(grid))
+        win_away = np.sum(np.triu(grid, 1))
+        
+        return {
+            "home_xG": lmbda,
+            "away_xG": mu,
+            "home_win": float(win_home),
+            "away_win": float(win_away),
+            "draw": float(draw),
+            "score_probabilities": grid.tolist()
+        }
+
+
+# --- 4. Softmax Classifier Model ---
+class SoftmaxClassifierModel:
+    def __init__(self, team_list, team_ranks):
+        self.teams = sorted(team_list)
+        self.ranks = team_ranks
+        
+        # Softmax coefficients: [Intercept, Elo difference coefficient, Rank difference coefficient, Home Advantage coefficient]
+        self.w_home = np.array([0.10, 0.0015, 0.015, 0.20]) # Logits for home win
+        self.w_draw = np.array([-0.80, -0.0002, -0.005, -0.05]) # Logits for draw
+        # baseline: w_away = [0.0, 0.0, 0.0, 0.0]
+        
+    def _softmax(self, zh, zd):
+        # baseline za = 0
+        exp_h = np.exp(zh)
+        exp_d = np.exp(zd)
+        denom = exp_h + exp_d + 1.0
+        return exp_h / denom, exp_d / denom, 1.0 / denom
+        
+    def _loss_function(self, params, X, outcomes, weights):
+        # params: [w_home (4), w_draw (4)]
+        w_h = params[:4]
+        w_d = params[4:]
+        
+        zh = X.dot(w_h)
+        zd = X.dot(w_d)
+        
+        # Softmax probabilities
+        exp_h = np.exp(zh)
+        exp_d = np.exp(zd)
+        denom = exp_h + exp_d + 1.0
+        
+        p_h = exp_h / denom
+        p_d = exp_d / denom
+        p_a = 1.0 / denom
+        
+        # Compute loss
+        loss = 0.0
+        for i in range(len(outcomes)):
+            actual = outcomes[i]
+            if actual == 0: # Home Win
+                p = p_h[i]
+            elif actual == 1: # Draw
+                p = p_d[i]
+            else: # Away Win
+                p = p_a[i]
+            loss += -weights[i] * math.log(max(1e-15, p))
+            
+        # Add regularization (L2)
+        l2 = 0.01 * (np.sum(w_h ** 2) + np.sum(w_d ** 2))
+        return loss + l2
+        
+    def fit(self, df_matches, elo_ratings):
+        """Fits multinomial logit coefficients using Elo and Rank features."""
+        print("Fitting Softmax Classifier coefficients...")
+        df_filtered = df_matches.filter((pl.col("home_team").is_in(self.teams)) & (pl.col("away_team").is_in(self.teams)))
+        
+        elo_h = np.array([elo_ratings[name] for name in df_filtered["home_team"]])
+        elo_a = np.array([elo_ratings[name] for name in df_filtered["away_team"]])
+        elo_diffs = elo_h - elo_a
+        
+        rank_h = np.array([self.ranks.get(name, 30) for name in df_filtered["home_team"]])
+        rank_a = np.array([self.ranks.get(name, 30) for name in df_filtered["away_team"]])
+        rank_diffs = rank_a - rank_h # positive means home has a better rank (lower rank index)
+        
+        neutral_val = df_filtered["neutral"].to_numpy().astype(bool)
+        home_names = df_filtered["home_team"].to_numpy()
+        is_host = np.array([name in ["USA", "Canada", "Mexico"] for name in home_names])
+        is_home_adv = ((~neutral_val) | is_host).astype(float)
+        
+        # Design matrix X: [Intercept, Elo difference, Rank difference, Home Advantage]
+        N = len(df_filtered)
+        X = np.column_stack([
+            np.ones(N),
+            elo_diffs,
+            rank_diffs,
+            is_home_adv
+        ])
+        
+        # Outcomes: 0=Home Win, 1=Draw, 2=Away Win
+        home_goals = df_filtered["home_score"].to_numpy().astype(int)
+        away_goals = df_filtered["away_score"].to_numpy().astype(int)
+        
+        outcomes = []
+        for i in range(N):
+            if home_goals[i] > away_goals[i]:
+                outcomes.append(0)
+            elif home_goals[i] == away_goals[i]:
+                outcomes.append(1)
+            else:
+                outcomes.append(2)
+        outcomes = np.array(outcomes)
+        weights = df_filtered["weight"].to_numpy().astype(float)
+        
+        initial_params = np.concatenate([self.w_home, self.w_draw])
+        
+        res = minimize(self._loss_function, initial_params, args=(X, outcomes, weights), method='BFGS')
+        if res.success:
+            self.w_home = res.x[:4]
+            self.w_draw = res.x[4:]
+            print(f"Fitted Softmax Classifier coefficients successfully.")
+            
+    def predict_match(self, home_team, away_team, elo_ratings, elo_poisson_model):
+        """Predicts probabilities and generates score grid mapping outcome probs to Elo expected goals."""
+        r_h = elo_ratings[home_team]
+        r_a = elo_ratings[away_team]
+        elo_diff = r_h - r_a
+        
+        rank_h = self.ranks.get(home_team, 30)
+        rank_a = self.ranks.get(away_team, 30)
+        rank_diff = rank_a - rank_h
+        
+        is_home_adv = 1.0 if home_team in ["USA", "Canada", "Mexico"] else 0.0
+        
+        x_vec = np.array([1.0, elo_diff, rank_diff, is_home_adv])
+        
+        zh = x_vec.dot(self.w_home)
+        zd = x_vec.dot(self.w_draw)
+        
+        p_h, p_d, p_a = self._softmax(zh, zd)
+        
+        # For the goals projection, we borrow expected goals from the Elo-Poisson model
+        pred_goals = elo_poisson_model.predict_match(home_team, away_team)
+        lmbda = pred_goals["home_xG"]
+        mu = pred_goals["away_xG"]
+        
+        # Build raw Poisson grid
+        max_goals = 5
+        grid = np.zeros((max_goals + 1, max_goals + 1))
+        for x in range(max_goals + 1):
+            for y in range(max_goals + 1):
+                grid[x, y] = ((lmbda ** x) * math.exp(-lmbda) / math.factorial(x)) * ((mu ** y) * math.exp(-mu) / math.factorial(y))
+                
+        # Split grid into Home, Draw, Away components and adjust their sums to match predicted Softmax probabilities
+        win_mask = np.tril(np.ones_like(grid), -1).astype(bool)
+        draw_mask = np.diag(np.ones(max_goals + 1)).astype(bool)
+        loss_mask = np.triu(np.ones_like(grid), 1).astype(bool)
+        
+        sum_w = np.sum(grid[win_mask])
+        sum_d = np.sum(grid[draw_mask])
+        sum_l = np.sum(grid[loss_mask])
+        
+        if sum_w > 0: grid[win_mask] *= (p_h / sum_w)
+        if sum_d > 0: grid[draw_mask] *= (p_d / sum_d)
+        if sum_l > 0: grid[loss_mask] *= (p_a / sum_l)
+        
+        grid_sum = np.sum(grid)
+        if grid_sum > 0:
+            grid /= grid_sum
+            
+        return {
+            "home_xG": lmbda,
+            "away_xG": mu,
+            "home_win": float(p_h),
+            "away_win": float(p_a),
+            "draw": float(p_d),
+            "score_probabilities": grid.tolist()
+        }
+
+
+# --- Unified Parameters Exporter ---
+def export_all_models(file_path, dc_model, bp_model, elo_model, sm_model):
+    """Exports all model weights and ratings into a single JSON parameter file."""
+    parameters = {
+        "dixon_coles": {
+            "rho": dc_model.rho,
+            "home_advantage_multiplier": math.exp(dc_model.log_home_adv),
+            "teams": {}
+        },
+        "bivariate": {
+            "log_covariance": bp_model.log_covariance,
+            "home_advantage_multiplier": math.exp(bp_model.log_home_adv),
+            "teams": {}
+        },
+        "elo": {
+            "beta_0": elo_model.beta_0,
+            "beta_1": elo_model.beta_1,
+            "beta_ha": elo_model.beta_ha,
+            "teams": {}
+        },
+        "classifier": {
+            "w_home": sm_model.w_home.tolist(),
+            "w_draw": sm_model.w_draw.tolist()
+        }
+    }
+    
+    # Save per-team parameters
+    for team in dc_model.teams:
+        # 1. Dixon-Coles team ratings
+        dc_idx = dc_model.team_to_idx[team]
+        dc_att = math.exp(dc_model.log_attack[dc_idx])
+        dc_dfn = math.exp(dc_model.log_defense[dc_idx])
+        parameters["dixon_coles"]["teams"][team] = {
+            "attack": dc_att,
+            "defense": dc_dfn,
+            "formation": dc_model.formations.get(team, "4-3-3"),
+            "rank": dc_model.ranks.get(team, 30)
+        }
+        
+        # 2. Bivariate Poisson team ratings
+        bp_idx = bp_model.team_to_idx[team]
+        bp_att = math.exp(bp_model.log_attack[bp_idx])
+        bp_dfn = math.exp(bp_model.log_defense[bp_idx])
+        parameters["bivariate"]["teams"][team] = {
+            "attack": bp_att,
+            "defense": bp_dfn
+        }
+        
+        # 3. Elo ratings
+        parameters["elo"]["teams"][team] = {
+            "rating": elo_model.elo_ratings[team]
+        }
+        
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(parameters, f, indent=2)
+    print(f"Exported all model parameters to {file_path}")

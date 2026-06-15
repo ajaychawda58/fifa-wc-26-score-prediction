@@ -1,3 +1,9 @@
+// --- Global State ---
+let modelParameters = null;
+let worldCupMatches = [];
+let squadRosters = {};
+let selectedModel = "ensemble"; // Default active model
+
 const GROUPS = {
     "A": ["Mexico", "South Africa", "South Korea", "Czechia"],
     "B": ["Canada", "Bosnia and Herzegovina", "Qatar", "Switzerland"],
@@ -12,11 +18,6 @@ const GROUPS = {
     "K": ["Colombia", "DR Congo", "Portugal", "Uzbekistan"],
     "L": ["Croatia", "England", "Ghana", "Panama"]
 };
-
-// --- Global State ---
-let modelParameters = null;
-let worldCupMatches = [];
-let squadRosters = {};
 
 // Default formations coordinates on the pitch (percentages from top-left)
 const FORMATIONS = {
@@ -104,6 +105,7 @@ const FORMATIONS = {
 document.addEventListener("DOMContentLoaded", async () => {
     setupTabNavigation();
     await loadApplicationData();
+    setupModelSelector();
     populateDropdowns();
     renderFixturesTable();
     initDashboardWidgets();
@@ -124,7 +126,6 @@ function setupTabNavigation() {
             btn.classList.add("active");
             document.getElementById(targetTab).classList.add("active");
             
-            // Trigger specific layout refreshes if needed
             if (targetTab === "standings-tab") {
                 renderGroupStandings();
             } else if (targetTab === "squads-tab") {
@@ -138,8 +139,8 @@ function setupTabNavigation() {
 async function loadApplicationData() {
     try {
         console.log("Fetching model parameters and schedule JSON...");
-        
         const cacheBuster = `?v=${Date.now()}`;
+        
         const [paramsRes, matchesRes, mdRes] = await Promise.all([
             fetch(`data/model_parameters.json${cacheBuster}`),
             fetch(`data/wc_2026_matches.json${cacheBuster}`),
@@ -149,7 +150,7 @@ async function loadApplicationData() {
         modelParameters = await paramsRes.json();
         worldCupMatches = await matchesRes.json();
         
-        // Sort matches chronologically by date and tie-break by ID
+        // Sort matches chronologically by date
         worldCupMatches.sort((a, b) => a.date.localeCompare(b.date) || a.id - b.id);
         
         const mdText = await mdRes.text();
@@ -168,7 +169,6 @@ function parseSquadsMarkdown(mdText) {
     for (let teamSection of teams) {
         if (!teamSection.trim() || teamSection.startsWith('#')) continue;
         const lines = teamSection.split('\n');
-        // Extract team name
         const header = lines[0].replace('Squad Profile', '').trim();
         squads[header] = [];
         
@@ -179,7 +179,7 @@ function parseSquadsMarkdown(mdText) {
                 continue;
             }
             if (inTable && line.startsWith('|')) {
-                if (line.includes('---')) continue; // Skip header divider
+                if (line.includes('---')) continue;
                 const cols = line.split('|').map(c => c.trim()).filter(Boolean);
                 if (cols.length >= 7) {
                     squads[header].push({
@@ -198,8 +198,16 @@ function parseSquadsMarkdown(mdText) {
     return squads;
 }
 
+// Helper to pull prediction record based on currently selected model
+function getPredictionRecord(match, modelName) {
+    if (match.predictions && match.predictions[modelName]) {
+        return match.predictions[modelName];
+    }
+    // Fallback to top-level legacy fields if nested fields are missing
+    return match;
+}
+
 function updateHeaderStats() {
-    // Calculate overall stats
     let completedCount = 0;
     let correctOutcomeCount = 0;
     
@@ -209,8 +217,10 @@ function updateHeaderStats() {
             
             const actualHome = parseInt(m.home_score);
             const actualAway = parseInt(m.away_score);
-            const predHome = parseInt(m.predicted_home_score);
-            const predAway = parseInt(m.predicted_away_score);
+            
+            const pred = getPredictionRecord(m, selectedModel);
+            const predHome = parseInt(pred.predicted_home_score);
+            const predAway = parseInt(pred.predicted_away_score);
             
             const actualOutcome = actualHome > actualAway ? "H" : actualAway > actualHome ? "A" : "D";
             const predOutcome = predHome > predAway ? "H" : predAway > predHome ? "A" : "D";
@@ -228,7 +238,34 @@ function updateHeaderStats() {
     document.getElementById("total-predicted").innerText = worldCupMatches.length;
 }
 
-// --- Dropdowns & selectors setup ---
+// --- Model Selector Hook ---
+function setupModelSelector() {
+    const selector = document.getElementById("model-select");
+    if (!selector) return;
+    
+    selector.addEventListener("change", (e) => {
+        selectedModel = e.target.value;
+        console.log(`Switched active model to: ${selectedModel}`);
+        
+        // Refresh UI components
+        updateHeaderStats();
+        renderFixturesTable();
+        
+        // Update comparison / prediction panel if prediction already run
+        const teamA = document.getElementById("team-a-select").value;
+        const teamB = document.getElementById("team-b-select").value;
+        if (document.getElementById("prediction-results").style.display !== "none") {
+            runVisualPrediction(teamA, teamB);
+        }
+        
+        // Refresh standings simulation if standings tab is active
+        const standingsTab = document.getElementById("standings-tab");
+        if (standingsTab.classList.contains("active")) {
+            renderGroupStandings();
+        }
+    });
+}
+
 function populateDropdowns() {
     if (!modelParameters) return;
     
@@ -236,7 +273,7 @@ function populateDropdowns() {
     const teamBSelect = document.getElementById("team-b-select");
     const squadSelect = document.getElementById("squad-team-select");
     
-    const sortedTeams = Object.keys(modelParameters.teams).sort();
+    const sortedTeams = Object.keys(modelParameters.dixon_coles.teams).sort();
     
     const generateOptions = (selectEl, defaultTeam) => {
         selectEl.innerHTML = "";
@@ -271,13 +308,10 @@ function initDashboardWidgets() {
     });
 }
 
-// Factorial helper
+// Mathematical Helper Functions
 const factorial = (n) => (n <= 1 ? 1 : n * factorial(n - 1));
-
-// Poisson PMF helper
 const poissonPmf = (k, lambda) => Math.exp(-lambda) * Math.pow(lambda, k) / factorial(k);
 
-// Dixon-Coles tau adjustment helper
 function getDixonColesTau(x, y, lambda, mu, rho) {
     if (x === 0 && y === 0) return 1.0 - rho * lambda * mu;
     if (x === 1 && y === 0) return 1.0 + rho * mu;
@@ -286,49 +320,236 @@ function getDixonColesTau(x, y, lambda, mu, rho) {
     return 1.0;
 }
 
-function runVisualPrediction(teamA, teamB) {
-    if (!modelParameters) return;
+function bivariatePoissonPmf(x, y, l1, l2, l3) {
+    let ans = 0.0;
+    const minXY = Math.min(x, y);
+    for (let k = 0; k <= minXY; k++) {
+        let term = Math.pow(l1, x - k) * Math.pow(l2, y - k) * Math.pow(l3, k) / 
+                   (factorial(x - k) * factorial(y - k) * factorial(k));
+        ans += term;
+    }
+    return ans * Math.exp(-(l1 + l2 + l3));
+}
+
+// --- Client-Side Model Predictors ---
+
+// 1. Dixon-Coles Predictor
+function predictDixonColes(teamA, teamB, maxGoals=5) {
+    const dc = modelParameters.dixon_coles;
+    const ratingsA = dc.teams[teamA];
+    const ratingsB = dc.teams[teamB];
+    const isHomeA = ["USA", "Canada", "Mexico"].includes(teamA);
+    const haMult = isHomeA ? dc.home_advantage_multiplier : 1.0;
     
-    const ratingsA = modelParameters.teams[teamA];
-    const ratingsB = modelParameters.teams[teamB];
-    
-    // Check if teamA has Home Advantage (if is host)
-    const isHomeAdv = ["USA", "Canada", "Mexico"].includes(teamA);
-    const haMult = isHomeAdv ? modelParameters.home_advantage_multiplier : 1.0;
-    
-    // Calculate expected goals (xG)
     const lambda = ratingsA.attack * ratingsB.defense * haMult;
     const mu = ratingsB.attack * ratingsA.defense;
-    const rho = modelParameters.rho;
+    const rho = dc.rho;
     
-    // Compute score grid (max 5x5 for heatmap rendering)
-    const maxGoals = 5;
     const grid = [];
     let sum = 0;
-    
     for (let x = 0; x <= maxGoals; x++) {
         grid[x] = [];
         for (let y = 0; y <= maxGoals; y++) {
             let prob = poissonPmf(x, lambda) * poissonPmf(y, mu);
-            let tau = getDixonColesTau(x, y, lambda, mu, rho);
-            prob *= tau;
+            prob *= getDixonColesTau(x, y, lambda, mu, rho);
             grid[x][y] = prob;
             sum += prob;
         }
     }
     
-    // Normalize grid
     for (let x = 0; x <= maxGoals; x++) {
         for (let y = 0; y <= maxGoals; y++) {
             grid[x][y] /= sum;
         }
     }
     
-    // Calculate outcome probabilities
-    let winA = 0;
-    let winB = 0;
-    let draw = 0;
+    return buildOutcomeRecord(grid, lambda, mu);
+}
+
+// 2. Bivariate Poisson Predictor
+function predictBivariate(teamA, teamB, maxGoals=5) {
+    const bp = modelParameters.bivariate;
+    const ratingsA = bp.teams[teamA];
+    const ratingsB = bp.teams[teamB];
+    const isHomeA = ["USA", "Canada", "Mexico"].includes(teamA);
+    const haMult = isHomeA ? bp.home_advantage_multiplier : 1.0;
     
+    const l1 = ratingsA.attack * ratingsB.defense * haMult;
+    const l2 = ratingsB.attack * ratingsA.defense;
+    const l3 = Math.exp(bp.log_covariance);
+    
+    const grid = [];
+    let sum = 0;
+    for (let x = 0; x <= maxGoals; x++) {
+        grid[x] = [];
+        for (let y = 0; y <= maxGoals; y++) {
+            let prob = bivariatePoissonPmf(x, y, l1, l2, l3);
+            grid[x][y] = prob;
+            sum += prob;
+        }
+    }
+    
+    for (let x = 0; x <= maxGoals; x++) {
+        for (let y = 0; y <= maxGoals; y++) {
+            grid[x][y] /= sum;
+        }
+    }
+    
+    return buildOutcomeRecord(grid, l1 + l3, l2 + l3);
+}
+
+// 3. Elo-Poisson Predictor
+function predictEloPoisson(teamA, teamB, maxGoals=5) {
+    const elo = modelParameters.elo;
+    const ratingA = elo.teams[teamA].rating;
+    const ratingB = elo.teams[teamB].rating;
+    const eloDiff = ratingA - ratingB;
+    const isHomeA = ["USA", "Canada", "Mexico"].includes(teamA) ? 1.0 : 0.0;
+    
+    const lambda = Math.exp(elo.beta_0 + elo.beta_1 * eloDiff + elo.beta_ha * isHomeA);
+    const mu = Math.exp(elo.beta_0 - elo.beta_1 * eloDiff);
+    
+    const grid = [];
+    let sum = 0;
+    for (let x = 0; x <= maxGoals; x++) {
+        grid[x] = [];
+        for (let y = 0; y <= maxGoals; y++) {
+            let prob = poissonPmf(x, lambda) * poissonPmf(y, mu);
+            grid[x][y] = prob;
+            sum += prob;
+        }
+    }
+    
+    for (let x = 0; x <= maxGoals; x++) {
+        for (let y = 0; y <= maxGoals; y++) {
+            grid[x][y] /= sum;
+        }
+    }
+    
+    return buildOutcomeRecord(grid, lambda, mu);
+}
+
+// 4. Softmax Classifier Predictor
+function predictSoftmaxClassifier(teamA, teamB, maxGoals=5) {
+    const cl = modelParameters.classifier;
+    const elo = modelParameters.elo;
+    const dc = modelParameters.dixon_coles;
+    
+    const ratingA = elo.teams[teamA].rating;
+    const ratingB = elo.teams[teamB].rating;
+    const eloDiff = ratingA - ratingB;
+    
+    const rankA = dc.teams[teamA].rank;
+    const rankB = dc.teams[teamB].rank;
+    const rankDiff = rankB - rankA;
+    
+    const isHomeA = ["USA", "Canada", "Mexico"].includes(teamA) ? 1.0 : 0.0;
+    
+    const xVec = [1.0, eloDiff, rankDiff, isHomeA];
+    let zh = 0, zd = 0;
+    for (let i = 0; i < 4; i++) {
+        zh += xVec[i] * cl.w_home[i];
+        zd += xVec[i] * cl.w_draw[i];
+    }
+    
+    const expH = Math.exp(zh);
+    const expD = Math.exp(zd);
+    const denom = expH + expD + 1.0;
+    
+    const pH = expH / denom;
+    const pD = expD / denom;
+    const pA = 1.0 / denom;
+    
+    // xG projections borrowed from Elo expected goals
+    const l1 = Math.exp(elo.beta_0 + elo.beta_1 * eloDiff + elo.beta_ha * isHomeA);
+    const l2 = Math.exp(elo.beta_0 - elo.beta_1 * eloDiff);
+    
+    // Build Poisson grid and scale parts to match pH, pD, pA
+    const grid = [];
+    let sumW = 0, sumD = 0, sumL = 0;
+    for (let x = 0; x <= maxGoals; x++) {
+        grid[x] = [];
+        for (let y = 0; y <= maxGoals; y++) {
+            let p = poissonPmf(x, l1) * poissonPmf(y, l2);
+            grid[x][y] = p;
+            if (x > y) sumW += p;
+            else if (x === y) sumD += p;
+            else sumL += p;
+        }
+    }
+    
+    // Re-scale grid components
+    for (let x = 0; x <= maxGoals; x++) {
+        for (let y = 0; y <= maxGoals; y++) {
+            if (x > y && sumW > 0) grid[x][y] *= (pH / sumW);
+            else if (x === y && sumD > 0) grid[x][y] *= (pD / sumD);
+            else if (y > x && sumL > 0) grid[x][y] *= (pA / sumL);
+        }
+    }
+    
+    let gridSum = 0;
+    for (let x = 0; x <= maxGoals; x++) {
+        for (let y = 0; y <= maxGoals; y++) {
+            gridSum += grid[x][y];
+        }
+    }
+    for (let x = 0; x <= maxGoals; x++) {
+        for (let y = 0; y <= maxGoals; y++) {
+            grid[x][y] /= gridSum;
+        }
+    }
+    
+    return {
+        home_xG: l1,
+        away_xG: l2,
+        home_win: pH,
+        away_win: pA,
+        draw: pD,
+        score_probabilities: grid
+    };
+}
+
+// 5. Ensemble Predictor
+function predictEnsemble(teamA, teamB, maxGoals=5) {
+    const dc = predictDixonColes(teamA, teamB, maxGoals);
+    const bp = predictBivariate(teamA, teamB, maxGoals);
+    const elo = predictEloPoisson(teamA, teamB, maxGoals);
+    const cl = predictSoftmaxClassifier(teamA, teamB, maxGoals);
+    
+    const w_dc = 0.35, w_bp = 0.20, w_elo = 0.30, w_cl = 0.15;
+    
+    const home_xG = w_dc * dc.home_xG + w_bp * bp.home_xG + w_elo * elo.home_xG + w_cl * cl.home_xG;
+    const away_xG = w_dc * dc.away_xG + w_bp * bp.away_xG + w_elo * elo.away_xG + w_cl * cl.away_xG;
+    
+    const home_win = w_dc * dc.home_win + w_bp * bp.home_win + w_elo * elo.home_win + w_cl * cl.home_win;
+    const away_win = w_dc * dc.away_win + w_bp * bp.away_win + w_elo * elo.away_win + w_cl * cl.away_win;
+    const draw = w_dc * dc.draw + w_bp * bp.draw + w_elo * elo.draw + w_cl * cl.draw;
+    
+    const grid = [];
+    for (let x = 0; x <= maxGoals; x++) {
+        grid[x] = [];
+        for (let y = 0; y <= maxGoals; y++) {
+            grid[x][y] = w_dc * dc.score_probabilities[x][y] + 
+                         w_bp * bp.score_probabilities[x][y] + 
+                         w_elo * elo.score_probabilities[x][y] + 
+                         w_cl * cl.score_probabilities[x][y];
+        }
+    }
+    
+    return {
+        home_xG: home_xG,
+        away_xG: away_xG,
+        home_win: home_win,
+        away_win: away_win,
+        draw: draw,
+        score_probabilities: grid
+    };
+}
+
+// Utility to build probabilities from grid
+function buildOutcomeRecord(grid, lambda, mu) {
+    let winA = 0, winB = 0, draw = 0;
+    const maxGoals = grid.length - 1;
     for (let x = 0; x <= maxGoals; x++) {
         for (let y = 0; y <= maxGoals; y++) {
             if (x > y) winA += grid[x][y];
@@ -336,12 +557,35 @@ function runVisualPrediction(teamA, teamB) {
             else draw += grid[x][y];
         }
     }
+    return {
+        home_xG: lambda,
+        away_xG: mu,
+        home_win: winA,
+        away_win: winB,
+        draw: draw,
+        score_probabilities: grid
+    };
+}
+
+function runVisualPrediction(teamA, teamB) {
+    if (!modelParameters) return;
+    
+    let pred;
+    if (selectedModel === "dixon_coles") pred = predictDixonColes(teamA, teamB);
+    else if (selectedModel === "bivariate") pred = predictBivariate(teamA, teamB);
+    else if (selectedModel === "elo") pred = predictEloPoisson(teamA, teamB);
+    else if (selectedModel === "classifier") pred = predictSoftmaxClassifier(teamA, teamB);
+    else pred = predictEnsemble(teamA, teamB);
+    
+    const lambda = pred.home_xG;
+    const mu = pred.away_xG;
+    const grid = pred.score_probabilities;
     
     // Find most likely score
     let maxProb = 0;
     let scoreHome = 0;
     let scoreAway = 0;
-    
+    const maxGoals = grid.length - 1;
     for (let x = 0; x <= maxGoals; x++) {
         for (let y = 0; y <= maxGoals; y++) {
             if (grid[x][y] > maxProb) {
@@ -358,9 +602,8 @@ function runVisualPrediction(teamA, teamB) {
     document.getElementById("xg-val-a").innerText = lambda.toFixed(2);
     document.getElementById("xg-val-b").innerText = mu.toFixed(2);
     
-    // Prob bars
-    const winAPercent = Math.round(winA * 100);
-    const winBPercent = Math.round(winB * 100);
+    const winAPercent = Math.round(pred.home_win * 100);
+    const winBPercent = Math.round(pred.away_win * 100);
     const drawPercent = 100 - winAPercent - winBPercent;
     
     document.getElementById("prob-lbl-a").innerText = `${teamA}: ${winAPercent}%`;
@@ -369,16 +612,17 @@ function runVisualPrediction(teamA, teamB) {
     document.getElementById("prob-bar-b").style.width = `${winBPercent}%`;
     document.getElementById("prob-bar-draw").style.width = `${drawPercent}%`;
     
-    // Predicted Score
     document.getElementById("predicted-score-text").innerText = `${scoreHome} - ${scoreAway}`;
     document.getElementById("predicted-score-prob").innerText = `Score probability: ${(maxProb * 100).toFixed(1)}%`;
-    
     document.getElementById("prediction-results").style.display = "block";
     
-    // Render Heatmap
     renderHeatmap(teamA, teamB, grid);
     
-    // Update comparison section
+    // Ratings display using Dixon-Coles parameters for base rating display
+    const dc = modelParameters.dixon_coles;
+    const ratingsA = dc.teams[teamA];
+    const ratingsB = dc.teams[teamB];
+    
     document.getElementById("comp-team-a-name").innerText = teamA;
     document.getElementById("comp-team-b-name").innerText = teamB;
     document.getElementById("comp-att-a").innerText = ratingsA.attack.toFixed(2);
@@ -386,7 +630,6 @@ function runVisualPrediction(teamA, teamB) {
     document.getElementById("comp-att-b").innerText = ratingsB.attack.toFixed(2);
     document.getElementById("comp-def-b").innerText = ratingsB.defense.toFixed(2);
     
-    // Fill bars: assume attack scale 0.4 to 1.8, defense 0.4 to 1.8 (lower defense is better, invert defense fill)
     const getFillPercent = (val) => Math.min(100, Math.max(10, ((val - 0.4) / 1.4) * 100));
     const getDefFillPercent = (val) => Math.min(100, Math.max(10, (1 - (val - 0.4) / 1.4) * 100));
     
@@ -398,7 +641,6 @@ function runVisualPrediction(teamA, teamB) {
     document.getElementById("comp-formation-a").innerText = ratingsA.formation;
     document.getElementById("comp-formation-b").innerText = ratingsB.formation;
     
-    // Render Formation Pitches
     renderFormationOnPitch("pitch-team-a", ratingsA.formation);
     renderFormationOnPitch("pitch-team-b", ratingsB.formation);
     
@@ -412,13 +654,11 @@ function renderHeatmap(teamA, teamB, grid) {
     const wrapper = document.createElement("div");
     wrapper.className = "heatmap-grid";
     
-    // Empty corner cell
     const corner = document.createElement("div");
     corner.className = "heatmap-header-cell";
     corner.innerHTML = `<span style="font-size:0.7rem;">${teamA}\\${teamB}</span>`;
     wrapper.appendChild(corner);
     
-    // Away goals headers (X axis)
     for (let y = 0; y <= 5; y++) {
         const cell = document.createElement("div");
         cell.className = "heatmap-header-cell";
@@ -426,9 +666,7 @@ function renderHeatmap(teamA, teamB, grid) {
         wrapper.appendChild(cell);
     }
     
-    // Grid rows
     for (let x = 0; x <= 5; x++) {
-        // Home goals header (Y axis)
         const rowHeader = document.createElement("div");
         rowHeader.className = "heatmap-header-cell";
         rowHeader.innerText = x;
@@ -439,11 +677,9 @@ function renderHeatmap(teamA, teamB, grid) {
             const cell = document.createElement("div");
             cell.className = "heatmap-cell";
             
-            // Adjust opacity and color based on probability size
-            // Pink for high probability cells
-            const hue = 333; // magenta pink
+            const hue = 333;
             const saturation = 90;
-            const lightness = 25 + Math.min(50, prob * 200); // dynamic brightness
+            const lightness = 25 + Math.min(50, prob * 200);
             
             cell.style.backgroundColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
             if (prob < 0.02) cell.style.color = "rgba(255,255,255,0.4)";
@@ -463,7 +699,6 @@ function renderFormationOnPitch(pitchId, formationName) {
     const pitch = document.getElementById(pitchId);
     pitch.innerHTML = "";
     
-    // Draw pitch lines first
     const innerCircle = document.createElement("div");
     innerCircle.className = "pitch-center-circle";
     pitch.appendChild(innerCircle);
@@ -476,7 +711,6 @@ function renderFormationOnPitch(pitchId, formationName) {
     bottomPen.className = "pitch-penalty-area-b";
     pitch.appendChild(bottomPen);
     
-    // Get positions
     const coords = FORMATIONS[formationName] || FORMATIONS["4-3-3"];
     
     coords.forEach(c => {
@@ -500,12 +734,10 @@ function renderFixturesTable() {
     const tableBody = document.getElementById("fixtures-table-body");
     tableBody.innerHTML = "";
     
-    // Filters
     const searchVal = document.getElementById("fixtures-search").value.toLowerCase();
     const groupFilter = document.getElementById("fixtures-group-filter").value;
     const statusFilter = document.getElementById("fixtures-status-filter").value;
     
-    // Apply filters and event listeners
     document.getElementById("fixtures-search").oninput = renderFixturesTable;
     document.getElementById("fixtures-group-filter").onchange = renderFixturesTable;
     document.getElementById("fixtures-status-filter").onchange = renderFixturesTable;
@@ -516,13 +748,8 @@ function renderFixturesTable() {
         const stage = m.stage;
         const played = m.home_score !== null && m.away_score !== null;
         
-        // Search filter
         if (searchVal && !home.includes(searchVal) && !away.includes(searchVal)) return false;
-        
-        // Group filter
         if (groupFilter !== "ALL" && !stage.includes(`Group ${groupFilter}`)) return false;
-        
-        // Status filter
         if (statusFilter === "PLAYED" && !played) return false;
         if (statusFilter === "UPCOMING" && played) return false;
         
@@ -531,21 +758,19 @@ function renderFixturesTable() {
     
     filteredMatches.forEach(m => {
         const row = document.createElement("tr");
-        
         const isPlayed = m.home_score !== null && m.away_score !== null;
+        const pred = getPredictionRecord(m, selectedModel);
         
-        // Columns: Date, Stage, Home, Score, Away, xG, Prediction, Win Probs, Outcome
         let scoreDisplay = "";
         let outcomeBadge = "-";
         
         if (isPlayed) {
             scoreDisplay = `<span class="score-cell-played">${m.home_score} - ${m.away_score}</span>`;
             
-            // Check result accuracy
             const actualHome = parseInt(m.home_score);
             const actualAway = parseInt(m.away_score);
-            const predHome = parseInt(m.predicted_home_score);
-            const predAway = parseInt(m.predicted_away_score);
+            const predHome = parseInt(pred.predicted_home_score);
+            const predAway = parseInt(pred.predicted_away_score);
             
             const actualOutcome = actualHome > actualAway ? "H" : actualAway > actualHome ? "A" : "D";
             const predOutcome = predHome > predAway ? "H" : predAway > predHome ? "A" : "D";
@@ -565,12 +790,12 @@ function renderFixturesTable() {
             <td class="text-right team-cell">${m.home}</td>
             <td class="text-center">${scoreDisplay}</td>
             <td class="text-left team-cell">${m.away}</td>
-            <td class="text-center text-muted" style="font-size:0.8rem;">${m.home_xG} - ${m.away_xG}</td>
+            <td class="text-center text-muted" style="font-size:0.8rem;">${pred.home_xG} - ${pred.away_xG}</td>
             <td class="text-center font-bold" style="color:var(--primary-light); font-weight:700;">
-                ${m.predicted_home_score} - ${m.predicted_away_score}
+                ${pred.predicted_home_score} - ${pred.predicted_away_score}
             </td>
             <td class="text-center" style="font-size:0.8rem; color:var(--text-muted);">
-                ${Math.round(m.home_win_prob * 100)}% / ${Math.round(m.draw_prob * 100)}% / ${Math.round(m.away_win_prob * 100)}%
+                ${Math.round(pred.home_win_prob * 100)}% / ${Math.round(pred.draw_prob * 100)}% / ${Math.round(pred.away_win_prob * 100)}%
             </td>
             <td class="text-center">${outcomeBadge}</td>
         `;
@@ -584,7 +809,6 @@ function renderGroupStandings() {
     const container = document.getElementById("groups-standings-container");
     container.innerHTML = "";
     
-    // We compute the standings dynamically based on played results
     const standings = computeStandings(worldCupMatches);
     
     Object.keys(standings).sort().forEach(groupLetter => {
@@ -627,7 +851,6 @@ function renderGroupStandings() {
         container.appendChild(card);
     });
     
-    // Set simulator button listener
     document.getElementById("btn-simulate").onclick = () => {
         simulateRemainingMatches();
     };
@@ -636,14 +859,12 @@ function renderGroupStandings() {
 function computeStandings(matchesList) {
     const standings = {};
     
-    // Initialize teams
     Object.keys(GROUPS).forEach(letter => {
         standings[letter] = GROUPS[letter].map(team => ({
             team: team, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, gd: 0, pts: 0
         }));
     });
     
-    // Update standings with scores
     matchesList.forEach(m => {
         if (m.home_score === null || m.away_score === null) return;
         
@@ -682,13 +903,11 @@ function computeStandings(matchesList) {
         }
     });
     
-    // Compute goal difference and sort
     Object.keys(standings).forEach(letter => {
         standings[letter].forEach(t => {
             t.gd = t.gf - t.ga;
         });
         
-        // Sort: Points DESC, Goal Difference DESC, Goals For DESC, alphabetical
         standings[letter].sort((a, b) => {
             if (b.pts !== a.pts) return b.pts - a.pts;
             if (b.gd !== a.gd) return b.gd - a.gd;
@@ -701,21 +920,17 @@ function computeStandings(matchesList) {
 }
 
 function simulateRemainingMatches() {
-    // Clone matches
-    const simulatedMatches = JSON.parse(jsonStringify(worldCupMatches));
+    const simulatedMatches = JSON.parse(JSON.stringify(worldCupMatches));
     
     simulatedMatches.forEach(m => {
         if (m.home_score === null || m.away_score === null) {
-            // Fill in scores using predicted score
-            m.home_score = m.predicted_home_score;
-            m.away_score = m.predicted_away_score;
+            const pred = getPredictionRecord(m, selectedModel);
+            m.home_score = pred.predicted_home_score;
+            m.away_score = pred.predicted_away_score;
         }
     });
     
-    // Compute simulated standings
     const standings = computeStandings(simulatedMatches);
-    
-    // Update container in UI
     const container = document.getElementById("groups-standings-container");
     container.innerHTML = "";
     
@@ -760,22 +975,15 @@ function simulateRemainingMatches() {
         container.appendChild(card);
     });
     
-    // Highlight completed simulation
-    alert("Full Group Stage simulated successfully based on Bayesian expected scores!");
-}
-
-function jsonStringify(obj) {
-    return JSON.stringify(obj);
+    alert(`Full Group Stage simulated successfully using the ${document.getElementById("model-select").options[document.getElementById("model-select").selectedIndex].text}!`);
 }
 
 // --- TAB 4: Squad Profiles Renders ---
 function renderSquadTab() {
     const teamSelect = document.getElementById("squad-team-select");
-    
     teamSelect.onchange = () => {
         renderSquadList(teamSelect.value);
     };
-    
     renderSquadList(teamSelect.value);
 }
 
@@ -789,14 +997,12 @@ function renderSquadList(teamName) {
     
     if (!modelParameters) return;
     
-    const teamMeta = modelParameters.teams[teamName];
+    const teamMeta = modelParameters.dixon_coles.teams[teamName];
     formationLabel.innerText = teamMeta.formation;
     
-    // Render Formation Pitch
     renderFormationOnPitch("squad-pitch-large", teamMeta.formation);
     
     const squad = squadRosters[teamName] || [];
-    
     if (squad.length === 0) {
         tableBody.innerHTML = `<tr><td colspan="7" class="text-center text-muted">No squad list loaded.</td></tr>`;
         return;

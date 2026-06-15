@@ -1,294 +1,659 @@
 {
-  "rho": -0.08886568058068701,
-  "home_advantage_multiplier": 1.2000969697022472,
-  "teams": {
-    "Algeria": {
-      "attack": 1.298758889837729,
-      "defense": 0.832710697818166,
-      "formation": "4-3-3",
-      "rank": 32
-    },
-    "Argentina": {
-      "attack": 2.016216554540889,
-      "defense": 0.6171246946863055,
-      "formation": "4-3-3",
-      "rank": 1
-    },
-    "Australia": {
-      "attack": 1.1799134538197888,
-      "defense": 0.8235969382951477,
-      "formation": "4-2-3-1",
-      "rank": 25
-    },
-    "Austria": {
-      "attack": 1.5251914044851662,
-      "defense": 0.7700646201492055,
-      "formation": "4-2-3-1",
-      "rank": 22
-    },
-    "Belgium": {
-      "attack": 1.5654289269062722,
-      "defense": 0.6389344656822393,
-      "formation": "4-2-3-1",
-      "rank": 8
-    },
-    "Bosnia and Herzegovina": {
-      "attack": 0.8069470487536531,
-      "defense": 1.2429766853183668,
-      "formation": "4-2-3-1",
-      "rank": 45
-    },
-    "Brazil": {
-      "attack": 1.9750530964170367,
-      "defense": 0.6787208348176161,
-      "formation": "4-2-3-1",
-      "rank": 5
-    },
-    "Canada": {
-      "attack": 0.8655085585248394,
-      "defense": 1.0015073673968908,
-      "formation": "3-4-2-1",
-      "rank": 35
-    },
-    "Cape Verde": {
-      "attack": 0.7019624816729427,
-      "defense": 1.251039388385805,
-      "formation": "4-3-3",
-      "rank": 44
-    },
-    "Colombia": {
-      "attack": 1.6347918593224526,
-      "defense": 0.6445098807234765,
-      "formation": "4-2-3-1",
-      "rank": 14
-    },
-    "Croatia": {
-      "attack": 1.550851372978806,
-      "defense": 0.70329441150265,
-      "formation": "4-3-3",
-      "rank": 9
-    },
-    "Cura\u00e7ao": {
-      "attack": 0.904051283374772,
-      "defense": 2.6424788378803923,
-      "formation": "4-3-3",
-      "rank": 48
-    },
-    "Czechia": {
-      "attack": 0.986380825778622,
-      "defense": 1.0923321430227495,
-      "formation": "3-4-1-2",
-      "rank": 28
-    },
-    "DR Congo": {
-      "attack": 0.766695906101857,
-      "defense": 1.1471809573317056,
-      "formation": "4-2-3-1",
-      "rank": 43
-    },
-    "Ecuador": {
-      "attack": 0.8884972223306814,
-      "defense": 0.6287647106084356,
-      "formation": "4-3-3",
-      "rank": 27
-    },
-    "Egypt": {
-      "attack": 1.081990869097686,
-      "defense": 1.0453699339834854,
-      "formation": "4-3-3",
-      "rank": 30
-    },
-    "England": {
-      "attack": 1.821737299033422,
-      "defense": 0.6485528247292918,
-      "formation": "4-2-3-1",
-      "rank": 4
-    },
-    "France": {
-      "attack": 2.1627393165784716,
-      "defense": 0.6544494322578716,
-      "formation": "4-2-3-1",
-      "rank": 2
-    },
-    "Germany": {
-      "attack": 2.079640429458863,
-      "defense": 0.8619841164805121,
-      "formation": "4-2-3-1",
-      "rank": 11
-    },
-    "Ghana": {
-      "attack": 0.9282478910749211,
-      "defense": 1.3996331038161953,
-      "formation": "4-2-3-1",
-      "rank": 46
-    },
-    "Haiti": {
-      "attack": 0.6427901475374733,
-      "defense": 1.4105826253423417,
-      "formation": "4-2-3-1",
-      "rank": 49
-    },
-    "Iran": {
-      "attack": 1.0425212216004205,
-      "defense": 1.1671216913059999,
-      "formation": "4-2-3-1",
-      "rank": 20
-    },
-    "Iraq": {
-      "attack": 0.6653393990906813,
-      "defense": 1.1065805703475136,
-      "formation": "4-2-3-1",
-      "rank": 40
-    },
-    "Ivory Coast": {
-      "attack": 1.1525204835667882,
-      "defense": 0.7218131747215581,
-      "formation": "4-3-3",
-      "rank": 33
-    },
-    "Japan": {
-      "attack": 1.6887541631303409,
-      "defense": 0.7531620260440594,
-      "formation": "4-2-3-1",
-      "rank": 19
-    },
-    "Jordan": {
-      "attack": 0.95019014398833,
-      "defense": 1.4863377954705483,
-      "formation": "3-4-2-1",
-      "rank": 41
-    },
-    "Mexico": {
-      "attack": 1.1126846383594948,
-      "defense": 0.922015577315392,
-      "formation": "4-2-3-1",
-      "rank": 36
-    },
-    "Morocco": {
-      "attack": 1.3196331274750581,
-      "defense": 0.6049896550575894,
-      "formation": "4-3-3",
-      "rank": 13
-    },
-    "Netherlands": {
-      "attack": 1.9657523235877925,
-      "defense": 0.8370012416959719,
-      "formation": "3-4-3",
-      "rank": 7
-    },
-    "New Zealand": {
-      "attack": 0.6036073406836838,
-      "defense": 1.3529450534728393,
-      "formation": "4-3-3",
-      "rank": 50
-    },
-    "Norway": {
-      "attack": 1.2548689647158047,
-      "defense": 0.9259617000553937,
-      "formation": "4-3-3",
-      "rank": 21
-    },
-    "Panama": {
-      "attack": 0.8402119703244271,
-      "defense": 1.3937433951667195,
-      "formation": "4-2-3-1",
-      "rank": 38
-    },
-    "Paraguay": {
-      "attack": 0.9688067958884418,
-      "defense": 1.115582795042652,
-      "formation": "4-2-3-1",
-      "rank": 39
-    },
-    "Portugal": {
-      "attack": 2.014747420347138,
-      "defense": 0.663084045432522,
-      "formation": "4-3-3",
-      "rank": 6
-    },
-    "Qatar": {
-      "attack": 0.8022138726662669,
-      "defense": 1.3872785013293556,
-      "formation": "3-5-2",
-      "rank": 37
-    },
-    "Saudi Arabia": {
-      "attack": 0.7729684319677295,
-      "defense": 0.9000492373639364,
-      "formation": "4-3-3",
-      "rank": 34
-    },
-    "Scotland": {
-      "attack": 0.9837053379091558,
-      "defense": 0.8889055176539308,
-      "formation": "3-4-2-1",
-      "rank": 29
-    },
-    "Senegal": {
-      "attack": 1.2814088908062058,
-      "defense": 0.973733863319459,
-      "formation": "4-3-3",
-      "rank": 17
-    },
-    "South Africa": {
-      "attack": 0.6256324651439695,
-      "defense": 1.2050331690954437,
-      "formation": "4-2-3-1",
-      "rank": 47
-    },
-    "South Korea": {
-      "attack": 1.337856628530053,
-      "defense": 1.121950700719803,
-      "formation": "4-2-3-1",
-      "rank": 24
-    },
-    "Spain": {
-      "attack": 1.7878200972346994,
-      "defense": 0.6707645811162953,
-      "formation": "4-3-3",
-      "rank": 3
-    },
-    "Sweden": {
-      "attack": 2.0682550241894253,
-      "defense": 1.1707584054764395,
-      "formation": "4-2-3-1",
-      "rank": 23
-    },
-    "Switzerland": {
-      "attack": 1.3930840950180303,
-      "defense": 1.0202961866190132,
-      "formation": "3-4-2-1",
-      "rank": 18
-    },
-    "Tunisia": {
-      "attack": 0.9108911136299618,
-      "defense": 1.159880693291116,
-      "formation": "4-3-3",
-      "rank": 31
-    },
-    "T\u00fcrkiye": {
-      "attack": 1.0911454120904713,
-      "defense": 1.2738984381181662,
-      "formation": "4-2-3-1",
-      "rank": 26
-    },
-    "USA": {
-      "attack": 1.373891380121355,
-      "defense": 0.9634588064048258,
-      "formation": "4-3-3",
-      "rank": 15
-    },
-    "Uruguay": {
-      "attack": 1.155274104259732,
-      "defense": 0.6314666040094471,
-      "formation": "4-3-3",
-      "rank": 12
-    },
-    "Uzbekistan": {
-      "attack": 0.8348449892324977,
-      "defense": 1.1527047677196038,
-      "formation": "3-4-2-1",
-      "rank": 42
+  "dixon_coles": {
+    "rho": -0.08886568058068701,
+    "home_advantage_multiplier": 1.2000969697022472,
+    "teams": {
+      "Algeria": {
+        "attack": 1.298758889837729,
+        "defense": 0.832710697818166,
+        "formation": "4-3-3",
+        "rank": 32
+      },
+      "Argentina": {
+        "attack": 2.016216554540889,
+        "defense": 0.6171246946863055,
+        "formation": "4-3-3",
+        "rank": 1
+      },
+      "Australia": {
+        "attack": 1.1799134538197888,
+        "defense": 0.8235969382951477,
+        "formation": "4-2-3-1",
+        "rank": 25
+      },
+      "Austria": {
+        "attack": 1.5251914044851662,
+        "defense": 0.7700646201492055,
+        "formation": "4-2-3-1",
+        "rank": 22
+      },
+      "Belgium": {
+        "attack": 1.5654289269062722,
+        "defense": 0.6389344656822393,
+        "formation": "4-2-3-1",
+        "rank": 8
+      },
+      "Bosnia and Herzegovina": {
+        "attack": 0.8069470487536531,
+        "defense": 1.2429766853183668,
+        "formation": "4-2-3-1",
+        "rank": 45
+      },
+      "Brazil": {
+        "attack": 1.9750530964170367,
+        "defense": 0.6787208348176161,
+        "formation": "4-2-3-1",
+        "rank": 5
+      },
+      "Canada": {
+        "attack": 0.8655085585248394,
+        "defense": 1.0015073673968908,
+        "formation": "3-4-2-1",
+        "rank": 35
+      },
+      "Cape Verde": {
+        "attack": 0.7019624816729427,
+        "defense": 1.251039388385805,
+        "formation": "4-3-3",
+        "rank": 44
+      },
+      "Colombia": {
+        "attack": 1.6347918593224526,
+        "defense": 0.6445098807234765,
+        "formation": "4-2-3-1",
+        "rank": 14
+      },
+      "Croatia": {
+        "attack": 1.550851372978806,
+        "defense": 0.70329441150265,
+        "formation": "4-3-3",
+        "rank": 9
+      },
+      "Cura\u00e7ao": {
+        "attack": 0.904051283374772,
+        "defense": 2.6424788378803923,
+        "formation": "4-3-3",
+        "rank": 48
+      },
+      "Czechia": {
+        "attack": 0.986380825778622,
+        "defense": 1.0923321430227495,
+        "formation": "3-4-1-2",
+        "rank": 28
+      },
+      "DR Congo": {
+        "attack": 0.766695906101857,
+        "defense": 1.1471809573317056,
+        "formation": "4-2-3-1",
+        "rank": 43
+      },
+      "Ecuador": {
+        "attack": 0.8884972223306814,
+        "defense": 0.6287647106084356,
+        "formation": "4-3-3",
+        "rank": 27
+      },
+      "Egypt": {
+        "attack": 1.081990869097686,
+        "defense": 1.0453699339834854,
+        "formation": "4-3-3",
+        "rank": 30
+      },
+      "England": {
+        "attack": 1.821737299033422,
+        "defense": 0.6485528247292918,
+        "formation": "4-2-3-1",
+        "rank": 4
+      },
+      "France": {
+        "attack": 2.1627393165784716,
+        "defense": 0.6544494322578716,
+        "formation": "4-2-3-1",
+        "rank": 2
+      },
+      "Germany": {
+        "attack": 2.079640429458863,
+        "defense": 0.8619841164805121,
+        "formation": "4-2-3-1",
+        "rank": 11
+      },
+      "Ghana": {
+        "attack": 0.9282478910749211,
+        "defense": 1.3996331038161953,
+        "formation": "4-2-3-1",
+        "rank": 46
+      },
+      "Haiti": {
+        "attack": 0.6427901475374733,
+        "defense": 1.4105826253423417,
+        "formation": "4-2-3-1",
+        "rank": 49
+      },
+      "Iran": {
+        "attack": 1.0425212216004205,
+        "defense": 1.1671216913059999,
+        "formation": "4-2-3-1",
+        "rank": 20
+      },
+      "Iraq": {
+        "attack": 0.6653393990906813,
+        "defense": 1.1065805703475136,
+        "formation": "4-2-3-1",
+        "rank": 40
+      },
+      "Ivory Coast": {
+        "attack": 1.1525204835667882,
+        "defense": 0.7218131747215581,
+        "formation": "4-3-3",
+        "rank": 33
+      },
+      "Japan": {
+        "attack": 1.6887541631303409,
+        "defense": 0.7531620260440594,
+        "formation": "4-2-3-1",
+        "rank": 19
+      },
+      "Jordan": {
+        "attack": 0.95019014398833,
+        "defense": 1.4863377954705483,
+        "formation": "3-4-2-1",
+        "rank": 41
+      },
+      "Mexico": {
+        "attack": 1.1126846383594948,
+        "defense": 0.922015577315392,
+        "formation": "4-2-3-1",
+        "rank": 36
+      },
+      "Morocco": {
+        "attack": 1.3196331274750581,
+        "defense": 0.6049896550575894,
+        "formation": "4-3-3",
+        "rank": 13
+      },
+      "Netherlands": {
+        "attack": 1.9657523235877925,
+        "defense": 0.8370012416959719,
+        "formation": "3-4-3",
+        "rank": 7
+      },
+      "New Zealand": {
+        "attack": 0.6036073406836838,
+        "defense": 1.3529450534728393,
+        "formation": "4-3-3",
+        "rank": 50
+      },
+      "Norway": {
+        "attack": 1.2548689647158047,
+        "defense": 0.9259617000553937,
+        "formation": "4-3-3",
+        "rank": 21
+      },
+      "Panama": {
+        "attack": 0.8402119703244271,
+        "defense": 1.3937433951667195,
+        "formation": "4-2-3-1",
+        "rank": 38
+      },
+      "Paraguay": {
+        "attack": 0.9688067958884418,
+        "defense": 1.115582795042652,
+        "formation": "4-2-3-1",
+        "rank": 39
+      },
+      "Portugal": {
+        "attack": 2.014747420347138,
+        "defense": 0.663084045432522,
+        "formation": "4-3-3",
+        "rank": 6
+      },
+      "Qatar": {
+        "attack": 0.8022138726662669,
+        "defense": 1.3872785013293556,
+        "formation": "3-5-2",
+        "rank": 37
+      },
+      "Saudi Arabia": {
+        "attack": 0.7729684319677295,
+        "defense": 0.9000492373639364,
+        "formation": "4-3-3",
+        "rank": 34
+      },
+      "Scotland": {
+        "attack": 0.9837053379091558,
+        "defense": 0.8889055176539308,
+        "formation": "3-4-2-1",
+        "rank": 29
+      },
+      "Senegal": {
+        "attack": 1.2814088908062058,
+        "defense": 0.973733863319459,
+        "formation": "4-3-3",
+        "rank": 17
+      },
+      "South Africa": {
+        "attack": 0.6256324651439695,
+        "defense": 1.2050331690954437,
+        "formation": "4-2-3-1",
+        "rank": 47
+      },
+      "South Korea": {
+        "attack": 1.337856628530053,
+        "defense": 1.121950700719803,
+        "formation": "4-2-3-1",
+        "rank": 24
+      },
+      "Spain": {
+        "attack": 1.7878200972346994,
+        "defense": 0.6707645811162953,
+        "formation": "4-3-3",
+        "rank": 3
+      },
+      "Sweden": {
+        "attack": 2.0682550241894253,
+        "defense": 1.1707584054764395,
+        "formation": "4-2-3-1",
+        "rank": 23
+      },
+      "Switzerland": {
+        "attack": 1.3930840950180303,
+        "defense": 1.0202961866190132,
+        "formation": "3-4-2-1",
+        "rank": 18
+      },
+      "Tunisia": {
+        "attack": 0.9108911136299618,
+        "defense": 1.159880693291116,
+        "formation": "4-3-3",
+        "rank": 31
+      },
+      "T\u00fcrkiye": {
+        "attack": 1.0911454120904713,
+        "defense": 1.2738984381181662,
+        "formation": "4-2-3-1",
+        "rank": 26
+      },
+      "USA": {
+        "attack": 1.373891380121355,
+        "defense": 0.9634588064048258,
+        "formation": "4-3-3",
+        "rank": 15
+      },
+      "Uruguay": {
+        "attack": 1.155274104259732,
+        "defense": 0.6314666040094471,
+        "formation": "4-3-3",
+        "rank": 12
+      },
+      "Uzbekistan": {
+        "attack": 0.8348449892324977,
+        "defense": 1.1527047677196038,
+        "formation": "3-4-2-1",
+        "rank": 42
+      }
     }
+  },
+  "bivariate": {
+    "log_covariance": -2.7714397268039614,
+    "home_advantage_multiplier": 1.2002169932313693,
+    "teams": {
+      "Algeria": {
+        "attack": 1.2659301419062925,
+        "defense": 0.8198119165230837
+      },
+      "Argentina": {
+        "attack": 2.002224179532133,
+        "defense": 0.6007717257683234
+      },
+      "Australia": {
+        "attack": 1.1577091125214316,
+        "defense": 0.8105800284312393
+      },
+      "Austria": {
+        "attack": 1.504112317872724,
+        "defense": 0.7529525474903386
+      },
+      "Belgium": {
+        "attack": 1.5533747507236375,
+        "defense": 0.6267051263508612
+      },
+      "Bosnia and Herzegovina": {
+        "attack": 0.7911634767741204,
+        "defense": 1.2339027691388889
+      },
+      "Brazil": {
+        "attack": 1.950742664761649,
+        "defense": 0.6562741335256493
+      },
+      "Canada": {
+        "attack": 0.8314355378425096,
+        "defense": 0.9700030968281163
+      },
+      "Cape Verde": {
+        "attack": 0.6840843568159297,
+        "defense": 1.2370529640360128
+      },
+      "Colombia": {
+        "attack": 1.602920523134156,
+        "defense": 0.6197760250447119
+      },
+      "Croatia": {
+        "attack": 1.507043584814464,
+        "defense": 0.6721161548686463
+      },
+      "Cura\u00e7ao": {
+        "attack": 0.8711874254284633,
+        "defense": 2.6203873610039516
+      },
+      "Czechia": {
+        "attack": 0.961194106703864,
+        "defense": 1.0751984214856154
+      },
+      "DR Congo": {
+        "attack": 0.7513840105737751,
+        "defense": 1.128571849414679
+      },
+      "Ecuador": {
+        "attack": 0.8588444645006331,
+        "defense": 0.6063712328346188
+      },
+      "Egypt": {
+        "attack": 1.0482821388037822,
+        "defense": 1.0173383866544201
+      },
+      "England": {
+        "attack": 1.7878869943950075,
+        "defense": 0.6154119632665923
+      },
+      "France": {
+        "attack": 2.1333024673257373,
+        "defense": 0.6212228149747834
+      },
+      "Germany": {
+        "attack": 2.0721849178189236,
+        "defense": 0.843847715052229
+      },
+      "Ghana": {
+        "attack": 0.8983005628592805,
+        "defense": 1.3799824197841992
+      },
+      "Haiti": {
+        "attack": 0.6469113680627413,
+        "defense": 1.4102146201328394
+      },
+      "Iran": {
+        "attack": 0.997743802909172,
+        "defense": 1.121334100755948
+      },
+      "Iraq": {
+        "attack": 0.6486350277242362,
+        "defense": 1.0958434636690144
+      },
+      "Ivory Coast": {
+        "attack": 1.1435344929855658,
+        "defense": 0.7188494551485168
+      },
+      "Japan": {
+        "attack": 1.664882940618753,
+        "defense": 0.7298858299488824
+      },
+      "Jordan": {
+        "attack": 0.9213685819162448,
+        "defense": 1.47361051864545
+      },
+      "Mexico": {
+        "attack": 1.0834971600877563,
+        "defense": 0.8971766787865799
+      },
+      "Morocco": {
+        "attack": 1.2802792870202877,
+        "defense": 0.5818371593707589
+      },
+      "Netherlands": {
+        "attack": 1.9413363867911375,
+        "defense": 0.8073225526611663
+      },
+      "New Zealand": {
+        "attack": 0.5940006209368629,
+        "defense": 1.3531355383410482
+      },
+      "Norway": {
+        "attack": 1.228090360396955,
+        "defense": 0.9053374860846602
+      },
+      "Panama": {
+        "attack": 0.8189900134181285,
+        "defense": 1.3856249906785088
+      },
+      "Paraguay": {
+        "attack": 0.929130688583721,
+        "defense": 1.0979955268272976
+      },
+      "Portugal": {
+        "attack": 2.0036467071886706,
+        "defense": 0.6356923801269263
+      },
+      "Qatar": {
+        "attack": 0.7790385822161129,
+        "defense": 1.3787115599103865
+      },
+      "Saudi Arabia": {
+        "attack": 0.7485220958926109,
+        "defense": 0.8803748869068229
+      },
+      "Scotland": {
+        "attack": 0.9625964462288882,
+        "defense": 0.8782059403092841
+      },
+      "Senegal": {
+        "attack": 1.25357976883111,
+        "defense": 0.9531302210117797
+      },
+      "South Africa": {
+        "attack": 0.6101126511697077,
+        "defense": 1.198006679342603
+      },
+      "South Korea": {
+        "attack": 1.3069362186580689,
+        "defense": 1.0993341414072175
+      },
+      "Spain": {
+        "attack": 1.7365911762488466,
+        "defense": 0.6366254191073109
+      },
+      "Sweden": {
+        "attack": 2.0284890960527235,
+        "defense": 1.1445380864768044
+      },
+      "Switzerland": {
+        "attack": 1.3647399479852471,
+        "defense": 0.9972527571847568
+      },
+      "Tunisia": {
+        "attack": 0.8966398237227792,
+        "defense": 1.169064754547793
+      },
+      "T\u00fcrkiye": {
+        "attack": 1.0764125987657043,
+        "defense": 1.2711567697613515
+      },
+      "USA": {
+        "attack": 1.3499117961105545,
+        "defense": 0.9385665035279415
+      },
+      "Uruguay": {
+        "attack": 1.1239657270082681,
+        "defense": 0.6074179579699158
+      },
+      "Uzbekistan": {
+        "attack": 0.8063588446838745,
+        "defense": 1.1253890980775365
+      }
+    }
+  },
+  "elo": {
+    "beta_0": 0.17058718516658977,
+    "beta_1": 0.002077962200889804,
+    "beta_ha": 0.14796552997524537,
+    "teams": {
+      "Algeria": {
+        "rating": 1577.75003604085
+      },
+      "Argentina": {
+        "rating": 1761.7226563329136
+      },
+      "Australia": {
+        "rating": 1484.0140382402215
+      },
+      "Austria": {
+        "rating": 1598.5040895216275
+      },
+      "Belgium": {
+        "rating": 1683.8795048588956
+      },
+      "Bosnia and Herzegovina": {
+        "rating": 1388.5006384794203
+      },
+      "Brazil": {
+        "rating": 1709.8024251448821
+      },
+      "Canada": {
+        "rating": 1438.1093326953276
+      },
+      "Cape Verde": {
+        "rating": 1313.782204857385
+      },
+      "Colombia": {
+        "rating": 1672.7291461948766
+      },
+      "Croatia": {
+        "rating": 1611.242833832203
+      },
+      "Cura\u00e7ao": {
+        "rating": 1192.7616897917094
+      },
+      "Czechia": {
+        "rating": 1500.0
+      },
+      "DR Congo": {
+        "rating": 1300.3936711376425
+      },
+      "Ecuador": {
+        "rating": 1571.208596029788
+      },
+      "Egypt": {
+        "rating": 1433.0648336309675
+      },
+      "England": {
+        "rating": 1679.1884853645327
+      },
+      "France": {
+        "rating": 1785.1006611974935
+      },
+      "Germany": {
+        "rating": 1672.5901299372701
+      },
+      "Ghana": {
+        "rating": 1370.6465906118708
+      },
+      "Haiti": {
+        "rating": 1234.6945096081176
+      },
+      "Iran": {
+        "rating": 1464.633908402328
+      },
+      "Iraq": {
+        "rating": 1333.1885999007466
+      },
+      "Ivory Coast": {
+        "rating": 1522.3536462809857
+      },
+      "Japan": {
+        "rating": 1620.6878244533211
+      },
+      "Jordan": {
+        "rating": 1298.5788161710736
+      },
+      "Mexico": {
+        "rating": 1562.3035082664026
+      },
+      "Morocco": {
+        "rating": 1615.2651106074757
+      },
+      "Netherlands": {
+        "rating": 1658.8114299739536
+      },
+      "New Zealand": {
+        "rating": 1165.25747720001
+      },
+      "Norway": {
+        "rating": 1500.088703096086
+      },
+      "Panama": {
+        "rating": 1269.1684166337418
+      },
+      "Paraguay": {
+        "rating": 1538.3143571254036
+      },
+      "Portugal": {
+        "rating": 1738.254659328451
+      },
+      "Qatar": {
+        "rating": 1312.4379175524862
+      },
+      "Saudi Arabia": {
+        "rating": 1330.5059039572452
+      },
+      "Scotland": {
+        "rating": 1457.2436442717112
+      },
+      "Senegal": {
+        "rating": 1511.8061418235934
+      },
+      "South Africa": {
+        "rating": 1400.5720757743602
+      },
+      "South Korea": {
+        "rating": 1500.0
+      },
+      "Spain": {
+        "rating": 1760.0646533240954
+      },
+      "Sweden": {
+        "rating": 1472.838082819791
+      },
+      "Switzerland": {
+        "rating": 1567.8579880179918
+      },
+      "Tunisia": {
+        "rating": 1453.6769490947563
+      },
+      "T\u00fcrkiye": {
+        "rating": 1500.0
+      },
+      "USA": {
+        "rating": 1500.0
+      },
+      "Uruguay": {
+        "rating": 1621.57604137514
+      },
+      "Uzbekistan": {
+        "rating": 1344.828071040854
+      }
+    }
+  },
+  "classifier": {
+    "w_home": [
+      0.1,
+      0.0015,
+      0.015,
+      0.2
+    ],
+    "w_draw": [
+      -0.8,
+      -0.0002,
+      -0.005,
+      -0.05
+    ]
   }
 }

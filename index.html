@@ -27,6 +27,18 @@
                     <p class="subtitle">Bayesian Dixon-Coles Score Prediction Engine</p>
                 </div>
             </div>
+            <div class="header-controls" style="display:flex; flex-direction:column; gap:0.4rem; min-width:240px; margin-right:1rem;">
+                <label for="model-select" style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">Active Model Selector</label>
+                <div class="select-wrapper">
+                    <select id="model-select" style="padding:0.6rem 2.5rem 0.6rem 1rem; font-size:0.95rem;">
+                        <option value="ensemble">Weighted Ensemble Model</option>
+                        <option value="dixon_coles" selected>Bayesian Dixon-Coles Model</option>
+                        <option value="bivariate">Bivariate Poisson Model</option>
+                        <option value="elo">Elo-Poisson Model</option>
+                        <option value="classifier">ML Softmax Classifier</option>
+                    </select>
+                </div>
+            </div>
             <div class="header-stats">
                 <div class="stat-box">
                     <span class="stat-val" id="model-accuracy">36.4%</span>
@@ -253,7 +265,7 @@
                 <div class="standings-control-panel glass-card">
                     <div class="control-text">
                         <h2>Group Stage Simulator</h2>
-                        <p>Simulate the remaining group matches using the fitted Bayesian Dixon-Coles model to compute predicted final standings.</p>
+                        <p>Simulate the remaining group matches using the selected predictive model to compute predicted final standings.</p>
                     </div>
                     <button id="btn-simulate" class="btn btn-accent">
                         <i class="fa-solid fa-arrows-spin"></i> Simulate Group Stage Standings
