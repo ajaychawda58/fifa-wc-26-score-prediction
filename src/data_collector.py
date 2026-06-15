@@ -180,24 +180,18 @@ def scrape_wikipedia_squads():
         with urllib.request.urlopen(req, timeout=10) as response:
             soup = BeautifulSoup(response.read(), 'html.parser')
             
-        # Wikipedia teams are generally headers like h3/h4 with a link or text
-        # Let's map team names to their tables
-        headlines = soup.find_all(['span'], class_='mw-headline')
+        # Find all h2, h3, h4 headings containing team names
+        headlines = soup.find_all(['h2', 'h3', 'h4'])
         for hl in headlines:
             team_name = hl.get_text().strip()
-            # Resolve name to standard name if needed
+            # Clean headline text (Wikipedia sometimes appends [edit] to headings)
+            team_name = re.sub(r'\[edit\]', '', team_name, flags=re.IGNORECASE).strip()
             common_team_name = get_common_name(team_name)
             if common_team_name in ALL_TEAMS:
-                # Find the next wikitable table
-                parent = hl.find_parent(['h2', 'h3', 'h4'])
-                if not parent:
-                    continue
-                sibling = parent.find_next_sibling()
-                while sibling and sibling.name not in ['table', 'h2', 'h3', 'h4']:
-                    sibling = sibling.find_next_sibling()
-                
-                if sibling and sibling.name == 'table' and 'wikitable' in sibling.get('class', []):
-                    players = parse_wiki_squad_table(sibling)
+                # Find the next table after this heading
+                tbl = hl.find_next('table')
+                if tbl and ('wikitable' in tbl.get('class', []) or 'sortable' in tbl.get('class', [])):
+                    players = parse_wiki_squad_table(tbl)
                     if players:
                         squads[common_team_name] = players
                         

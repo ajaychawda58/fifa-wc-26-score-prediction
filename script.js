@@ -148,6 +148,9 @@ async function loadApplicationData() {
         modelParameters = await paramsRes.json();
         worldCupMatches = await matchesRes.json();
         
+        // Sort matches chronologically by date and tie-break by ID
+        worldCupMatches.sort((a, b) => a.date.localeCompare(b.date) || a.id - b.id);
+        
         const mdText = await mdRes.text();
         squadRosters = parseSquadsMarkdown(mdText);
         
