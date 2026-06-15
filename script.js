@@ -139,10 +139,11 @@ async function loadApplicationData() {
     try {
         console.log("Fetching model parameters and schedule JSON...");
         
+        const cacheBuster = `?v=${Date.now()}`;
         const [paramsRes, matchesRes, mdRes] = await Promise.all([
-            fetch("data/model_parameters.json"),
-            fetch("data/wc_2026_matches.json"),
-            fetch("data/player_profiles.md")
+            fetch(`data/model_parameters.json${cacheBuster}`),
+            fetch(`data/wc_2026_matches.json${cacheBuster}`),
+            fetch(`data/player_profiles.md${cacheBuster}`)
         ]);
         
         modelParameters = await paramsRes.json();
