@@ -7,14 +7,6 @@
     "home_score": 2,
     "away_score": 0,
     "stage": "Group A",
-    "predicted_home_score": 1,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.15,
-    "home_xG": 1.75,
-    "away_xG": 0.71,
-    "home_win_prob": 0.614,
-    "away_win_prob": 0.161,
-    "draw_prob": 0.225,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -66,7 +58,15 @@
         "away_win_prob": 0.161,
         "draw_prob": 0.225
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.15,
+    "home_xG": 1.75,
+    "away_xG": 0.71,
+    "home_win_prob": 0.614,
+    "away_win_prob": 0.161,
+    "draw_prob": 0.225
   },
   {
     "id": 2,
@@ -76,14 +76,6 @@
     "home_score": 2,
     "away_score": 1,
     "stage": "Group A",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.124,
-    "home_xG": 1.34,
-    "away_xG": 1.14,
-    "home_win_prob": 0.419,
-    "away_win_prob": 0.319,
-    "draw_prob": 0.262,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -135,7 +127,15 @@
         "away_win_prob": 0.319,
         "draw_prob": 0.262
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.124,
+    "home_xG": 1.34,
+    "away_xG": 1.14,
+    "home_win_prob": 0.419,
+    "away_win_prob": 0.319,
+    "draw_prob": 0.262
   },
   {
     "id": 3,
@@ -145,14 +145,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group A",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.119,
-    "home_xG": 1.53,
-    "away_xG": 1.15,
-    "home_win_prob": 0.45,
-    "away_win_prob": 0.299,
-    "draw_prob": 0.251,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -204,7 +196,15 @@
         "away_win_prob": 0.299,
         "draw_prob": 0.251
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.119,
+    "home_xG": 1.53,
+    "away_xG": 1.15,
+    "home_win_prob": 0.45,
+    "away_win_prob": 0.299,
+    "draw_prob": 0.251
   },
   {
     "id": 4,
@@ -214,14 +214,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group A",
-    "predicted_home_score": 0,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.153,
-    "home_xG": 0.82,
-    "away_xG": 1.32,
-    "home_win_prob": 0.236,
-    "away_win_prob": 0.472,
-    "draw_prob": 0.292,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -273,7 +265,15 @@
         "away_win_prob": 0.472,
         "draw_prob": 0.292
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.153,
+    "home_xG": 0.82,
+    "away_xG": 1.32,
+    "home_win_prob": 0.236,
+    "away_win_prob": 0.472,
+    "draw_prob": 0.292
   },
   {
     "id": 5,
@@ -283,14 +283,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group A",
-    "predicted_home_score": 1,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.123,
-    "home_xG": 1.51,
-    "away_xG": 0.97,
-    "home_win_prob": 0.488,
-    "away_win_prob": 0.256,
-    "draw_prob": 0.256,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -342,7 +334,15 @@
         "away_win_prob": 0.256,
         "draw_prob": 0.256
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.123,
+    "home_xG": 1.51,
+    "away_xG": 0.97,
+    "home_win_prob": 0.488,
+    "away_win_prob": 0.256,
+    "draw_prob": 0.256
   },
   {
     "id": 6,
@@ -352,14 +352,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group A",
-    "predicted_home_score": 0,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.142,
-    "home_xG": 0.83,
-    "away_xG": 1.55,
-    "home_win_prob": 0.206,
-    "away_win_prob": 0.534,
-    "draw_prob": 0.26,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -411,7 +403,15 @@
         "away_win_prob": 0.534,
         "draw_prob": 0.26
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.142,
+    "home_xG": 0.83,
+    "away_xG": 1.55,
+    "home_win_prob": 0.206,
+    "away_win_prob": 0.534,
+    "draw_prob": 0.26
   },
   {
     "id": 7,
@@ -421,14 +421,6 @@
     "home_score": 1,
     "away_score": 1,
     "stage": "Group B",
-    "predicted_home_score": 1,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.137,
-    "home_xG": 1.4,
-    "away_xG": 0.93,
-    "home_win_prob": 0.482,
-    "away_win_prob": 0.253,
-    "draw_prob": 0.265,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -480,7 +472,15 @@
         "away_win_prob": 0.253,
         "draw_prob": 0.265
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.137,
+    "home_xG": 1.4,
+    "away_xG": 0.93,
+    "home_win_prob": 0.482,
+    "away_win_prob": 0.253,
+    "draw_prob": 0.265
   },
   {
     "id": 8,
@@ -490,14 +490,6 @@
     "home_score": 1,
     "away_score": 1,
     "stage": "Group B",
-    "predicted_home_score": 0,
-    "predicted_away_score": 2,
-    "predicted_score_probability": 0.122,
-    "home_xG": 0.77,
-    "away_xG": 1.97,
-    "home_win_prob": 0.158,
-    "away_win_prob": 0.619,
-    "draw_prob": 0.224,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -549,7 +541,15 @@
         "away_win_prob": 0.619,
         "draw_prob": 0.224
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 2,
+    "predicted_score_probability": 0.122,
+    "home_xG": 0.77,
+    "away_xG": 1.97,
+    "home_win_prob": 0.158,
+    "away_win_prob": 0.619,
+    "draw_prob": 0.224
   },
   {
     "id": 9,
@@ -559,14 +559,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group B",
-    "predicted_home_score": 1,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.134,
-    "home_xG": 1.6,
-    "away_xG": 0.86,
-    "home_win_prob": 0.535,
-    "away_win_prob": 0.217,
-    "draw_prob": 0.248,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -618,7 +610,15 @@
         "away_win_prob": 0.217,
         "draw_prob": 0.248
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.134,
+    "home_xG": 1.6,
+    "away_xG": 0.86,
+    "home_win_prob": 0.535,
+    "away_win_prob": 0.217,
+    "draw_prob": 0.248
   },
   {
     "id": 10,
@@ -628,14 +628,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group B",
-    "predicted_home_score": 0,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.129,
-    "home_xG": 0.83,
-    "away_xG": 1.73,
-    "home_win_prob": 0.187,
-    "away_win_prob": 0.566,
-    "draw_prob": 0.248,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -687,7 +679,15 @@
         "away_win_prob": 0.566,
         "draw_prob": 0.248
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.129,
+    "home_xG": 0.83,
+    "away_xG": 1.73,
+    "home_win_prob": 0.187,
+    "away_win_prob": 0.566,
+    "draw_prob": 0.248
   },
   {
     "id": 11,
@@ -697,14 +697,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group B",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.125,
-    "home_xG": 1.06,
-    "away_xG": 1.46,
-    "home_win_prob": 0.285,
-    "away_win_prob": 0.45,
-    "draw_prob": 0.265,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -756,7 +748,15 @@
         "away_win_prob": 0.45,
         "draw_prob": 0.265
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.125,
+    "home_xG": 1.06,
+    "away_xG": 1.46,
+    "home_win_prob": 0.285,
+    "away_win_prob": 0.45,
+    "draw_prob": 0.265
   },
   {
     "id": 12,
@@ -766,14 +766,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group B",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.129,
-    "home_xG": 1.25,
-    "away_xG": 1.01,
-    "home_win_prob": 0.407,
-    "away_win_prob": 0.312,
-    "draw_prob": 0.282,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -825,7 +817,15 @@
         "away_win_prob": 0.312,
         "draw_prob": 0.282
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.129,
+    "home_xG": 1.25,
+    "away_xG": 1.01,
+    "home_win_prob": 0.407,
+    "away_win_prob": 0.312,
+    "draw_prob": 0.282
   },
   {
     "id": 13,
@@ -835,14 +835,6 @@
     "home_score": 1,
     "away_score": 1,
     "stage": "Group C",
-    "predicted_home_score": 1,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.136,
-    "home_xG": 1.31,
-    "away_xG": 0.93,
-    "home_win_prob": 0.449,
-    "away_win_prob": 0.275,
-    "draw_prob": 0.276,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -894,7 +886,15 @@
         "away_win_prob": 0.275,
         "draw_prob": 0.276
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.136,
+    "home_xG": 1.31,
+    "away_xG": 0.93,
+    "home_win_prob": 0.449,
+    "away_win_prob": 0.275,
+    "draw_prob": 0.276
   },
   {
     "id": 14,
@@ -904,14 +904,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group C",
-    "predicted_home_score": 0,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.159,
-    "home_xG": 0.66,
-    "away_xG": 1.62,
-    "home_win_prob": 0.166,
-    "away_win_prob": 0.571,
-    "draw_prob": 0.263,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -963,7 +955,15 @@
         "away_win_prob": 0.571,
         "draw_prob": 0.263
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.159,
+    "home_xG": 0.66,
+    "away_xG": 1.62,
+    "home_win_prob": 0.166,
+    "away_win_prob": 0.571,
+    "draw_prob": 0.263
   },
   {
     "id": 15,
@@ -973,14 +973,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group C",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.154,
-    "home_xG": 2.97,
-    "away_xG": 0.45,
-    "home_win_prob": 0.844,
-    "away_win_prob": 0.055,
-    "draw_prob": 0.101,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -1032,7 +1024,15 @@
         "away_win_prob": 0.055,
         "draw_prob": 0.101
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.154,
+    "home_xG": 2.97,
+    "away_xG": 0.45,
+    "home_win_prob": 0.844,
+    "away_win_prob": 0.055,
+    "draw_prob": 0.101
   },
   {
     "id": 16,
@@ -1042,14 +1042,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group C",
-    "predicted_home_score": 1,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.167,
-    "home_xG": 1.39,
-    "away_xG": 0.72,
-    "home_win_prob": 0.521,
-    "away_win_prob": 0.204,
-    "draw_prob": 0.274,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -1101,7 +1093,15 @@
         "away_win_prob": 0.204,
         "draw_prob": 0.274
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.167,
+    "home_xG": 1.39,
+    "away_xG": 0.72,
+    "home_win_prob": 0.521,
+    "away_win_prob": 0.204,
+    "draw_prob": 0.274
   },
   {
     "id": 17,
@@ -1111,14 +1111,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group C",
-    "predicted_home_score": 1,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.143,
-    "home_xG": 1.87,
-    "away_xG": 0.69,
-    "home_win_prob": 0.641,
-    "away_win_prob": 0.149,
-    "draw_prob": 0.21,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -1170,7 +1162,15 @@
         "away_win_prob": 0.149,
         "draw_prob": 0.21
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.143,
+    "home_xG": 1.87,
+    "away_xG": 0.69,
+    "home_win_prob": 0.641,
+    "away_win_prob": 0.149,
+    "draw_prob": 0.21
   },
   {
     "id": 18,
@@ -1180,14 +1180,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group C",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.166,
-    "home_xG": 2.2,
-    "away_xG": 0.47,
-    "home_win_prob": 0.748,
-    "away_win_prob": 0.085,
-    "draw_prob": 0.167,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -1239,7 +1231,15 @@
         "away_win_prob": 0.085,
         "draw_prob": 0.167
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.166,
+    "home_xG": 2.2,
+    "away_xG": 0.47,
+    "home_win_prob": 0.748,
+    "away_win_prob": 0.085,
+    "draw_prob": 0.167
   },
   {
     "id": 19,
@@ -1249,14 +1249,6 @@
     "home_score": 4,
     "away_score": 1,
     "stage": "Group D",
-    "predicted_home_score": 1,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.114,
-    "home_xG": 1.58,
-    "away_xG": 1.09,
-    "home_win_prob": 0.511,
-    "away_win_prob": 0.257,
-    "draw_prob": 0.232,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -1308,7 +1300,15 @@
         "away_win_prob": 0.257,
         "draw_prob": 0.232
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.114,
+    "home_xG": 1.58,
+    "away_xG": 1.09,
+    "home_win_prob": 0.511,
+    "away_win_prob": 0.257,
+    "draw_prob": 0.232
   },
   {
     "id": 20,
@@ -1318,14 +1318,6 @@
     "home_score": 2,
     "away_score": 0,
     "stage": "Group D",
-    "predicted_home_score": 1,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.123,
-    "home_xG": 1.35,
-    "away_xG": 1.05,
-    "home_win_prob": 0.444,
-    "away_win_prob": 0.293,
-    "draw_prob": 0.263,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -1377,7 +1369,15 @@
         "away_win_prob": 0.293,
         "draw_prob": 0.263
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.123,
+    "home_xG": 1.35,
+    "away_xG": 1.05,
+    "home_win_prob": 0.444,
+    "away_win_prob": 0.293,
+    "draw_prob": 0.263
   },
   {
     "id": 21,
@@ -1387,14 +1387,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group D",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.121,
-    "home_xG": 1.39,
-    "away_xG": 1.14,
-    "home_win_prob": 0.435,
-    "away_win_prob": 0.308,
-    "draw_prob": 0.257,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -1446,7 +1438,15 @@
         "away_win_prob": 0.308,
         "draw_prob": 0.257
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.121,
+    "home_xG": 1.39,
+    "away_xG": 1.14,
+    "home_win_prob": 0.435,
+    "away_win_prob": 0.308,
+    "draw_prob": 0.257
   },
   {
     "id": 22,
@@ -1456,14 +1456,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group D",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.128,
-    "home_xG": 1.26,
-    "away_xG": 1.17,
-    "home_win_prob": 0.378,
-    "away_win_prob": 0.35,
-    "draw_prob": 0.273,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -1515,7 +1507,15 @@
         "away_win_prob": 0.35,
         "draw_prob": 0.273
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.128,
+    "home_xG": 1.26,
+    "away_xG": 1.17,
+    "home_win_prob": 0.378,
+    "away_win_prob": 0.35,
+    "draw_prob": 0.273
   },
   {
     "id": 23,
@@ -1525,14 +1525,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group D",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.103,
-    "home_xG": 1.78,
-    "away_xG": 1.12,
-    "home_win_prob": 0.534,
-    "away_win_prob": 0.245,
-    "draw_prob": 0.221,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -1584,7 +1576,15 @@
         "away_win_prob": 0.245,
         "draw_prob": 0.221
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.103,
+    "home_xG": 1.78,
+    "away_xG": 1.12,
+    "home_win_prob": 0.534,
+    "away_win_prob": 0.245,
+    "draw_prob": 0.221
   },
   {
     "id": 24,
@@ -1594,14 +1594,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group D",
-    "predicted_home_score": 0,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.133,
-    "home_xG": 1.04,
-    "away_xG": 1.2,
-    "home_win_prob": 0.307,
-    "away_win_prob": 0.414,
-    "draw_prob": 0.278,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -1653,7 +1645,15 @@
         "away_win_prob": 0.414,
         "draw_prob": 0.278
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.133,
+    "home_xG": 1.04,
+    "away_xG": 1.2,
+    "home_win_prob": 0.307,
+    "away_win_prob": 0.414,
+    "draw_prob": 0.278
   },
   {
     "id": 25,
@@ -1663,14 +1663,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group E",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.132,
-    "home_xG": 2.74,
-    "away_xG": 0.64,
-    "home_win_prob": 0.775,
-    "away_win_prob": 0.093,
-    "draw_prob": 0.131,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 3,
@@ -1722,7 +1714,15 @@
         "away_win_prob": 0.093,
         "draw_prob": 0.131
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.132,
+    "home_xG": 2.74,
+    "away_xG": 0.64,
+    "home_win_prob": 0.775,
+    "away_win_prob": 0.093,
+    "draw_prob": 0.131
   },
   {
     "id": 26,
@@ -1732,14 +1732,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group E",
-    "predicted_home_score": 0,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.143,
-    "home_xG": 0.86,
-    "away_xG": 1.38,
-    "home_win_prob": 0.24,
-    "away_win_prob": 0.479,
-    "draw_prob": 0.281,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -1791,7 +1783,15 @@
         "away_win_prob": 0.479,
         "draw_prob": 0.281
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.143,
+    "home_xG": 0.86,
+    "away_xG": 1.38,
+    "home_win_prob": 0.24,
+    "away_win_prob": 0.479,
+    "draw_prob": 0.281
   },
   {
     "id": 27,
@@ -1801,14 +1801,6 @@
     "home_score": 1,
     "away_score": 0,
     "stage": "Group E",
-    "predicted_home_score": 0,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.181,
-    "home_xG": 0.89,
-    "away_xG": 0.95,
-    "home_win_prob": 0.327,
-    "away_win_prob": 0.338,
-    "draw_prob": 0.335,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -1860,7 +1852,15 @@
         "away_win_prob": 0.338,
         "draw_prob": 0.335
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.181,
+    "home_xG": 0.89,
+    "away_xG": 0.95,
+    "home_win_prob": 0.327,
+    "away_win_prob": 0.338,
+    "draw_prob": 0.335
   },
   {
     "id": 28,
@@ -1870,14 +1870,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group E",
-    "predicted_home_score": 0,
-    "predicted_away_score": 4,
-    "predicted_score_probability": 0.125,
-    "home_xG": 0.63,
-    "away_xG": 4.47,
-    "home_win_prob": 0.043,
-    "away_win_prob": 0.858,
-    "draw_prob": 0.099,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -1929,7 +1921,15 @@
         "away_win_prob": 0.858,
         "draw_prob": 0.099
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 4,
+    "predicted_score_probability": 0.125,
+    "home_xG": 0.63,
+    "away_xG": 4.47,
+    "home_win_prob": 0.043,
+    "away_win_prob": 0.858,
+    "draw_prob": 0.099
   },
   {
     "id": 29,
@@ -1939,14 +1939,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group E",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.124,
-    "home_xG": 0.94,
-    "away_xG": 1.57,
-    "home_win_prob": 0.238,
-    "away_win_prob": 0.499,
-    "draw_prob": 0.263,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -1998,7 +1990,15 @@
         "away_win_prob": 0.499,
         "draw_prob": 0.263
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.124,
+    "home_xG": 0.94,
+    "away_xG": 1.57,
+    "home_win_prob": 0.238,
+    "away_win_prob": 0.499,
+    "draw_prob": 0.263
   },
   {
     "id": 30,
@@ -2008,14 +2008,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group E",
-    "predicted_home_score": 0,
-    "predicted_away_score": 2,
-    "predicted_score_probability": 0.145,
-    "home_xG": 0.56,
-    "away_xG": 2.46,
-    "home_win_prob": 0.091,
-    "away_win_prob": 0.735,
-    "draw_prob": 0.175,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -2067,7 +2059,15 @@
         "away_win_prob": 0.735,
         "draw_prob": 0.175
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 2,
+    "predicted_score_probability": 0.145,
+    "home_xG": 0.56,
+    "away_xG": 2.46,
+    "home_win_prob": 0.091,
+    "away_win_prob": 0.735,
+    "draw_prob": 0.175
   },
   {
     "id": 31,
@@ -2077,14 +2077,6 @@
     "home_score": 2,
     "away_score": 2,
     "stage": "Group F",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.118,
-    "home_xG": 1.39,
-    "away_xG": 1.27,
-    "home_win_prob": 0.407,
-    "away_win_prob": 0.342,
-    "draw_prob": 0.252,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -2136,7 +2128,15 @@
         "away_win_prob": 0.342,
         "draw_prob": 0.252
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.118,
+    "home_xG": 1.39,
+    "away_xG": 1.27,
+    "home_win_prob": 0.407,
+    "away_win_prob": 0.342,
+    "draw_prob": 0.252
   },
   {
     "id": 32,
@@ -2146,14 +2146,6 @@
     "home_score": 5,
     "away_score": 1,
     "stage": "Group F",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.099,
-    "home_xG": 1.88,
-    "away_xG": 1.1,
-    "home_win_prob": 0.545,
-    "away_win_prob": 0.24,
-    "draw_prob": 0.215,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -2205,7 +2197,15 @@
         "away_win_prob": 0.24,
         "draw_prob": 0.215
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.099,
+    "home_xG": 1.88,
+    "away_xG": 1.1,
+    "home_win_prob": 0.545,
+    "away_win_prob": 0.24,
+    "draw_prob": 0.215
   },
   {
     "id": 33,
@@ -2215,14 +2215,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group F",
-    "predicted_home_score": 2,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.09,
-    "home_xG": 2.05,
-    "away_xG": 1.31,
-    "home_win_prob": 0.536,
-    "away_win_prob": 0.256,
-    "draw_prob": 0.208,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -2274,7 +2266,15 @@
         "away_win_prob": 0.256,
         "draw_prob": 0.208
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.09,
+    "home_xG": 2.05,
+    "away_xG": 1.31,
+    "home_win_prob": 0.536,
+    "away_win_prob": 0.256,
+    "draw_prob": 0.208
   },
   {
     "id": 34,
@@ -2284,14 +2284,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group F",
-    "predicted_home_score": 1,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.135,
-    "home_xG": 1.84,
-    "away_xG": 0.76,
-    "home_win_prob": 0.619,
-    "away_win_prob": 0.168,
-    "draw_prob": 0.212,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -2343,7 +2335,15 @@
         "away_win_prob": 0.168,
         "draw_prob": 0.212
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.135,
+    "home_xG": 1.84,
+    "away_xG": 0.76,
+    "home_win_prob": 0.619,
+    "away_win_prob": 0.168,
+    "draw_prob": 0.212
   },
   {
     "id": 35,
@@ -2353,14 +2353,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group F",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.126,
-    "home_xG": 2.08,
-    "away_xG": 0.77,
-    "home_win_prob": 0.665,
-    "away_win_prob": 0.147,
-    "draw_prob": 0.188,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -2412,7 +2404,15 @@
         "away_win_prob": 0.147,
         "draw_prob": 0.188
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.126,
+    "home_xG": 2.08,
+    "away_xG": 0.77,
+    "home_win_prob": 0.665,
+    "away_win_prob": 0.147,
+    "draw_prob": 0.188
   },
   {
     "id": 36,
@@ -2422,14 +2422,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group F",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.1,
-    "home_xG": 1.81,
-    "away_xG": 1.25,
-    "home_win_prob": 0.496,
-    "away_win_prob": 0.278,
-    "draw_prob": 0.226,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -2481,7 +2473,15 @@
         "away_win_prob": 0.278,
         "draw_prob": 0.226
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.1,
+    "home_xG": 1.81,
+    "away_xG": 1.25,
+    "home_win_prob": 0.496,
+    "away_win_prob": 0.278,
+    "draw_prob": 0.226
   },
   {
     "id": 37,
@@ -2491,14 +2491,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group G",
-    "predicted_home_score": 1,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.144,
-    "home_xG": 1.8,
-    "away_xG": 0.7,
-    "home_win_prob": 0.619,
-    "away_win_prob": 0.161,
-    "draw_prob": 0.22,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -2550,7 +2542,15 @@
         "away_win_prob": 0.161,
         "draw_prob": 0.22
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.144,
+    "home_xG": 1.8,
+    "away_xG": 0.7,
+    "home_win_prob": 0.619,
+    "away_win_prob": 0.161,
+    "draw_prob": 0.22
   },
   {
     "id": 38,
@@ -2560,14 +2560,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group G",
-    "predicted_home_score": 1,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.147,
-    "home_xG": 1.77,
-    "away_xG": 0.68,
-    "home_win_prob": 0.609,
-    "away_win_prob": 0.164,
-    "draw_prob": 0.227,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -2619,7 +2611,15 @@
         "away_win_prob": 0.164,
         "draw_prob": 0.227
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.147,
+    "home_xG": 1.77,
+    "away_xG": 0.68,
+    "home_win_prob": 0.609,
+    "away_win_prob": 0.164,
+    "draw_prob": 0.227
   },
   {
     "id": 39,
@@ -2629,14 +2629,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group G",
-    "predicted_home_score": 1,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.141,
-    "home_xG": 1.84,
-    "away_xG": 0.71,
-    "home_win_prob": 0.627,
-    "away_win_prob": 0.159,
-    "draw_prob": 0.214,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -2688,7 +2680,15 @@
         "away_win_prob": 0.159,
         "draw_prob": 0.214
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.141,
+    "home_xG": 1.84,
+    "away_xG": 0.71,
+    "home_win_prob": 0.627,
+    "away_win_prob": 0.159,
+    "draw_prob": 0.214
   },
   {
     "id": 40,
@@ -2698,14 +2698,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group G",
-    "predicted_home_score": 1,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.154,
-    "home_xG": 1.74,
-    "away_xG": 0.66,
-    "home_win_prob": 0.61,
-    "away_win_prob": 0.16,
-    "draw_prob": 0.23,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -2757,7 +2749,15 @@
         "away_win_prob": 0.16,
         "draw_prob": 0.23
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.154,
+    "home_xG": 1.74,
+    "away_xG": 0.66,
+    "home_win_prob": 0.61,
+    "away_win_prob": 0.16,
+    "draw_prob": 0.23
   },
   {
     "id": 41,
@@ -2767,14 +2767,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group G",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.163,
-    "home_xG": 2.74,
-    "away_xG": 0.4,
-    "home_win_prob": 0.813,
-    "away_win_prob": 0.061,
-    "draw_prob": 0.126,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -2826,7 +2818,15 @@
         "away_win_prob": 0.061,
         "draw_prob": 0.126
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.163,
+    "home_xG": 2.74,
+    "away_xG": 0.4,
+    "home_win_prob": 0.813,
+    "away_win_prob": 0.061,
+    "draw_prob": 0.126
   },
   {
     "id": 42,
@@ -2836,14 +2836,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group G",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.13,
-    "home_xG": 1.19,
-    "away_xG": 1.17,
-    "home_win_prob": 0.37,
-    "away_win_prob": 0.353,
-    "draw_prob": 0.278,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -2895,7 +2887,15 @@
         "away_win_prob": 0.353,
         "draw_prob": 0.278
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.13,
+    "home_xG": 1.19,
+    "away_xG": 1.17,
+    "home_win_prob": 0.37,
+    "away_win_prob": 0.353,
+    "draw_prob": 0.278
   },
   {
     "id": 43,
@@ -2905,14 +2905,6 @@
     "home_score": 0,
     "away_score": 0,
     "stage": "Group H",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.159,
-    "home_xG": 2.57,
-    "away_xG": 0.48,
-    "home_win_prob": 0.793,
-    "away_win_prob": 0.072,
-    "draw_prob": 0.135,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -2964,7 +2956,15 @@
         "away_win_prob": 0.072,
         "draw_prob": 0.135
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.159,
+    "home_xG": 2.57,
+    "away_xG": 0.48,
+    "home_win_prob": 0.793,
+    "away_win_prob": 0.072,
+    "draw_prob": 0.135
   },
   {
     "id": 44,
@@ -2974,14 +2974,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group H",
-    "predicted_home_score": 0,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.173,
-    "home_xG": 0.57,
-    "away_xG": 1.55,
-    "home_win_prob": 0.157,
-    "away_win_prob": 0.552,
-    "draw_prob": 0.291,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -3033,7 +3025,15 @@
         "away_win_prob": 0.552,
         "draw_prob": 0.291
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.173,
+    "home_xG": 0.57,
+    "away_xG": 1.55,
+    "home_win_prob": 0.157,
+    "away_win_prob": 0.552,
+    "draw_prob": 0.291
   },
   {
     "id": 45,
@@ -3043,14 +3043,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group H",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.15,
-    "home_xG": 2.18,
-    "away_xG": 0.51,
-    "home_win_prob": 0.709,
-    "away_win_prob": 0.105,
-    "draw_prob": 0.186,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -3102,7 +3094,15 @@
         "away_win_prob": 0.105,
         "draw_prob": 0.186
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.15,
+    "home_xG": 2.18,
+    "away_xG": 0.51,
+    "home_win_prob": 0.709,
+    "away_win_prob": 0.105,
+    "draw_prob": 0.186
   },
   {
     "id": 46,
@@ -3112,14 +3112,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group H",
-    "predicted_home_score": 0,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.169,
-    "home_xG": 0.53,
-    "away_xG": 1.81,
-    "home_win_prob": 0.118,
-    "away_win_prob": 0.634,
-    "draw_prob": 0.248,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -3171,7 +3163,15 @@
         "away_win_prob": 0.634,
         "draw_prob": 0.248
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.169,
+    "home_xG": 0.53,
+    "away_xG": 1.81,
+    "home_win_prob": 0.118,
+    "away_win_prob": 0.634,
+    "draw_prob": 0.248
   },
   {
     "id": 47,
@@ -3181,14 +3181,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group H",
-    "predicted_home_score": 1,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.149,
-    "home_xG": 1.33,
-    "away_xG": 0.83,
-    "home_win_prob": 0.474,
-    "away_win_prob": 0.247,
-    "draw_prob": 0.279,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -3240,7 +3232,15 @@
         "away_win_prob": 0.247,
         "draw_prob": 0.279
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.149,
+    "home_xG": 1.33,
+    "away_xG": 0.83,
+    "home_win_prob": 0.474,
+    "away_win_prob": 0.247,
+    "draw_prob": 0.279
   },
   {
     "id": 48,
@@ -3250,14 +3250,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group H",
-    "predicted_home_score": 0,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.156,
-    "home_xG": 0.87,
-    "away_xG": 1.09,
-    "home_win_prob": 0.283,
-    "away_win_prob": 0.404,
-    "draw_prob": 0.313,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -3309,7 +3301,15 @@
         "away_win_prob": 0.404,
         "draw_prob": 0.313
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.156,
+    "home_xG": 0.87,
+    "away_xG": 1.09,
+    "home_win_prob": 0.283,
+    "away_win_prob": 0.404,
+    "draw_prob": 0.313
   },
   {
     "id": 49,
@@ -3319,14 +3319,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group I",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.161,
-    "home_xG": 2.68,
-    "away_xG": 0.45,
-    "home_win_prob": 0.811,
-    "away_win_prob": 0.066,
-    "draw_prob": 0.123,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -3378,7 +3370,15 @@
         "away_win_prob": 0.066,
         "draw_prob": 0.123
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.161,
+    "home_xG": 2.68,
+    "away_xG": 0.45,
+    "home_win_prob": 0.811,
+    "away_win_prob": 0.066,
+    "draw_prob": 0.123
   },
   {
     "id": 50,
@@ -3388,14 +3388,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group I",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.129,
-    "home_xG": 1.2,
-    "away_xG": 1.2,
-    "home_win_prob": 0.365,
-    "away_win_prob": 0.362,
-    "draw_prob": 0.273,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -3447,7 +3439,15 @@
         "away_win_prob": 0.362,
         "draw_prob": 0.273
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.129,
+    "home_xG": 1.2,
+    "away_xG": 1.2,
+    "home_win_prob": 0.365,
+    "away_win_prob": 0.362,
+    "draw_prob": 0.273
   },
   {
     "id": 51,
@@ -3457,14 +3457,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group I",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.128,
-    "home_xG": 2.06,
-    "away_xG": 0.75,
-    "home_win_prob": 0.657,
-    "away_win_prob": 0.149,
-    "draw_prob": 0.194,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -3516,7 +3508,15 @@
         "away_win_prob": 0.149,
         "draw_prob": 0.194
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.128,
+    "home_xG": 2.06,
+    "away_xG": 0.75,
+    "home_win_prob": 0.657,
+    "away_win_prob": 0.149,
+    "draw_prob": 0.194
   },
   {
     "id": 52,
@@ -3526,14 +3526,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group I",
-    "predicted_home_score": 0,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.153,
-    "home_xG": 0.73,
-    "away_xG": 1.56,
-    "home_win_prob": 0.185,
-    "away_win_prob": 0.547,
-    "draw_prob": 0.268,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -3585,7 +3577,15 @@
         "away_win_prob": 0.547,
         "draw_prob": 0.268
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.153,
+    "home_xG": 0.73,
+    "away_xG": 1.56,
+    "home_win_prob": 0.185,
+    "away_win_prob": 0.547,
+    "draw_prob": 0.268
   },
   {
     "id": 53,
@@ -3595,14 +3595,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group I",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.126,
-    "home_xG": 2.1,
-    "away_xG": 0.76,
-    "home_win_prob": 0.659,
-    "away_win_prob": 0.15,
-    "draw_prob": 0.191,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -3654,7 +3646,15 @@
         "away_win_prob": 0.15,
         "draw_prob": 0.191
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.126,
+    "home_xG": 2.1,
+    "away_xG": 0.76,
+    "home_win_prob": 0.659,
+    "away_win_prob": 0.15,
+    "draw_prob": 0.191
   },
   {
     "id": 54,
@@ -3664,14 +3664,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group I",
-    "predicted_home_score": 0,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.156,
-    "home_xG": 0.72,
-    "away_xG": 1.52,
-    "home_win_prob": 0.188,
-    "away_win_prob": 0.542,
-    "draw_prob": 0.27,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -3723,7 +3715,15 @@
         "away_win_prob": 0.542,
         "draw_prob": 0.27
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.156,
+    "home_xG": 0.72,
+    "away_xG": 1.52,
+    "home_win_prob": 0.188,
+    "away_win_prob": 0.542,
+    "draw_prob": 0.27
   },
   {
     "id": 55,
@@ -3733,14 +3733,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group J",
-    "predicted_home_score": 0,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.132,
-    "home_xG": 0.81,
-    "away_xG": 1.71,
-    "home_win_prob": 0.183,
-    "away_win_prob": 0.565,
-    "draw_prob": 0.251,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -3792,7 +3784,15 @@
         "away_win_prob": 0.565,
         "draw_prob": 0.251
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.132,
+    "home_xG": 0.81,
+    "away_xG": 1.71,
+    "home_win_prob": 0.183,
+    "away_win_prob": 0.565,
+    "draw_prob": 0.251
   },
   {
     "id": 56,
@@ -3802,14 +3802,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group J",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.134,
-    "home_xG": 2.24,
-    "away_xG": 0.69,
-    "home_win_prob": 0.702,
-    "away_win_prob": 0.125,
-    "draw_prob": 0.173,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -3861,7 +3853,15 @@
         "away_win_prob": 0.125,
         "draw_prob": 0.173
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.134,
+    "home_xG": 2.24,
+    "away_xG": 0.69,
+    "home_win_prob": 0.702,
+    "away_win_prob": 0.125,
+    "draw_prob": 0.173
   },
   {
     "id": 57,
@@ -3871,14 +3871,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group J",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.13,
-    "home_xG": 1.06,
-    "away_xG": 1.26,
-    "home_win_prob": 0.314,
-    "away_win_prob": 0.408,
-    "draw_prob": 0.279,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -3930,7 +3922,15 @@
         "away_win_prob": 0.408,
         "draw_prob": 0.279
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.13,
+    "home_xG": 1.06,
+    "away_xG": 1.26,
+    "home_win_prob": 0.314,
+    "away_win_prob": 0.408,
+    "draw_prob": 0.279
   },
   {
     "id": 58,
@@ -3940,14 +3940,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group J",
-    "predicted_home_score": 3,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.141,
-    "home_xG": 3.05,
-    "away_xG": 0.53,
-    "home_win_prob": 0.834,
-    "away_win_prob": 0.063,
-    "draw_prob": 0.103,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -3999,7 +3991,15 @@
         "away_win_prob": 0.063,
         "draw_prob": 0.103
       }
-    }
+    },
+    "predicted_home_score": 3,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.141,
+    "home_xG": 3.05,
+    "away_xG": 0.53,
+    "home_win_prob": 0.834,
+    "away_win_prob": 0.063,
+    "draw_prob": 0.103
   },
   {
     "id": 59,
@@ -4009,14 +4009,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group J",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.128,
-    "home_xG": 2.01,
-    "away_xG": 0.74,
-    "home_win_prob": 0.644,
-    "away_win_prob": 0.155,
-    "draw_prob": 0.201,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -4068,7 +4060,15 @@
         "away_win_prob": 0.155,
         "draw_prob": 0.201
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.128,
+    "home_xG": 2.01,
+    "away_xG": 0.74,
+    "home_win_prob": 0.644,
+    "away_win_prob": 0.155,
+    "draw_prob": 0.201
   },
   {
     "id": 60,
@@ -4078,14 +4078,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group J",
-    "predicted_home_score": 1,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.129,
-    "home_xG": 1.61,
-    "away_xG": 0.9,
-    "home_win_prob": 0.535,
-    "away_win_prob": 0.224,
-    "draw_prob": 0.241,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -4137,7 +4129,15 @@
         "away_win_prob": 0.224,
         "draw_prob": 0.241
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.129,
+    "home_xG": 1.61,
+    "away_xG": 0.9,
+    "home_win_prob": 0.535,
+    "away_win_prob": 0.224,
+    "draw_prob": 0.241
   },
   {
     "id": 61,
@@ -4147,14 +4147,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group K",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.156,
-    "home_xG": 2.19,
-    "away_xG": 0.52,
-    "home_win_prob": 0.727,
-    "away_win_prob": 0.1,
-    "draw_prob": 0.174,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -4206,7 +4198,15 @@
         "away_win_prob": 0.1,
         "draw_prob": 0.174
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.156,
+    "home_xG": 2.19,
+    "away_xG": 0.52,
+    "home_win_prob": 0.727,
+    "away_win_prob": 0.1,
+    "draw_prob": 0.174
   },
   {
     "id": 62,
@@ -4216,14 +4216,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group K",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.152,
-    "home_xG": 2.49,
-    "away_xG": 0.54,
-    "home_win_prob": 0.772,
-    "away_win_prob": 0.085,
-    "draw_prob": 0.143,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -4275,7 +4267,15 @@
         "away_win_prob": 0.085,
         "draw_prob": 0.143
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.152,
+    "home_xG": 2.49,
+    "away_xG": 0.54,
+    "home_win_prob": 0.772,
+    "away_win_prob": 0.085,
+    "draw_prob": 0.143
   },
   {
     "id": 63,
@@ -4285,14 +4285,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group K",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.129,
-    "home_xG": 1.06,
-    "away_xG": 1.33,
-    "home_win_prob": 0.307,
-    "away_win_prob": 0.419,
-    "draw_prob": 0.274,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -4344,7 +4336,15 @@
         "away_win_prob": 0.419,
         "draw_prob": 0.274
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.129,
+    "home_xG": 1.06,
+    "away_xG": 1.33,
+    "home_win_prob": 0.307,
+    "away_win_prob": 0.419,
+    "draw_prob": 0.274
   },
   {
     "id": 64,
@@ -4354,14 +4354,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group K",
-    "predicted_home_score": 0,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.132,
-    "home_xG": 0.98,
-    "away_xG": 1.12,
-    "home_win_prob": 0.325,
-    "away_win_prob": 0.376,
-    "draw_prob": 0.299,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -4413,7 +4405,15 @@
         "away_win_prob": 0.376,
         "draw_prob": 0.299
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.132,
+    "home_xG": 0.98,
+    "away_xG": 1.12,
+    "home_win_prob": 0.325,
+    "away_win_prob": 0.376,
+    "draw_prob": 0.299
   },
   {
     "id": 65,
@@ -4423,14 +4423,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group K",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.151,
-    "home_xG": 2.09,
-    "away_xG": 0.57,
-    "home_win_prob": 0.705,
-    "away_win_prob": 0.112,
-    "draw_prob": 0.183,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -4482,7 +4474,15 @@
         "away_win_prob": 0.112,
         "draw_prob": 0.183
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.151,
+    "home_xG": 2.09,
+    "away_xG": 0.57,
+    "home_win_prob": 0.705,
+    "away_win_prob": 0.112,
+    "draw_prob": 0.183
   },
   {
     "id": 66,
@@ -4492,14 +4492,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group K",
-    "predicted_home_score": 0,
-    "predicted_away_score": 2,
-    "predicted_score_probability": 0.15,
-    "home_xG": 0.5,
-    "away_xG": 2.6,
-    "home_win_prob": 0.072,
-    "away_win_prob": 0.759,
-    "draw_prob": 0.17,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 0,
@@ -4551,7 +4543,15 @@
         "away_win_prob": 0.759,
         "draw_prob": 0.17
       }
-    }
+    },
+    "predicted_home_score": 0,
+    "predicted_away_score": 2,
+    "predicted_score_probability": 0.15,
+    "home_xG": 0.5,
+    "away_xG": 2.6,
+    "home_win_prob": 0.072,
+    "away_win_prob": 0.759,
+    "draw_prob": 0.17
   },
   {
     "id": 67,
@@ -4561,14 +4561,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group L",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.129,
-    "home_xG": 1.01,
-    "away_xG": 1.32,
-    "home_win_prob": 0.298,
-    "away_win_prob": 0.425,
-    "draw_prob": 0.277,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -4620,7 +4612,15 @@
         "away_win_prob": 0.425,
         "draw_prob": 0.277
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.129,
+    "home_xG": 1.01,
+    "away_xG": 1.32,
+    "home_win_prob": 0.298,
+    "away_win_prob": 0.425,
+    "draw_prob": 0.277
   },
   {
     "id": 68,
@@ -4630,14 +4630,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group L",
-    "predicted_home_score": 1,
-    "predicted_away_score": 1,
-    "predicted_score_probability": 0.125,
-    "home_xG": 1.37,
-    "away_xG": 1.08,
-    "home_win_prob": 0.422,
-    "away_win_prob": 0.312,
-    "draw_prob": 0.265,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 1,
@@ -4689,7 +4681,15 @@
         "away_win_prob": 0.312,
         "draw_prob": 0.265
       }
-    }
+    },
+    "predicted_home_score": 1,
+    "predicted_away_score": 1,
+    "predicted_score_probability": 0.125,
+    "home_xG": 1.37,
+    "away_xG": 1.08,
+    "home_win_prob": 0.422,
+    "away_win_prob": 0.312,
+    "draw_prob": 0.265
   },
   {
     "id": 69,
@@ -4699,14 +4699,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group L",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.139,
-    "home_xG": 2.07,
-    "away_xG": 0.69,
-    "home_win_prob": 0.69,
-    "away_win_prob": 0.128,
-    "draw_prob": 0.183,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -4758,7 +4750,15 @@
         "away_win_prob": 0.128,
         "draw_prob": 0.183
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.139,
+    "home_xG": 2.07,
+    "away_xG": 0.69,
+    "home_win_prob": 0.69,
+    "away_win_prob": 0.128,
+    "draw_prob": 0.183
   },
   {
     "id": 70,
@@ -4768,14 +4768,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group L",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.151,
-    "home_xG": 2.65,
-    "away_xG": 0.53,
-    "home_win_prob": 0.794,
-    "away_win_prob": 0.077,
-    "draw_prob": 0.129,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -4827,7 +4819,15 @@
         "away_win_prob": 0.077,
         "draw_prob": 0.129
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.151,
+    "home_xG": 2.65,
+    "away_xG": 0.53,
+    "home_win_prob": 0.794,
+    "away_win_prob": 0.077,
+    "draw_prob": 0.129
   },
   {
     "id": 71,
@@ -4837,14 +4837,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group L",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.149,
-    "home_xG": 2.27,
-    "away_xG": 0.59,
-    "home_win_prob": 0.732,
-    "away_win_prob": 0.104,
-    "draw_prob": 0.164,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -4896,7 +4888,15 @@
         "away_win_prob": 0.104,
         "draw_prob": 0.164
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.149,
+    "home_xG": 2.27,
+    "away_xG": 0.59,
+    "home_win_prob": 0.732,
+    "away_win_prob": 0.104,
+    "draw_prob": 0.164
   },
   {
     "id": 72,
@@ -4906,14 +4906,6 @@
     "home_score": null,
     "away_score": null,
     "stage": "Group L",
-    "predicted_home_score": 2,
-    "predicted_away_score": 0,
-    "predicted_score_probability": 0.145,
-    "home_xG": 2.41,
-    "away_xG": 0.61,
-    "home_win_prob": 0.758,
-    "away_win_prob": 0.095,
-    "draw_prob": 0.148,
     "predictions": {
       "dixon_coles": {
         "predicted_home_score": 2,
@@ -4965,6 +4957,14 @@
         "away_win_prob": 0.095,
         "draw_prob": 0.148
       }
-    }
+    },
+    "predicted_home_score": 2,
+    "predicted_away_score": 0,
+    "predicted_score_probability": 0.145,
+    "home_xG": 2.41,
+    "away_xG": 0.61,
+    "home_win_prob": 0.758,
+    "away_win_prob": 0.095,
+    "draw_prob": 0.148
   }
 ]
