@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIFA World Cup 2026 - Bayesian Score Prediction Engine</title>
+    <!-- Google Fonts: Outfit & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="stars-bg"></div>
+    <div class="radial-glow-1"></div>
+    <div class="radial-glow-2"></div>
+
+    <div class="app-container">
+        <!-- Main Header -->
+        <header class="main-header glass-card animate-slide-down">
+            <div class="header-logo">
+                <div class="logo-badge">26</div>
+                <div class="header-text">
+                    <h1>FIFA WORLD CUP 2026</h1>
+                    <p class="subtitle">Bayesian Dixon-Coles Score Prediction Engine</p>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="stat-box">
+                    <span class="stat-val" id="model-accuracy">36.4%</span>
+                    <span class="stat-lbl">Outcome Accuracy</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-val" id="played-count">13 / 72</span>
+                    <span class="stat-lbl">Group Matches Played</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-val" id="total-predicted">72</span>
+                    <span class="stat-lbl">Total Predicted</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="main-nav animate-fade-in">
+            <button class="nav-btn active" data-tab="dashboard-tab">
+                <i class="fa-solid fa-chart-line"></i> Dashboard & Predictor
+            </button>
+            <button class="nav-btn" data-tab="fixtures-tab">
+                <i class="fa-solid fa-calendar-days"></i> Fixtures & Results
+            </button>
+            <button class="nav-btn" data-tab="standings-tab">
+                <i class="fa-solid fa-list-ol"></i> Groups & Standings
+            </button>
+            <button class="nav-btn" data-tab="squads-tab">
+                <i class="fa-solid fa-users"></i> Squad Profiles
+            </button>
+        </nav>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- TAB 1: Dashboard & Match Predictor -->
+            <section id="dashboard-tab" class="tab-pane active animate-fade-in">
+                <div class="predictor-grid">
+                    <!-- Left: Interactive Predictor Panel -->
+                    <div class="glass-card predictor-card">
+                        <h2 class="card-title"><i class="fa-solid fa-calculator text-primary"></i> Match Predictor</h2>
+                        
+                        <div class="selector-container">
+                            <div class="team-selector">
+                                <label for="team-a-select">Team A (Home Advantage if Host)</label>
+                                <div class="select-wrapper">
+                                    <select id="team-a-select"></select>
+                                </div>
+                            </div>
+                            <div class="vs-divider">VS</div>
+                            <div class="team-selector">
+                                <label for="team-b-select">Team B (Away / Neutral)</label>
+                                <div class="select-wrapper">
+                                    <select id="team-b-select"></select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button id="btn-predict" class="btn btn-primary btn-block">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Run Bayesian Prediction
+                        </button>
+
+                        <div class="prediction-results" id="prediction-results" style="display: none;">
+                            <!-- Expected Goals (xG) Section -->
+                            <div class="xg-display">
+                                <div class="team-xg">
+                                    <span class="xg-team-name" id="xg-team-a">Team A</span>
+                                    <span class="xg-val" id="xg-val-a">1.45</span>
+                                    <span class="xg-lbl">Expected Goals (xG)</span>
+                                </div>
+                                <div class="xg-divider">-</div>
+                                <div class="team-xg">
+                                    <span class="xg-team-name" id="xg-team-b">Team B</span>
+                                    <span class="xg-val" id="xg-val-b">1.10</span>
+                                    <span class="xg-lbl">Expected Goals (xG)</span>
+                                </div>
+                            </div>
+
+                            <!-- Probability Bar -->
+                            <div class="prob-section">
+                                <div class="prob-labels">
+                                    <span id="prob-lbl-a">Team A: 45%</span>
+                                    <span>Draw: 25%</span>
+                                    <span id="prob-lbl-b">Team B: 30%</span>
+                                </div>
+                                <div class="prob-bar-container">
+                                    <div class="prob-segment bg-primary" id="prob-bar-a" style="width: 45%;"></div>
+                                    <div class="prob-segment bg-neutral" id="prob-bar-draw" style="width: 25%;"></div>
+                                    <div class="prob-segment bg-secondary" id="prob-bar-b" style="width: 30%;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Most Likely Scoreline -->
+                            <div class="scoreline-prediction">
+                                <h3>Most Likely Scoreline</h3>
+                                <div class="score-display">
+                                    <span id="predicted-score-text">2 - 1</span>
+                                    <span class="score-prob-badge" id="predicted-score-prob">Probability: 12.4%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Dynamic Analysis & Heatmap -->
+                    <div class="glass-card analysis-card">
+                        <h2 class="card-title"><i class="fa-solid fa-chart-grid text-secondary"></i> Bayesian Score Heatmap</h2>
+                        <div class="heatmap-container" id="heatmap-placeholder">
+                            <p class="placeholder-text">Run a prediction to generate the scoreline probability matrix.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom: Team Details & Formations -->
+                <div class="team-comparison-section glass-card" id="comparison-section" style="display: none;">
+                    <h2 class="card-title"><i class="fa-solid fa-sliders text-accent"></i> Tactical & Strength Profiles</h2>
+                    <div class="comparison-grid">
+                        <div class="comparison-team-card">
+                            <h3 id="comp-team-a-name">Argentina</h3>
+                            <div class="ratings-display">
+                                <div class="rating-bar-group">
+                                    <div class="rating-label">
+                                        <span>Attack Rating</span>
+                                        <span id="comp-att-a">1.45</span>
+                                    </div>
+                                    <div class="rating-bar"><div class="rating-fill bg-primary" id="comp-att-a-bar" style="width: 70%;"></div></div>
+                                </div>
+                                <div class="rating-bar-group">
+                                    <div class="rating-label">
+                                        <span>Defense Rating (Lower is Better)</span>
+                                        <span id="comp-def-a">0.65</span>
+                                    </div>
+                                    <div class="rating-bar"><div class="rating-fill bg-accent" id="comp-def-a-bar" style="width: 80%;"></div></div>
+                                </div>
+                            </div>
+                            <div class="tactics-panel">
+                                <span>Preferred Formation: <strong id="comp-formation-a">4-3-3</strong></span>
+                                <div class="pitch-container" id="pitch-team-a"></div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-team-card">
+                            <h3 id="comp-team-b-name">France</h3>
+                            <div class="ratings-display">
+                                <div class="rating-bar-group">
+                                    <div class="rating-label">
+                                        <span>Attack Rating</span>
+                                        <span id="comp-att-b">1.40</span>
+                                    </div>
+                                    <div class="rating-bar"><div class="rating-fill bg-secondary" id="comp-att-b-bar" style="width: 68%;"></div></div>
+                                </div>
+                                <div class="rating-bar-group">
+                                    <div class="rating-label">
+                                        <span>Defense Rating (Lower is Better)</span>
+                                        <span id="comp-def-b">0.70</span>
+                                    </div>
+                                    <div class="rating-bar"><div class="rating-fill bg-accent" id="comp-def-b-bar" style="width: 75%;"></div></div>
+                                </div>
+                            </div>
+                            <div class="tactics-panel">
+                                <span>Preferred Formation: <strong id="comp-formation-b">4-2-3-1</strong></span>
+                                <div class="pitch-container" id="pitch-team-b"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: Fixtures & Predictions -->
+            <section id="fixtures-tab" class="tab-pane animate-fade-in">
+                <div class="glass-card">
+                    <div class="fixtures-header">
+                        <h2 class="card-title"><i class="fa-solid fa-calendar-days text-primary"></i> Match Schedule & Predictions</h2>
+                        <div class="fixtures-filters">
+                            <input type="text" id="fixtures-search" class="search-input" placeholder="Search by team...">
+                            <div class="select-wrapper">
+                                <select id="fixtures-group-filter">
+                                    <option value="ALL">All Groups</option>
+                                    <option value="A">Group A</option>
+                                    <option value="B">Group B</option>
+                                    <option value="C">Group C</option>
+                                    <option value="D">Group D</option>
+                                    <option value="E">Group E</option>
+                                    <option value="F">Group F</option>
+                                    <option value="G">Group G</option>
+                                    <option value="H">Group H</option>
+                                    <option value="I">Group I</option>
+                                    <option value="J">Group J</option>
+                                    <option value="K">Group K</option>
+                                    <option value="L">Group L</option>
+                                </select>
+                            </div>
+                            <div class="select-wrapper">
+                                <select id="fixtures-status-filter">
+                                    <option value="ALL">All Status</option>
+                                    <option value="PLAYED">Played</option>
+                                    <option value="UPCOMING">Upcoming</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="fixtures-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Stage</th>
+                                    <th class="text-right">Home Team</th>
+                                    <th class="text-center">Actual Score</th>
+                                    <th class="text-left">Away Team</th>
+                                    <th class="text-center">xG Prediction</th>
+                                    <th class="text-center">Predicted Score</th>
+                                    <th class="text-center">Win Probs</th>
+                                    <th class="text-center">Result</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fixtures-table-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: Groups & Standings -->
+            <section id="standings-tab" class="tab-pane animate-fade-in">
+                <div class="standings-control-panel glass-card">
+                    <div class="control-text">
+                        <h2>Group Stage Simulator</h2>
+                        <p>Simulate the remaining group matches using the fitted Bayesian Dixon-Coles model to compute predicted final standings.</p>
+                    </div>
+                    <button id="btn-simulate" class="btn btn-accent">
+                        <i class="fa-solid fa-arrows-spin"></i> Simulate Group Stage Standings
+                    </button>
+                </div>
+                
+                <div class="groups-grid" id="groups-standings-container">
+                    <!-- Dynamic rendering of Groups A-L -->
+                </div>
+            </section>
+
+            <!-- TAB 4: Squad Profiles -->
+            <section id="squads-tab" class="tab-pane animate-fade-in">
+                <div class="squads-grid">
+                    <!-- Left column: Selector and tactical diagram -->
+                    <div class="glass-card squad-selector-panel">
+                        <h2 class="card-title"><i class="fa-solid fa-users text-primary"></i> Team Squad Roster</h2>
+                        <div class="select-wrapper">
+                            <select id="squad-team-select" class="btn-block"></select>
+                        </div>
+                        <div class="squad-tactical-formation-card">
+                            <h3>Tactical Alignment</h3>
+                            <p>Formation: <span id="squad-formation-label" class="badge">4-3-3</span></p>
+                            <div class="pitch-container pitch-large" id="squad-pitch-large"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right column: Squad Table -->
+                    <div class="glass-card squad-table-panel">
+                        <h2 class="card-title" id="squad-table-title">Argentina Squad List</h2>
+                        <div class="table-container">
+                            <table class="squad-table">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">No.</th>
+                                        <th>Name</th>
+                                        <th class="text-center">Position</th>
+                                        <th class="text-center">Age</th>
+                                        <th class="text-center">Caps</th>
+                                        <th class="text-center">Goals</th>
+                                        <th>Club</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="squad-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <p>&copy; 2026 FIFA World Cup Prediction Project. Built with Polars, Scipy and Vanilla JS.</p>
+        </footer>
+    </div>
+
+    <!-- Main Logic Script -->
+    <script src="script.js"></script>
+</body>
+</html>

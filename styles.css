@@ -1,0 +1,1092 @@
+/* --- CSS variables and design tokens --- */
+:root {
+    --bg-dark: #0a0817;
+    --card-bg: rgba(18, 14, 38, 0.6);
+    --card-border: rgba(255, 255, 255, 0.07);
+    --primary: #9d4edd; /* Neon purple */
+    --primary-light: #c77dff;
+    --primary-glow: rgba(157, 78, 221, 0.3);
+    --secondary: #f72585; /* Neon pink/magenta */
+    --secondary-glow: rgba(247, 37, 133, 0.3);
+    --accent: #06d6a0; /* Emerald green */
+    --accent-glow: rgba(6, 214, 160, 0.2);
+    --neutral-color: #3f37c9; /* Royal blue */
+    --neutral-glow: rgba(63, 55, 201, 0.2);
+    
+    --text-main: #f8f9fa;
+    --text-muted: #a5a5b8;
+    --text-dark: #06040d;
+    
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    
+    --transition-fast: 0.2s ease;
+    --transition-slow: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* --- Base settings --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    line-height: 1.5;
+}
+
+/* --- Dynamic backgrounds --- */
+.stars-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -3;
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px);
+    background-size: 550px 550px, 350px 350px;
+    background-position: 0 0, 40px 60px;
+    opacity: 0.2;
+}
+
+.radial-glow-1 {
+    position: fixed;
+    top: -10%;
+    right: -10%;
+    width: 60vw;
+    height: 60vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(157, 78, 221, 0.15) 0%, transparent 70%);
+    z-index: -2;
+    pointer-events: none;
+    animation: pulse-glow 8s infinite alternate;
+}
+
+.radial-glow-2 {
+    position: fixed;
+    bottom: -10%;
+    left: -10%;
+    width: 50vw;
+    height: 50vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(247, 37, 133, 0.1) 0%, transparent 70%);
+    z-index: -2;
+    pointer-events: none;
+    animation: pulse-glow 12s infinite alternate-reverse;
+}
+
+@keyframes pulse-glow {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.15); opacity: 1; }
+}
+
+/* --- Layout --- */
+.app-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* --- Glassmorphism UI elements --- */
+.glass-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 1.75rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    transition: transform var(--transition-slow), box-shadow var(--transition-slow), border-color var(--transition-fast);
+}
+
+.glass-card:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* --- Header Section --- */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.logo-badge {
+    background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    font-family: var(--font-heading);
+    font-weight: 900;
+    font-size: 2rem;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px var(--primary-glow);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.header-text h1 {
+    font-family: var(--font-heading);
+    font-size: 2.25rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, #fff 0%, #dcdcef 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-weight: 400;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+
+.header-stats {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.stat-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.03);
+    min-width: 100px;
+}
+
+.stat-val {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-light);
+}
+
+.stat-lbl {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+/* --- Navigation Tab System --- */
+.main-nav {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    padding-bottom: 5px;
+}
+
+.nav-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    padding: 0.75rem 1.5rem;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: var(--text-main);
+    transform: translateY(-2px);
+}
+
+.nav-btn.active {
+    background: linear-gradient(135deg, var(--primary) 0%, rgba(157, 78, 221, 0.5) 100%);
+    border-color: var(--primary-light);
+    color: #fff;
+    box-shadow: 0 4px 15px var(--primary-glow);
+}
+
+/* --- Main workspace panels --- */
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* --- Tab 1: Dashboard Grid --- */
+.predictor-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 1.5rem;
+}
+
+@media (max-width: 968px) {
+    .predictor-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card-title {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding-bottom: 0.75rem;
+}
+
+.text-primary { color: var(--primary-light); }
+.text-secondary { color: var(--secondary); }
+.text-accent { color: var(--accent); }
+
+/* --- Dropdown Form Elements --- */
+.selector-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 576px) {
+    .selector-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .vs-divider {
+        align-self: center;
+    }
+}
+
+.team-selector {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.team-selector label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+select {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    color: var(--text-main);
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 1.05rem;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: border-color var(--transition-fast);
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.select-wrapper::after {
+    content: '\f107';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--text-muted);
+}
+
+.vs-divider {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.06);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* --- Premium Buttons --- */
+.btn {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 0.9rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--primary-glow);
+}
+
+.btn-accent {
+    background: linear-gradient(135deg, var(--accent) 0%, #03b085 100%);
+    color: var(--bg-dark);
+}
+
+.btn-accent:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--accent-glow);
+}
+
+/* --- Match Prediction Output Display --- */
+.prediction-results {
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 1.5rem;
+    animation: slide-up var(--transition-slow);
+}
+
+/* Expected goals (xG) display */
+.xg-display {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.02);
+}
+
+.team-xg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.xg-team-name {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+}
+
+.xg-val {
+    font-family: var(--font-heading);
+    font-size: 2.25rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff 0%, var(--text-muted) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.xg-lbl {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.xg-divider {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+}
+
+/* Outcome probability bar */
+.prob-section {
+    margin-bottom: 1.5rem;
+}
+
+.prob-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.prob-bar-container {
+    height: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    display: flex;
+    overflow: hidden;
+}
+
+.prob-segment {
+    height: 100%;
+    transition: width var(--transition-slow);
+}
+
+.bg-primary { background: linear-gradient(90deg, var(--primary), var(--primary-light)); }
+.bg-secondary { background: linear-gradient(90deg, var(--secondary), #ff54b0); }
+.bg-neutral { background: #3b3b5c; }
+
+/* Scoreline prediction */
+.scoreline-prediction {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(157, 78, 221, 0.1) 0%, rgba(247, 37, 133, 0.05) 100%);
+    padding: 1.25rem;
+    border-radius: 12px;
+    border: 1px solid rgba(157, 78, 221, 0.15);
+}
+
+.scoreline-prediction h3 {
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.score-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+#predicted-score-text {
+    font-family: var(--font-heading);
+    font-size: 2.75rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #fff 0%, var(--primary-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.score-prob-badge {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--primary-light);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* --- Heatmap UI --- */
+.heatmap-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 320px;
+    position: relative;
+    width: 100%;
+}
+
+.placeholder-text {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+/* Rendered heatmap structure */
+.heatmap-grid {
+    display: grid;
+    grid-template-columns: auto repeat(6, 1fr);
+    gap: 4px;
+    width: 100%;
+    max-width: 400px;
+    margin-top: 1rem;
+}
+
+.heatmap-cell {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    position: relative;
+    cursor: default;
+    transition: transform 0.15s ease;
+}
+
+.heatmap-cell:hover {
+    transform: scale(1.08);
+    z-index: 5;
+}
+
+.heatmap-cell-val {
+    font-size: 0.6rem;
+    opacity: 0.85;
+    font-weight: 400;
+}
+
+.heatmap-header-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.heatmap-axis-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.axis-lbl-y {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    grid-row: span 7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 0.5rem;
+}
+
+.axis-lbl-x {
+    grid-column: span 7;
+    text-align: center;
+    padding-top: 0.5rem;
+}
+
+/* --- Team Comparison Profiles --- */
+.team-comparison-section {
+    animation: fade-in var(--transition-slow);
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .comparison-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.comparison-team-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.comparison-team-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+}
+
+.ratings-display {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.rating-bar-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.rating-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.rating-label span:last-child {
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.rating-bar {
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.rating-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width var(--transition-slow);
+}
+
+.rating-fill.bg-accent {
+    background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.tactics-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.tactics-panel span {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Football Pitch Visualizer CSS */
+.pitch-container {
+    width: 100%;
+    aspect-ratio: 0.72;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(6, 95, 70, 0.05) 100%);
+    border: 2px solid rgba(16, 185, 129, 0.3);
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+.pitch-large {
+    aspect-ratio: 0.68;
+    max-width: 360px;
+}
+
+/* Pitch line markings */
+.pitch-container::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 2px;
+    background: rgba(16, 185, 129, 0.25);
+}
+
+.pitch-center-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 28%;
+    height: 20%;
+    border: 2px solid rgba(16, 185, 129, 0.25);
+    border-radius: 50%;
+}
+
+.pitch-penalty-area-t {
+    position: absolute;
+    left: 18%;
+    right: 18%;
+    top: 0;
+    height: 16%;
+    border: 2px solid rgba(16, 185, 129, 0.25);
+    border-top: none;
+}
+
+.pitch-penalty-area-b {
+    position: absolute;
+    left: 18%;
+    right: 18%;
+    bottom: 0;
+    height: 16%;
+    border: 2px solid rgba(16, 185, 129, 0.25);
+    border-bottom: none;
+}
+
+/* Player node layout on pitch */
+.player-node {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    background: radial-gradient(circle, var(--primary-light), var(--primary));
+    border: 2px solid #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transform: translate(-50%, -50%);
+}
+
+.player-node.gk { background: radial-gradient(circle, #fcd34d, #f59e0b); color: var(--text-dark); border-color: var(--text-dark); }
+.player-node.df { background: radial-gradient(circle, #60a5fa, #2563eb); }
+.player-node.mf { background: radial-gradient(circle, #fb7185, #e11d48); }
+.player-node.fw { background: radial-gradient(circle, #34d399, #059669); }
+
+.player-node-name {
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.55rem;
+    font-weight: 600;
+    color: var(--text-main);
+    background: rgba(0,0,0,0.6);
+    padding: 1px 4px;
+    border-radius: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* --- TAB 2: Fixtures & Results --- */
+.fixtures-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding-bottom: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.fixtures-header h2 {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.fixtures-filters {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-main);
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    min-width: 200px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-light);
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1rem;
+    border-bottom: 2px solid rgba(255,255,255,0.05);
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 0.95rem;
+}
+
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+
+.fixtures-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* Badge types */
+.badge {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.badge-group {
+    background: var(--neutral-glow);
+    color: #a5c4ff;
+    border-color: rgba(63, 55, 201, 0.3);
+}
+
+.team-cell {
+    font-family: var(--font-heading);
+    font-weight: 600;
+}
+
+.score-cell-played {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 1.1rem;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    padding: 0.25rem 0.5rem;
+    letter-spacing: 1px;
+}
+
+.score-cell-upcoming {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.outcome-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 0.75rem;
+}
+
+.outcome-correct {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--accent);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.outcome-incorrect {
+    background: rgba(247, 37, 133, 0.15);
+    color: var(--secondary);
+    border: 1px solid rgba(247, 37, 133, 0.2);
+}
+
+/* --- TAB 3: Standings Simulator --- */
+.standings-control-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.control-text h2 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.control-text p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.groups-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.group-table-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 1.25rem;
+}
+
+.group-table-card h3 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.15rem;
+    margin-bottom: 0.75rem;
+    color: var(--primary-light);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 0.5rem;
+}
+
+.standings-table {
+    width: 100%;
+    font-size: 0.85rem;
+}
+
+.standings-table th, .standings-table td {
+    padding: 0.5rem;
+}
+
+.standings-table th {
+    font-size: 0.7rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.rank-idx {
+    font-weight: 700;
+    color: var(--text-muted);
+    width: 15px;
+}
+
+.standings-team-name {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.qualified-row-top2 {
+    border-left: 3px solid var(--accent);
+}
+
+.qualified-row-3rd {
+    border-left: 3px solid var(--primary-light);
+}
+
+/* --- TAB 4: Squad Profiles Layout --- */
+.squads-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1.5rem;
+}
+
+@media (max-width: 968px) {
+    .squads-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.squad-selector-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.squad-tactical-formation-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.squad-tactical-formation-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+}
+
+.squad-table th, .squad-table td {
+    padding: 0.75rem;
+}
+
+.squad-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* --- Animation details --- */
+.animate-slide-down {
+    animation: slide-down 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-up {
+    animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade-in {
+    animation: fade-in 0.5s ease forwards;
+}
+
+@keyframes slide-down {
+    from { transform: translateY(-30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-up {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* --- Footer --- */
+.main-footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
