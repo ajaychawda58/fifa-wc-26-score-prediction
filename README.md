@@ -8,6 +8,31 @@ All predictions and simulation systems run completely client-side in the browser
 
 ---
 
+## 📊 Data Sources
+
+The prediction engine pulls and synthesizes data from several different directories to feed the modeling pipeline:
+
+1. **Historical International Matches (1872–Present)**: 
+   * **Source**: [Mart Jürisoo's International Football Results Dataset](https://github.com/martj42/international_results).
+   * **Usage**: Over 50,000 historical international matches are loaded and processed using Polars to build team Elo ratings chronologically and train model regression coefficients.
+2. **FIFA World Cup 2026 Group Fixtures**:
+   * **Source**: Parsed from the scheduled tournament entries in the international results database.
+   * **Usage**: Defines the real match pairings, dates, and venues for all 72 group stage matches.
+3. **Squad Rosters & Player Metadata**:
+   * **Source**: Scraped from the Wikipedia page [2026 FIFA World Cup squads](https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads).
+   * **Usage**: Loaded dynamically to retrieve player listings, ages, caps, goals, and club details for all 48 qualified countries.
+4. **Squad Fitness & Injury Rates**:
+   * **Source**: Deterministic hash-based player injury generator (simulating time since last injury between 0.5 and 35 months).
+   * **Usage**: Used to aggregate squad-level injury percentages (players injured in the last 6 months) to fit the $\beta_{\text{injury}}$ regression parameters.
+5. **Match Temperature & Weather**:
+   * **Source**: Deterministic climate simulation (generating match temperature values between 15°C and 36°C).
+   * **Usage**: Used to fit weather parameters ($\beta_{\text{hot}}$) and simulate temperature conditions in real time using the front-end slider.
+6. **Rankings & Tactical Meta**:
+   * **Source**: Structured metadata defining confederations, World Rankings, and preferred team formations.
+   * **Usage**: Sets the Bayesian priors for the Dixon-Coles model and features for the Softmax logit regression.
+
+---
+
 ## 🧠 How the Models Predict the Score
 
 The system utilizes four distinct statistical/ML models, alongside a weighted ensemble that combines them:
