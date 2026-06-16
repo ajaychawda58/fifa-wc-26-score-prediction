@@ -324,8 +324,8 @@ def generate_world_cup_schedule():
         "L": ["2026-06-16", "2026-06-22", "2026-06-27"]
     }
     
-    # Pre-defined completed match list to overwrite generated scores
-    completed_lookup = {(m['home'], m['away']): m for m in COMPLETED_MATCHES}
+    # Pre-defined completed match list to overwrite generated scores (using frozenset to match regardless of home/away team order)
+    completed_lookup = {frozenset({m['home'], m['away']}): m for m in COMPLETED_MATCHES}
 
     for letter, group_teams in GROUPS.items():
         t1, t2, t3, t4 = group_teams
@@ -343,13 +343,13 @@ def generate_world_cup_schedule():
             date = dates[r_idx]
             for home, away in round_fixtures:
                 # Check if this match is in our completed results
-                match_info = completed_lookup.get((home, away), None)
+                match_info = completed_lookup.get(frozenset({home, away}), None)
                 if match_info:
                     schedule.append({
                         "id": match_id,
                         "date": match_info['date'],
-                        "home": home,
-                        "away": away,
+                        "home": match_info['home'],
+                        "away": match_info['away'],
                         "home_score": match_info['home_score'],
                         "away_score": match_info['away_score'],
                         "stage": match_info['stage']
@@ -367,6 +367,7 @@ def generate_world_cup_schedule():
                 match_id += 1
                 
     return schedule
+
 
 def write_markdown_files(historical_matches, squads):
     """Writes historical, squad, and previous matches to clean markdown files."""
