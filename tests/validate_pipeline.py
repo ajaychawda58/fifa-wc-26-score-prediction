@@ -89,7 +89,8 @@ def test_file_outputs():
     expected_keys = [
         "predicted_home_score", "predicted_away_score", 
         "home_win_prob", "away_win_prob", "draw_prob", 
-        "home_xG", "away_xG", "predictions"
+        "home_xG", "away_xG", "predictions",
+        "temperature_c", "is_hot"
     ]
     for key in expected_keys:
         assert key in first_match, f"Expected key {key} in match record"

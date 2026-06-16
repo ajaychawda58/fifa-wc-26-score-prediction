@@ -792,8 +792,24 @@ function renderFixturesTable() {
             scoreDisplay = `<span class="score-cell-upcoming">VS</span>`;
         }
         
+        const tempVal = m.temperature_c;
+        const isHot = m.is_hot;
+        let weatherHtml = "";
+        if (tempVal !== undefined) {
+            weatherHtml = `
+                <div class="match-weather" style="font-size: 0.65rem; margin-top: 3px; display: flex; align-items: center; gap: 3px; color: ${isHot ? '#ff4757' : 'var(--text-muted)'}; font-weight: ${isHot ? '600' : 'normal'};">
+                    <span>${isHot ? '🔥' : '🌡️'}</span>
+                    <span>${tempVal.toFixed(1)}°C</span>
+                    ${isHot ? '<span class="weather-hot-badge" style="font-size:0.5rem; background:rgba(255,71,87,0.15); color:#ff4757; padding:0px 3px; border-radius:2px; font-weight:800; text-transform:uppercase;">Hot</span>' : ''}
+                </div>
+            `;
+        }
+
         row.innerHTML = `
-            <td>${m.date}</td>
+            <td>
+                <div>${m.date}</div>
+                ${weatherHtml}
+            </td>
             <td><span class="badge badge-group">${m.stage}</span></td>
             <td class="text-right team-cell">${m.home}</td>
             <td class="text-center">${scoreDisplay}</td>
