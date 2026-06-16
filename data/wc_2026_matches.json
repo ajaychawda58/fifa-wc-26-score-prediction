@@ -2488,8 +2488,8 @@
     "date": "2026-06-15",
     "home": "Belgium",
     "away": "Egypt",
-    "home_score": null,
-    "away_score": null,
+    "home_score": 1,
+    "away_score": 1,
     "stage": "Group G",
     "predictions": {
       "dixon_coles": {
@@ -2557,8 +2557,8 @@
     "date": "2026-06-15",
     "home": "Iran",
     "away": "New Zealand",
-    "home_score": null,
-    "away_score": null,
+    "home_score": 2,
+    "away_score": 2,
     "stage": "Group G",
     "predictions": {
       "dixon_coles": {
@@ -2971,8 +2971,8 @@
     "date": "2026-06-15",
     "home": "Saudi Arabia",
     "away": "Uruguay",
-    "home_score": null,
-    "away_score": null,
+    "home_score": 1,
+    "away_score": 1,
     "stage": "Group H",
     "predictions": {
       "dixon_coles": {

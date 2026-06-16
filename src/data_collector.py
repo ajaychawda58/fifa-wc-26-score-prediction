@@ -110,10 +110,9 @@ COMPLETED_MATCHES = [
     {"date": "2026-06-14", "home": "Ivory Coast", "away": "Ecuador", "home_score": 1, "away_score": 0, "stage": "Group E"},
     {"date": "2026-06-14", "home": "Sweden", "away": "Tunisia", "home_score": 5, "away_score": 1, "stage": "Group F"},
     {"date": "2026-06-15", "home": "Spain", "away": "Cape Verde", "home_score": 0, "away_score": 0, "stage": "Group H"},
-    # Matches scheduled for late June 15
-    {"date": "2026-06-15", "home": "Belgium", "away": "Egypt", "home_score": None, "away_score": None, "stage": "Group G"},
-    {"date": "2026-06-15", "home": "Saudi Arabia", "away": "Uruguay", "home_score": None, "away_score": None, "stage": "Group H"},
-    {"date": "2026-06-15", "home": "Iran", "away": "New Zealand", "home_score": None, "away_score": None, "stage": "Group G"}
+    {"date": "2026-06-15", "home": "Belgium", "away": "Egypt", "home_score": 1, "away_score": 1, "stage": "Group G"},
+    {"date": "2026-06-15", "home": "Saudi Arabia", "away": "Uruguay", "home_score": 1, "away_score": 1, "stage": "Group H"},
+    {"date": "2026-06-15", "home": "Iran", "away": "New Zealand", "home_score": 2, "away_score": 2, "stage": "Group G"}
 ]
 
 def download_historical_results():
