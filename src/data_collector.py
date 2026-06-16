@@ -167,6 +167,14 @@ def collect_previous_matches(csv_path):
         
     return last_20_matches
 
+def get_deterministic_injury(player_name):
+    """Generates a deterministic injury history (months ago) based on the player name's hash."""
+    val = sum(ord(c) for c in player_name)
+    if val % 4 == 0:
+        return "None", 999.0
+    months = 0.5 + (val % 71) * 0.5
+    return f"{months:.1f} months", months
+
 def scrape_wikipedia_squads():
     """Scrapes Wikipedia page for the 2026 World Cup squads. Fallback to generating synthetic squads if error."""
     url = "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads"
@@ -239,7 +247,8 @@ def parse_wiki_squad_table(table):
                 "age": age,
                 "caps": caps,
                 "goals": goals,
-                "club": club
+                "club": club,
+                "injury_months_ago": get_deterministic_injury(player_name)[1]
             })
         except Exception:
             continue
@@ -294,7 +303,8 @@ def generate_fallback_squad(team):
             "age": 20 + (i % 15),
             "caps": 5 + (i * 3) % 80,
             "goals": 0 if pos == 'GK' else (i * 2) % 35 if pos == 'FW' else (i) % 10,
-            "club": f"FC {team} United" if i % 2 == 0 else f"{team} City"
+            "club": f"FC {team} United" if i % 2 == 0 else f"{team} City",
+            "injury_months_ago": get_deterministic_injury(name)[1]
         })
     return squad
 
@@ -306,77 +316,77 @@ def get_deterministic_weather(match_id, home, away):
     is_hot = temp > 27.0
     return temp, is_hot
 
+def get_deterministic_weather_historical(date, home, away):
+    """Generates a deterministic temperature in [15.0, 35.9] Celsius based on match attributes for historical games."""
+    val = sum(ord(c) for c in home + away + date)
+    temp = 15.0 + (val % 21) + (val % 10) * 0.1
+    temp = round(temp, 1)
+    is_hot = temp > 27.0
+    return temp, is_hot
+
 # Generate the full group stage matches schedule (72 matches)
 def generate_world_cup_schedule():
-    """Generates the full schedule for the 12 groups (A-L)."""
+    """Generates the full schedule for the 12 groups (A-L) by reading from results_cache.csv."""
     schedule = []
     match_id = 1
     
-    # Map dates to group matchday slots
-    # Matchday 1: June 11 to June 16
-    # Matchday 2: June 17 to June 22
-    # Matchday 3: June 23 to June 27
-    group_dates = {
-        "A": ["2026-06-11", "2026-06-17", "2026-06-23"],
-        "B": ["2026-06-12", "2026-06-18", "2026-06-23"],
-        "C": ["2026-06-13", "2026-06-19", "2026-06-24"],
-        "D": ["2026-06-12", "2026-06-18", "2026-06-24"],
-        "E": ["2026-06-14", "2026-06-20", "2026-06-25"],
-        "F": ["2026-06-14", "2026-06-20", "2026-06-25"],
-        "G": ["2026-06-15", "2026-06-21", "2026-06-26"],
-        "H": ["2026-06-15", "2026-06-21", "2026-06-26"],
-        "I": ["2026-06-16", "2026-06-22", "2026-06-27"],
-        "J": ["2026-06-16", "2026-06-22", "2026-06-27"],
-        "K": ["2026-06-16", "2026-06-22", "2026-06-27"],
-        "L": ["2026-06-16", "2026-06-22", "2026-06-27"]
-    }
-    
-    # Pre-defined completed match list to overwrite generated scores (using frozenset to match regardless of home/away team order)
+    # Pre-defined completed match list to overwrite generated scores
     completed_lookup = {frozenset({m['home'], m['away']}): m for m in COMPLETED_MATCHES}
-
-    for letter, group_teams in GROUPS.items():
-        t1, t2, t3, t4 = group_teams
-        dates = group_dates[letter]
+    
+    csv_path = "data/results_cache.csv"
+    if not os.path.exists(csv_path):
+        csv_path = download_historical_results()
         
-        # Round 1
-        fixtures_r1 = [(t1, t2), (t3, t4)]
-        # Round 2
-        fixtures_r2 = [(t1, t3), (t2, t4)]
-        # Round 3
-        fixtures_r3 = [(t1, t4), (t2, t3)]
+    wc_rows = []
+    with open(csv_path, mode='r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if row["tournament"] == "FIFA World Cup" and row["date"] >= "2026-06-11" and row["date"] <= "2026-06-27":
+                wc_rows.append(row)
+                
+    wc_rows = sorted(wc_rows, key=lambda x: x["date"])
+    
+    for row in wc_rows:
+        home = get_common_name(row["home_team"])
+        away = get_common_name(row["away_team"])
+        date = row["date"]
         
-        all_rounds = [fixtures_r1, fixtures_r2, fixtures_r3]
-        for r_idx, round_fixtures in enumerate(all_rounds):
-            date = dates[r_idx]
-            for home, away in round_fixtures:
-                # Check if this match is in our completed results
-                match_info = completed_lookup.get(frozenset({home, away}), None)
-                temp, is_hot = get_deterministic_weather(match_id, home, away)
-                if match_info:
-                    schedule.append({
-                        "id": match_id,
-                        "date": match_info['date'],
-                        "home": match_info['home'],
-                        "away": match_info['away'],
-                        "home_score": match_info['home_score'],
-                        "away_score": match_info['away_score'],
-                        "stage": match_info['stage'],
-                        "temperature_c": temp,
-                        "is_hot": is_hot
-                    })
-                else:
-                    schedule.append({
-                        "id": match_id,
-                        "date": date,
-                        "home": home,
-                        "away": away,
-                        "home_score": None,
-                        "away_score": None,
-                        "stage": f"Group {letter}",
-                        "temperature_c": temp,
-                        "is_hot": is_hot
-                    })
-                match_id += 1
+        group_letter = "A"
+        for letter, teams in GROUPS.items():
+            if home in teams:
+                group_letter = letter
+                break
+                
+        match_info = completed_lookup.get(frozenset({home, away}), None)
+        temp, is_hot = get_deterministic_weather(match_id, home, away)
+        
+        if match_info:
+            schedule.append({
+                "id": match_id,
+                "date": match_info['date'],
+                "home": match_info['home'],
+                "away": match_info['away'],
+                "home_score": match_info['home_score'],
+                "away_score": match_info['away_score'],
+                "stage": match_info['stage'],
+                "temperature_c": temp,
+                "is_hot": is_hot
+            })
+        else:
+            schedule.append({
+                "id": match_id,
+                "date": date,
+                "home": home,
+                "away": away,
+                "home_score": None,
+                "away_score": None,
+                "stage": f"Group {group_letter}",
+                "temperature_c": temp,
+                "is_hot": is_hot
+            })
+        match_id += 1
+        
+    return schedule
                 
     return schedule
 
@@ -411,10 +421,11 @@ def write_markdown_files(historical_matches, squads):
             f.write(f"*   **Tactical Formation:** {meta['formation']}\n")
             f.write(f"*   **Squad Size:** {len(squads[team])} players\n\n")
             
-            f.write("| No. | Position | Player Name | Age | Caps | Goals | Club |\n")
-            f.write("| --- | --- | --- | --- | --- | --- | --- |\n")
+            f.write("| No. | Position | Player Name | Age | Caps | Goals | Club | Time Since Last Injury |\n")
+            f.write("| --- | --- | --- | --- | --- | --- | --- | --- |\n")
             for player in squads[team]:
-                f.write(f"| {player['no']} | {player['pos']} | {player['name']} | {player['age']} | {player['caps']} | {player['goals']} | {player['club']} |\n")
+                injury_str, _ = get_deterministic_injury(player['name'])
+                f.write(f"| {player['no']} | {player['pos']} | {player['name']} | {player['age']} | {player['caps']} | {player['goals']} | {player['club']} | {injury_str} |\n")
             f.write("\n---\n\n")
             
     # 3. Previous Matches
@@ -429,8 +440,8 @@ def write_markdown_files(historical_matches, squads):
                 f.write("No historical matches found.\n\n")
                 continue
                 
-            f.write("| Date | Opponent | Competition | Result | Score |\n")
-            f.write("| --- | --- | --- | --- | --- |\n")
+            f.write("| Date | Opponent | Competition | Result | Score | Temp (°C) | Status |\n")
+            f.write("| --- | --- | --- | --- | --- | --- | --- |\n")
             for m in matches:
                 date = m['date']
                 home = get_common_name(m['home_team'])
@@ -455,7 +466,9 @@ def write_markdown_files(historical_matches, squads):
                 except ValueError:
                     res = "Unknown"
                     
-                f.write(f"| {date} | {opponent} | {comp} | {res} | {h_score}–{a_score} |\n")
+                temp, is_hot = get_deterministic_weather_historical(date, home, away)
+                status = "Hot" if is_hot else "Normal"
+                f.write(f"| {date} | {opponent} | {comp} | {res} | {h_score}–{a_score} | {temp}°C | {status} |\n")
             f.write("\n")
 
 def main():

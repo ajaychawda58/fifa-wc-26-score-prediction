@@ -98,6 +98,14 @@
                             </div>
                         </div>
 
+                        <div class="control-group" style="margin-bottom: 1.5rem;">
+                            <label for="predictor-temp-slider" style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; font-weight:600; display:block; margin-bottom: 0.4rem;">Match Temperature</label>
+                            <div style="display:flex; align-items:center; gap:15px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 0.6rem 1rem; border-radius: 8px;">
+                                <input type="range" id="predictor-temp-slider" min="15" max="36" value="22" step="0.5" style="flex:1; cursor: pointer; accent-color: var(--primary-light);">
+                                <span id="predictor-temp-label" style="font-size:0.95rem; font-weight:700; min-width:85px; text-align:right; color: var(--text-main);">🌡️ 22.0°C</span>
+                            </div>
+                        </div>
+
                         <button id="btn-predict" class="btn btn-primary btn-block">
                             <i class="fa-solid fa-wand-magic-sparkles"></i> Predict scores
                         </button>
@@ -175,7 +183,7 @@
                                 </div>
                             </div>
                             <div class="tactics-panel">
-                                <span>Preferred Formation: <strong id="comp-formation-a">4-3-3</strong></span>
+                                <span>Preferred Formation: <strong id="comp-formation-a">4-3-3</strong> | Injury Rate: <strong id="comp-injury-a">0.0%</strong></span>
                                 <div class="pitch-container" id="pitch-team-a"></div>
                             </div>
                         </div>
@@ -199,7 +207,7 @@
                                 </div>
                             </div>
                             <div class="tactics-panel">
-                                <span>Preferred Formation: <strong id="comp-formation-b">4-2-3-1</strong></span>
+                                <span>Preferred Formation: <strong id="comp-formation-b">4-2-3-1</strong> | Injury Rate: <strong id="comp-injury-b">0.0%</strong></span>
                                 <div class="pitch-container" id="pitch-team-b"></div>
                             </div>
                         </div>

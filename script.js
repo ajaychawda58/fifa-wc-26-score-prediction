@@ -314,6 +314,36 @@ function initDashboardWidgets() {
         
         runVisualPrediction(teamA, teamB);
     });
+
+    const tempSlider = document.getElementById("predictor-temp-slider");
+    const tempLabel = document.getElementById("predictor-temp-label");
+    
+    if (tempSlider && tempLabel) {
+        tempSlider.addEventListener("input", (e) => {
+            const temp = parseFloat(e.target.value);
+            const isHot = temp > 27.0;
+            tempLabel.innerHTML = `${isHot ? '🔥' : '🌡️'} ${temp.toFixed(1)}°C`;
+            
+            // Recalculate if prediction results are visible
+            const teamA = document.getElementById("team-a-select").value;
+            const teamB = document.getElementById("team-b-select").value;
+            if (document.getElementById("prediction-results").style.display !== "none") {
+                runVisualPrediction(teamA, teamB);
+            }
+            
+            // Refresh standings simulation if standings tab is active
+            const standingsTab = document.getElementById("standings-tab");
+            if (standingsTab && standingsTab.classList.contains("active")) {
+                renderGroupStandings();
+            }
+            
+            // Refresh bracket simulation if bracket tab is active
+            const bracketTab = document.getElementById("bracket-tab");
+            if (bracketTab && bracketTab.classList.contains("active")) {
+                renderKnockoutBracket();
+            }
+        });
+    }
 }
 
 // Mathematical Helper Functions
@@ -342,15 +372,21 @@ function bivariatePoissonPmf(x, y, l1, l2, l3) {
 // --- Client-Side Model Predictors ---
 
 // 1. Dixon-Coles Predictor
-function predictDixonColes(teamA, teamB, maxGoals=5) {
+function predictDixonColes(teamA, teamB, maxGoals=5, isHot=false) {
     const dc = modelParameters.dixon_coles;
     const ratingsA = dc.teams[teamA];
     const ratingsB = dc.teams[teamB];
     const isHomeA = ["USA", "Canada", "Mexico"].includes(teamA);
     const haMult = isHomeA ? dc.home_advantage_multiplier : 1.0;
+    const hotMult = isHot ? Math.exp(dc.beta_hot) : 1.0;
     
-    const lambda = ratingsA.attack * ratingsB.defense * haMult;
-    const mu = ratingsB.attack * ratingsA.defense;
+    const injuryRateA = ratingsA ? (ratingsA.injury_rate || 0.0) : 0.0;
+    const injuryRateB = ratingsB ? (ratingsB.injury_rate || 0.0) : 0.0;
+    const injuryMultA = Math.exp((dc.beta_injury || 0.0) * injuryRateA);
+    const injuryMultB = Math.exp((dc.beta_injury || 0.0) * injuryRateB);
+    
+    const lambda = ratingsA.attack * ratingsB.defense * haMult * hotMult * injuryMultA;
+    const mu = ratingsB.attack * ratingsA.defense * hotMult * injuryMultB;
     const rho = dc.rho;
     
     const grid = [];
@@ -375,15 +411,22 @@ function predictDixonColes(teamA, teamB, maxGoals=5) {
 }
 
 // 2. Bivariate Poisson Predictor
-function predictBivariate(teamA, teamB, maxGoals=5) {
+function predictBivariate(teamA, teamB, maxGoals=5, isHot=false) {
     const bp = modelParameters.bivariate;
+    const dc = modelParameters.dixon_coles;
     const ratingsA = bp.teams[teamA];
     const ratingsB = bp.teams[teamB];
     const isHomeA = ["USA", "Canada", "Mexico"].includes(teamA);
     const haMult = isHomeA ? bp.home_advantage_multiplier : 1.0;
+    const hotMult = isHot ? Math.exp(bp.beta_hot) : 1.0;
     
-    const l1 = ratingsA.attack * ratingsB.defense * haMult;
-    const l2 = ratingsB.attack * ratingsA.defense;
+    const injuryRateA = dc.teams[teamA] ? (dc.teams[teamA].injury_rate || 0.0) : 0.0;
+    const injuryRateB = dc.teams[teamB] ? (dc.teams[teamB].injury_rate || 0.0) : 0.0;
+    const injuryMultA = Math.exp((bp.beta_injury || 0.0) * injuryRateA);
+    const injuryMultB = Math.exp((bp.beta_injury || 0.0) * injuryRateB);
+    
+    const l1 = ratingsA.attack * ratingsB.defense * haMult * hotMult * injuryMultA;
+    const l2 = ratingsB.attack * ratingsA.defense * hotMult * injuryMultB;
     const l3 = Math.exp(bp.log_covariance);
     
     const grid = [];
@@ -407,15 +450,20 @@ function predictBivariate(teamA, teamB, maxGoals=5) {
 }
 
 // 3. Elo-Poisson Predictor
-function predictEloPoisson(teamA, teamB, maxGoals=5) {
+function predictEloPoisson(teamA, teamB, maxGoals=5, isHot=false) {
     const elo = modelParameters.elo;
+    const dc = modelParameters.dixon_coles;
     const ratingA = elo.teams[teamA].rating;
     const ratingB = elo.teams[teamB].rating;
     const eloDiff = ratingA - ratingB;
     const isHomeA = ["USA", "Canada", "Mexico"].includes(teamA) ? 1.0 : 0.0;
+    const hotVal = isHot ? 1.0 : 0.0;
     
-    const lambda = Math.exp(elo.beta_0 + elo.beta_1 * eloDiff + elo.beta_ha * isHomeA);
-    const mu = Math.exp(elo.beta_0 - elo.beta_1 * eloDiff);
+    const injuryRateA = dc.teams[teamA] ? (dc.teams[teamA].injury_rate || 0.0) : 0.0;
+    const injuryRateB = dc.teams[teamB] ? (dc.teams[teamB].injury_rate || 0.0) : 0.0;
+    
+    const lambda = Math.exp(elo.beta_0 + elo.beta_1 * eloDiff + elo.beta_ha * isHomeA + elo.beta_hot * hotVal + (elo.beta_injury || 0.0) * injuryRateA);
+    const mu = Math.exp(elo.beta_0 - elo.beta_1 * eloDiff + elo.beta_hot * hotVal + (elo.beta_injury || 0.0) * injuryRateB);
     
     const grid = [];
     let sum = 0;
@@ -438,7 +486,7 @@ function predictEloPoisson(teamA, teamB, maxGoals=5) {
 }
 
 // 4. Softmax Classifier Predictor
-function predictSoftmaxClassifier(teamA, teamB, maxGoals=5) {
+function predictSoftmaxClassifier(teamA, teamB, maxGoals=5, isHot=false) {
     const cl = modelParameters.classifier;
     const elo = modelParameters.elo;
     const dc = modelParameters.dixon_coles;
@@ -452,10 +500,15 @@ function predictSoftmaxClassifier(teamA, teamB, maxGoals=5) {
     const rankDiff = rankB - rankA;
     
     const isHomeA = ["USA", "Canada", "Mexico"].includes(teamA) ? 1.0 : 0.0;
+    const hotVal = isHot ? 1.0 : 0.0;
     
-    const xVec = [1.0, eloDiff, rankDiff, isHomeA];
+    const injuryRateA = dc.teams[teamA] ? (dc.teams[teamA].injury_rate || 0.0) : 0.0;
+    const injuryRateB = dc.teams[teamB] ? (dc.teams[teamB].injury_rate || 0.0) : 0.0;
+    const injuryDiff = injuryRateA - injuryRateB;
+    
+    const xVec = [1.0, eloDiff, rankDiff, isHomeA, hotVal, injuryDiff];
     let zh = 0, zd = 0;
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 6; i++) {
         zh += xVec[i] * cl.w_home[i];
         zd += xVec[i] * cl.w_draw[i];
     }
@@ -469,8 +522,9 @@ function predictSoftmaxClassifier(teamA, teamB, maxGoals=5) {
     const pA = 1.0 / denom;
     
     // xG projections borrowed from Elo expected goals
-    const l1 = Math.exp(elo.beta_0 + elo.beta_1 * eloDiff + elo.beta_ha * isHomeA);
-    const l2 = Math.exp(elo.beta_0 - elo.beta_1 * eloDiff);
+    const eloPred = predictEloPoisson(teamA, teamB, maxGoals, isHot);
+    const l1 = eloPred.home_xG;
+    const l2 = eloPred.away_xG;
     
     // Build Poisson grid and scale parts to match pH, pD, pA
     const grid = [];
@@ -518,11 +572,11 @@ function predictSoftmaxClassifier(teamA, teamB, maxGoals=5) {
 }
 
 // 5. Ensemble Predictor
-function predictEnsemble(teamA, teamB, maxGoals=5) {
-    const dc = predictDixonColes(teamA, teamB, maxGoals);
-    const bp = predictBivariate(teamA, teamB, maxGoals);
-    const elo = predictEloPoisson(teamA, teamB, maxGoals);
-    const cl = predictSoftmaxClassifier(teamA, teamB, maxGoals);
+function predictEnsemble(teamA, teamB, maxGoals=5, isHot=false) {
+    const dc = predictDixonColes(teamA, teamB, maxGoals, isHot);
+    const bp = predictBivariate(teamA, teamB, maxGoals, isHot);
+    const elo = predictEloPoisson(teamA, teamB, maxGoals, isHot);
+    const cl = predictSoftmaxClassifier(teamA, teamB, maxGoals, isHot);
     
     const w_dc = 0.35, w_bp = 0.20, w_elo = 0.30, w_cl = 0.15;
     
@@ -578,12 +632,16 @@ function buildOutcomeRecord(grid, lambda, mu) {
 function runVisualPrediction(teamA, teamB) {
     if (!modelParameters) return;
     
+    const tempSlider = document.getElementById("predictor-temp-slider");
+    const tempVal = tempSlider ? parseFloat(tempSlider.value) : 22.0;
+    const isHot = tempVal > 27.0;
+    
     let pred;
-    if (selectedModel === "dixon_coles") pred = predictDixonColes(teamA, teamB);
-    else if (selectedModel === "bivariate") pred = predictBivariate(teamA, teamB);
-    else if (selectedModel === "elo") pred = predictEloPoisson(teamA, teamB);
-    else if (selectedModel === "classifier") pred = predictSoftmaxClassifier(teamA, teamB);
-    else pred = predictEnsemble(teamA, teamB);
+    if (selectedModel === "dixon_coles") pred = predictDixonColes(teamA, teamB, 5, isHot);
+    else if (selectedModel === "bivariate") pred = predictBivariate(teamA, teamB, 5, isHot);
+    else if (selectedModel === "elo") pred = predictEloPoisson(teamA, teamB, 5, isHot);
+    else if (selectedModel === "classifier") pred = predictSoftmaxClassifier(teamA, teamB, 5, isHot);
+    else pred = predictEnsemble(teamA, teamB, 5, isHot);
     
     const lambda = pred.home_xG;
     const mu = pred.away_xG;
@@ -648,6 +706,11 @@ function runVisualPrediction(teamA, teamB) {
     
     document.getElementById("comp-formation-a").innerText = ratingsA.formation;
     document.getElementById("comp-formation-b").innerText = ratingsB.formation;
+    
+    const injuryRateA = (ratingsA.injury_rate || 0.0) * 100;
+    const injuryRateB = (ratingsB.injury_rate || 0.0) * 100;
+    document.getElementById("comp-injury-a").innerText = `${injuryRateA.toFixed(1)}%`;
+    document.getElementById("comp-injury-b").innerText = `${injuryRateB.toFixed(1)}%`;
     
     renderFormationOnPitch("pitch-team-a", ratingsA.formation);
     renderFormationOnPitch("pitch-team-b", ratingsB.formation);
@@ -1083,6 +1146,10 @@ function renderKnockoutBracket() {
 function simulateAndRenderKnockout(showAlert = false) {
     if (!modelParameters || worldCupMatches.length === 0) return;
     
+    const tempSlider = document.getElementById("predictor-temp-slider");
+    const tempVal = tempSlider ? parseFloat(tempSlider.value) : 22.0;
+    const isHot = tempVal > 27.0;
+    
     // 1. Run full group stage simulation
     const simulatedMatches = JSON.parse(JSON.stringify(worldCupMatches));
     simulatedMatches.forEach(m => {
@@ -1147,13 +1214,13 @@ function simulateAndRenderKnockout(showAlert = false) {
         "M88": { home: qualifiers["2D"], away: qualifiers["2G"], label: "M88 (2D vs 2G)" }
     };
     
-    function runKnockoutMatch(home, away) {
+    function runKnockoutMatch(home, away, isHot=false) {
         let pred;
-        if (selectedModel === "dixon_coles") pred = predictDixonColes(home, away);
-        else if (selectedModel === "bivariate") pred = predictBivariate(home, away);
-        else if (selectedModel === "elo") pred = predictEloPoisson(home, away);
-        else if (selectedModel === "classifier") pred = predictSoftmaxClassifier(home, away);
-        else pred = predictEnsemble(home, away);
+        if (selectedModel === "dixon_coles") pred = predictDixonColes(home, away, 5, isHot);
+        else if (selectedModel === "bivariate") pred = predictBivariate(home, away, 5, isHot);
+        else if (selectedModel === "elo") pred = predictEloPoisson(home, away, 5, isHot);
+        else if (selectedModel === "classifier") pred = predictSoftmaxClassifier(home, away, 5, isHot);
+        else pred = predictEnsemble(home, away, 5, isHot);
         
         let scoreHome = 0;
         let scoreAway = 0;
@@ -1203,7 +1270,7 @@ function simulateAndRenderKnockout(showAlert = false) {
     const r32 = {};
     Object.keys(r32Seeds).forEach(mId => {
         const fixture = r32Seeds[mId];
-        r32[mId] = runKnockoutMatch(fixture.home, fixture.away);
+        r32[mId] = runKnockoutMatch(fixture.home, fixture.away, isHot);
     });
     
     // Simulate R16
@@ -1220,7 +1287,7 @@ function simulateAndRenderKnockout(showAlert = false) {
     const r16 = {};
     Object.keys(r16Seeds).forEach(mId => {
         const fixture = r16Seeds[mId];
-        r16[mId] = runKnockoutMatch(fixture.home, fixture.away);
+        r16[mId] = runKnockoutMatch(fixture.home, fixture.away, isHot);
     });
     
     // Simulate QF
@@ -1233,7 +1300,7 @@ function simulateAndRenderKnockout(showAlert = false) {
     const qf = {};
     Object.keys(qfSeeds).forEach(mId => {
         const fixture = qfSeeds[mId];
-        qf[mId] = runKnockoutMatch(fixture.home, fixture.away);
+        qf[mId] = runKnockoutMatch(fixture.home, fixture.away, isHot);
     });
     
     // Simulate SF
@@ -1244,11 +1311,11 @@ function simulateAndRenderKnockout(showAlert = false) {
     const sf = {};
     Object.keys(sfSeeds).forEach(mId => {
         const fixture = sfSeeds[mId];
-        sf[mId] = runKnockoutMatch(fixture.home, fixture.away);
+        sf[mId] = runKnockoutMatch(fixture.home, fixture.away, isHot);
     });
     
     // Simulate Final
-    const finalResult = runKnockoutMatch(sf["M101"].winner, sf["M102"].winner);
+    const finalResult = runKnockoutMatch(sf["M101"].winner, sf["M102"].winner, isHot);
     const champion = finalResult.winner;
     
     // Clear previous bracket DOM contents

@@ -116,6 +116,9 @@ def run_prediction_pipeline():
     with open(wc_matches_json, "r", encoding="utf-8") as f:
         matches = json.load(f)
         
+    from src.preprocessor import load_injury_rates
+    injury_rates = load_injury_rates("data/player_profiles.md")
+    
     print(f"Generating predictions for {len(matches)} World Cup matches across 5 model options...")
     
     # Accuracy counters for statistics logging (using Ensemble model for master stats)
@@ -125,12 +128,15 @@ def run_prediction_pipeline():
     for m in matches:
         home = m["home"]
         away = m["away"]
+        is_hot = bool(m.get("is_hot", False))
+        h_inj = injury_rates.get(home, 0.0)
+        a_inj = injury_rates.get(away, 0.0)
         
         # Calculate individual predictions
-        dc_p = dc_model.predict_match(home, away)
-        bp_p = bp_model.predict_match(home, away)
-        elo_p = elo_model.predict_match(home, away)
-        cl_p = sm_model.predict_match(home, away, elo_model.elo_ratings, elo_model)
+        dc_p = dc_model.predict_match(home, away, is_hot=is_hot, home_injury_rate=h_inj, away_injury_rate=a_inj)
+        bp_p = bp_model.predict_match(home, away, is_hot=is_hot, home_injury_rate=h_inj, away_injury_rate=a_inj)
+        elo_p = elo_model.predict_match(home, away, is_hot=is_hot, home_injury_rate=h_inj, away_injury_rate=a_inj)
+        cl_p = sm_model.predict_match(home, away, elo_model.elo_ratings, elo_model, is_hot=is_hot, home_injury_rate=h_inj, away_injury_rate=a_inj)
         ens_p = ensemble_predictions(dc_p, bp_p, elo_p, cl_p)
         
         # Helper to structure model outputs

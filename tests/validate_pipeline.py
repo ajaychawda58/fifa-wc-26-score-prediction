@@ -115,11 +115,20 @@ def test_file_outputs():
     for model_key in ["dixon_coles", "bivariate", "elo", "classifier"]:
         assert model_key in params, f"Model parameters must contain ratings/weights for model '{model_key}'"
         
+    assert "beta_hot" in params["dixon_coles"], "Expected beta_hot in Dixon-Coles params"
+    assert "beta_hot" in params["bivariate"], "Expected beta_hot in Bivariate params"
+    assert "beta_hot" in params["elo"], "Expected beta_hot in Elo params"
+    assert "beta_injury" in params["dixon_coles"], "Expected beta_injury in Dixon-Coles params"
+    assert "beta_injury" in params["bivariate"], "Expected beta_injury in Bivariate params"
+    assert "beta_injury" in params["elo"], "Expected beta_injury in Elo params"
+        
     assert len(params["dixon_coles"]["teams"]) == 48, "Expected 48 teams in Dixon-Coles parameters"
     assert len(params["bivariate"]["teams"]) == 48, "Expected 48 teams in Bivariate parameters"
     assert len(params["elo"]["teams"]) == 48, "Expected 48 teams in Elo parameters"
     assert "w_home" in params["classifier"], "Expected w_home weights in Softmax Classifier"
     assert "w_draw" in params["classifier"], "Expected w_draw weights in Softmax Classifier"
+    assert len(params["classifier"]["w_home"]) == 6, "Expected w_home to have length 6"
+    assert len(params["classifier"]["w_draw"]) == 6, "Expected w_draw to have length 6"
     
     # Check Argentina ratings in Dixon-Coles
     arg_ratings = params["dixon_coles"]["teams"]["Argentina"]
@@ -127,6 +136,7 @@ def test_file_outputs():
     assert "defense" in arg_ratings
     assert "formation" in arg_ratings
     assert "rank" in arg_ratings
+    assert "injury_rate" in arg_ratings, "Expected injury_rate in team ratings"
     
     print("✓ Pipeline file outputs validation passed!")
 
