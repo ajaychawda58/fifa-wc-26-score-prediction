@@ -298,6 +298,14 @@ def generate_fallback_squad(team):
         })
     return squad
 
+def get_deterministic_weather(match_id, home, away):
+    """Generates a deterministic temperature in [15.0, 35.9] Celsius based on match attributes."""
+    val = sum(ord(c) for c in home + away) + match_id
+    temp = 15.0 + (val % 21) + (val % 10) * 0.1
+    temp = round(temp, 1)
+    is_hot = temp > 27.0
+    return temp, is_hot
+
 # Generate the full group stage matches schedule (72 matches)
 def generate_world_cup_schedule():
     """Generates the full schedule for the 12 groups (A-L)."""
@@ -343,6 +351,7 @@ def generate_world_cup_schedule():
             for home, away in round_fixtures:
                 # Check if this match is in our completed results
                 match_info = completed_lookup.get(frozenset({home, away}), None)
+                temp, is_hot = get_deterministic_weather(match_id, home, away)
                 if match_info:
                     schedule.append({
                         "id": match_id,
@@ -351,7 +360,9 @@ def generate_world_cup_schedule():
                         "away": match_info['away'],
                         "home_score": match_info['home_score'],
                         "away_score": match_info['away_score'],
-                        "stage": match_info['stage']
+                        "stage": match_info['stage'],
+                        "temperature_c": temp,
+                        "is_hot": is_hot
                     })
                 else:
                     schedule.append({
@@ -361,7 +372,9 @@ def generate_world_cup_schedule():
                         "away": away,
                         "home_score": None,
                         "away_score": None,
-                        "stage": f"Group {letter}"
+                        "stage": f"Group {letter}",
+                        "temperature_c": temp,
+                        "is_hot": is_hot
                     })
                 match_id += 1
                 
