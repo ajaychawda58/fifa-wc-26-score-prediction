@@ -2,7 +2,7 @@
 let modelParameters = null;
 let worldCupMatches = [];
 let squadRosters = {};
-let selectedModel = "ensemble"; // Default active model
+let selectedModel = "dixon_coles"; // Default active model
 
 const GROUPS = {
     "A": ["Mexico", "South Africa", "South Korea", "Czechia"],
@@ -130,6 +130,8 @@ function setupTabNavigation() {
                 renderGroupStandings();
             } else if (targetTab === "squads-tab") {
                 renderSquadTab();
+            } else if (targetTab === "bracket-tab") {
+                renderKnockoutBracket();
             }
         });
     });
@@ -262,6 +264,12 @@ function setupModelSelector() {
         const standingsTab = document.getElementById("standings-tab");
         if (standingsTab.classList.contains("active")) {
             renderGroupStandings();
+        }
+        
+        // Refresh bracket simulation if bracket tab is active
+        const bracketTab = document.getElementById("bracket-tab");
+        if (bracketTab && bracketTab.classList.contains("active")) {
+            renderKnockoutBracket();
         }
     });
 }
@@ -1021,4 +1029,359 @@ function renderSquadList(teamName) {
         `;
         tableBody.appendChild(row);
     });
+}
+
+// --- FLAGS LOOKUP ---
+const FLAGS = {
+    "Argentina": "🇦🇷", "France": "🇫🇷", "Spain": "🇪🇸", "England": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Brazil": "🇧🇷",
+    "Portugal": "🇵🇹", "Netherlands": "🇳🇱", "Belgium": "🇧🇪", "Croatia": "🇭🇷", "Germany": "🇩🇪",
+    "Uruguay": "🇺🇾", "Morocco": "🇲🇦", "Colombia": "🇨🇴", "USA": "🇺🇸", "Senegal": "🇸🇳",
+    "Switzerland": "🇨🇭", "Japan": "🇯🇵", "Iran": "🇮🇷", "Norway": "🇳🇴", "Austria": "🇦🇹",
+    "Sweden": "🇸🇪", "South Korea": "🇰🇷", "Australia": "🇦🇺", "Türkiye": "🇹🇷", "Ecuador": "🇪🇨",
+    "Czechia": "🇨🇿", "Scotland": "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "Egypt": "🇪🇬", "Tunisia": "🇹🇳", "Algeria": "🇩🇿",
+    "Ivory Coast": "🇨🇮", "Saudi Arabia": "🇸🇦", "Canada": "🇨🇦", "Mexico": "🇲🇽", "Qatar": "🇶🇦",
+    "Panama": "🇵🇦", "Paraguay": "🇵🇾", "Iraq": "🇮🇶", "Jordan": "🇯🇴", "Uzbekistan": "🇺🇿",
+    "DR Congo": "🇨🇩", "Cape Verde": "🇨🇻", "Bosnia and Herzegovina": "🇧🇦", "Ghana": "🇬🇭",
+    "South Africa": "🇿🇦", "Curaçao": "🇨🇼", "Haiti": "🇭🇹", "New Zealand": "🇳🇿"
+};
+
+function getTeamFlag(teamName) {
+    return FLAGS[teamName] || "🏳️";
+}
+
+// --- KNOCKOUT BRACKET SIMULATION & RENDER ---
+
+function renderKnockoutBracket() {
+    console.log("Simulating and rendering Knockout Bracket...");
+    
+    const btnSim = document.getElementById("btn-simulate-bracket");
+    if (btnSim) {
+        btnSim.onclick = () => {
+            simulateAndRenderKnockout(true);
+        };
+    }
+    
+    simulateAndRenderKnockout(false);
+}
+
+function simulateAndRenderKnockout(showAlert = false) {
+    if (!modelParameters || worldCupMatches.length === 0) return;
+    
+    // 1. Run full group stage simulation
+    const simulatedMatches = JSON.parse(JSON.stringify(worldCupMatches));
+    simulatedMatches.forEach(m => {
+        if (m.home_score === null || m.away_score === null) {
+            const pred = getPredictionRecord(m, selectedModel);
+            m.home_score = pred.predicted_home_score;
+            m.away_score = pred.predicted_away_score;
+        }
+    });
+    
+    const standings = computeStandings(simulatedMatches);
+    
+    // 2. Extract qualified teams (Top 2 from groups A-L)
+    const qualifiers = {};
+    const thirds = [];
+    
+    Object.keys(standings).sort().forEach(groupLetter => {
+        const groupTeams = standings[groupLetter];
+        qualifiers[`1${groupLetter}`] = groupTeams[0].team;
+        qualifiers[`2${groupLetter}`] = groupTeams[1].team;
+        
+        const t3 = groupTeams[2];
+        thirds.push({
+            team: t3.team,
+            group: groupLetter,
+            pts: t3.pts,
+            gd: t3.gd,
+            gf: t3.gf
+        });
+    });
+    
+    // Rank third-placed teams
+    thirds.sort((a, b) => {
+        if (b.pts !== a.pts) return b.pts - a.pts;
+        if (b.gd !== a.gd) return b.gd - a.gd;
+        if (b.gf !== a.gf) return b.gf - a.gf;
+        return a.team.localeCompare(b.team);
+    });
+    
+    const qualifiedThirds = thirds.slice(0, 8);
+    
+    // 3. Allocate third-placed teams to Round of 32
+    const allocatedThirds = assignThirdPlaceTeams(qualifiedThirds);
+    
+    // 4. Seeding logic for Round of 32
+    const r32Seeds = {
+        "M73": { home: qualifiers["2A"], away: qualifiers["2B"], label: "M73 (2A vs 2B)" },
+        "M74": { home: qualifiers["1E"], away: allocatedThirds["M74"], label: "M74 (1E vs 3rd)" },
+        "M75": { home: qualifiers["1F"], away: qualifiers["2C"], label: "M75 (1F vs 2C)" },
+        "M76": { home: qualifiers["1C"], away: qualifiers["2F"], label: "M76 (1C vs 2F)" },
+        "M77": { home: qualifiers["1I"], away: allocatedThirds["M77"], label: "M77 (1I vs 3rd)" },
+        "M78": { home: qualifiers["2E"], away: qualifiers["2I"], label: "M78 (2E vs 2I)" },
+        "M79": { home: qualifiers["1A"], away: allocatedThirds["M79"], label: "M79 (1A vs 3rd)" },
+        "M80": { home: qualifiers["1L"], away: allocatedThirds["M80"], label: "M80 (1L vs 3rd)" },
+        "M81": { home: qualifiers["1D"], away: allocatedThirds["M81"], label: "M81 (1D vs 3rd)" },
+        "M82": { home: qualifiers["1G"], away: allocatedThirds["M82"], label: "M82 (1G vs 3rd)" },
+        "M83": { home: qualifiers["2K"], away: qualifiers["2L"], label: "M83 (2K vs 2L)" },
+        "M84": { home: qualifiers["1H"], away: qualifiers["2J"], label: "M84 (1H vs 2J)" },
+        "M85": { home: qualifiers["1B"], away: allocatedThirds["M85"], label: "M85 (1B vs 3rd)" },
+        "M86": { home: qualifiers["1J"], away: qualifiers["2H"], label: "M86 (1J vs 2H)" },
+        "M87": { home: qualifiers["1K"], away: allocatedThirds["M87"], label: "M87 (1K vs 3rd)" },
+        "M88": { home: qualifiers["2D"], away: qualifiers["2G"], label: "M88 (2D vs 2G)" }
+    };
+    
+    function runKnockoutMatch(home, away) {
+        let pred;
+        if (selectedModel === "dixon_coles") pred = predictDixonColes(home, away);
+        else if (selectedModel === "bivariate") pred = predictBivariate(home, away);
+        else if (selectedModel === "elo") pred = predictEloPoisson(home, away);
+        else if (selectedModel === "classifier") pred = predictSoftmaxClassifier(home, away);
+        else pred = predictEnsemble(home, away);
+        
+        let scoreHome = 0;
+        let scoreAway = 0;
+        let maxProb = 0;
+        
+        if (pred.score_probabilities) {
+            const grid = pred.score_probabilities;
+            for (let x = 0; x < grid.length; x++) {
+                for (let y = 0; y < grid[x].length; y++) {
+                    if (grid[x][y] > maxProb) {
+                        maxProb = grid[x][y];
+                        scoreHome = x;
+                        scoreAway = y;
+                    }
+                }
+            }
+        }
+        
+        let winner;
+        if (scoreHome > scoreAway) winner = home;
+        else if (scoreAway > scoreHome) winner = away;
+        else {
+            if (pred.home_win > pred.away_win) winner = home;
+            else if (pred.away_win > pred.home_win) winner = away;
+            else {
+                const rankA = modelParameters.dixon_coles.teams[home].rank;
+                const rankB = modelParameters.dixon_coles.teams[away].rank;
+                winner = rankA <= rankB ? home : away;
+            }
+        }
+        
+        return {
+            home: home,
+            away: away,
+            scoreHome: scoreHome,
+            scoreAway: scoreAway,
+            winner: winner,
+            home_xG: pred.home_xG,
+            away_xG: pred.away_xG,
+            home_win: pred.home_win,
+            away_win: pred.away_win,
+            draw: pred.draw
+        };
+    }
+    
+    // Simulate R32
+    const r32 = {};
+    Object.keys(r32Seeds).forEach(mId => {
+        const fixture = r32Seeds[mId];
+        r32[mId] = runKnockoutMatch(fixture.home, fixture.away);
+    });
+    
+    // Simulate R16
+    const r16Seeds = {
+        "M89": { home: r32["M74"].winner, away: r32["M77"].winner },
+        "M90": { home: r32["M73"].winner, away: r32["M75"].winner },
+        "M91": { home: r32["M76"].winner, away: r32["M78"].winner },
+        "M92": { home: r32["M79"].winner, away: r32["M80"].winner },
+        "M93": { home: r32["M83"].winner, away: r32["M84"].winner },
+        "M94": { home: r32["M81"].winner, away: r32["M82"].winner },
+        "M95": { home: r32["M86"].winner, away: r32["M88"].winner },
+        "M96": { home: r32["M85"].winner, away: r32["M87"].winner }
+    };
+    const r16 = {};
+    Object.keys(r16Seeds).forEach(mId => {
+        const fixture = r16Seeds[mId];
+        r16[mId] = runKnockoutMatch(fixture.home, fixture.away);
+    });
+    
+    // Simulate QF
+    const qfSeeds = {
+        "M97": { home: r16["M89"].winner, away: r16["M90"].winner },
+        "M98": { home: r16["M93"].winner, away: r16["M94"].winner },
+        "M99": { home: r16["M91"].winner, away: r16["M92"].winner },
+        "M100": { home: r16["M95"].winner, away: r16["M96"].winner }
+    };
+    const qf = {};
+    Object.keys(qfSeeds).forEach(mId => {
+        const fixture = qfSeeds[mId];
+        qf[mId] = runKnockoutMatch(fixture.home, fixture.away);
+    });
+    
+    // Simulate SF
+    const sfSeeds = {
+        "M101": { home: qf["M97"].winner, away: qf["M98"].winner },
+        "M102": { home: qf["M99"].winner, away: qf["M100"].winner }
+    };
+    const sf = {};
+    Object.keys(sfSeeds).forEach(mId => {
+        const fixture = sfSeeds[mId];
+        sf[mId] = runKnockoutMatch(fixture.home, fixture.away);
+    });
+    
+    // Simulate Final
+    const finalResult = runKnockoutMatch(sf["M101"].winner, sf["M102"].winner);
+    const champion = finalResult.winner;
+    
+    // Clear previous bracket DOM contents
+    const colIds = [
+        "left-r32", "left-r16", "left-qf", "left-sf",
+        "right-r32", "right-r16", "right-qf", "right-sf"
+    ];
+    colIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = "";
+    });
+    
+    const leftR32Ids = ["M73", "M75", "M74", "M77", "M83", "M84", "M81", "M82"];
+    const leftR16Ids = ["M90", "M89", "M93", "M94"];
+    const leftQFIds = ["M97", "M98"];
+    const leftSFIds = ["M101"];
+    
+    const rightR32Ids = ["M76", "M78", "M79", "M80", "M85", "M87", "M86", "M88"];
+    const rightR16Ids = ["M91", "M92", "M96", "M95"];
+    const rightQFIds = ["M99", "M100"];
+    const rightSFIds = ["M102"];
+    
+    function createMatchCard(matchId, matchData, title) {
+        const card = document.createElement("div");
+        card.className = "bracket-match-card animate-fade-in";
+        
+        const isHomeWinner = matchData.winner === matchData.home;
+        const isAwayWinner = matchData.winner === matchData.away;
+        
+        card.innerHTML = `
+            <div class="bracket-match-team ${isHomeWinner ? 'winner' : 'loser'}">
+                <span>${getTeamFlag(matchData.home)} ${matchData.home}</span>
+                <span class="bracket-match-score">${matchData.scoreHome}</span>
+            </div>
+            <div class="bracket-match-team ${isAwayWinner ? 'winner' : 'loser'}">
+                <span>${getTeamFlag(matchData.away)} ${matchData.away}</span>
+                <span class="bracket-match-score">${matchData.scoreAway}</span>
+            </div>
+            <div class="bracket-match-info">
+                Match ${matchId.replace("M","")} | xG: ${matchData.home_xG.toFixed(1)}-${matchData.away_xG.toFixed(1)} | Win %: ${Math.round(matchData.home_win*100)}-${Math.round(matchData.draw*100)}-${Math.round(matchData.away_win*100)}
+            </div>
+        `;
+        return card;
+    }
+    
+    function renderColHelper(colId, mIds, dataset, headerLabel) {
+        const container = document.getElementById(colId);
+        if (!container) return;
+        
+        const lbl = document.createElement("div");
+        lbl.className = "round-header-label";
+        lbl.innerText = headerLabel;
+        container.appendChild(lbl);
+        
+        mIds.forEach(id => {
+            container.appendChild(createMatchCard(id, dataset[id], headerLabel));
+        });
+    }
+    
+    renderColHelper("left-r32", leftR32Ids, r32, "Round of 32");
+    renderColHelper("left-r16", leftR16Ids, r16, "Round of 16");
+    renderColHelper("left-qf", leftQFIds, qf, "Quarter-final");
+    renderColHelper("left-sf", leftSFIds, sf, "Semi-final");
+    
+    renderColHelper("right-r32", rightR32Ids, r32, "Round of 32");
+    renderColHelper("right-r16", rightR16Ids, r16, "Round of 16");
+    renderColHelper("right-qf", rightQFIds, qf, "Quarter-final");
+    renderColHelper("right-sf", rightSFIds, sf, "Semi-final");
+    
+    // Final Match Card rendering
+    const finalContainer = document.getElementById("match-final");
+    if (finalContainer) {
+        finalContainer.className = "bracket-match-card final-match-card animate-fade-in";
+        finalContainer.innerHTML = "";
+        const finalWinner = finalResult.winner === finalResult.home;
+        finalContainer.innerHTML = `
+            <div class="bracket-match-team ${finalWinner ? 'winner' : 'loser'}" style="font-size:0.9rem;">
+                <span>${getTeamFlag(finalResult.home)} ${finalResult.home}</span>
+                <span class="bracket-match-score" style="font-size:1rem;">${finalResult.scoreHome}</span>
+            </div>
+            <div class="bracket-match-team ${!finalWinner ? 'winner' : 'loser'}" style="font-size:0.9rem;">
+                <span>${getTeamFlag(finalResult.away)} ${finalResult.away}</span>
+                <span class="bracket-match-score" style="font-size:1rem;">${finalResult.scoreAway}</span>
+            </div>
+            <div class="bracket-match-info">
+                Final | xG: ${finalResult.home_xG.toFixed(1)}-${finalResult.away_xG.toFixed(1)} | Win %: ${Math.round(finalResult.home_win*100)}-${Math.round(finalResult.draw*100)}-${Math.round(finalResult.away_win*100)}
+            </div>
+        `;
+    }
+    
+    document.getElementById("champ-team-name").innerText = `${getTeamFlag(champion)} ${champion}`;
+    
+    if (showAlert) {
+        const activeModelText = document.getElementById("model-select").options[document.getElementById("model-select").selectedIndex].text;
+        alert(`Knockout Phase simulated successfully using the ${activeModelText}!\nPredicted Champion: ${champion}`);
+    }
+}
+
+function assignThirdPlaceTeams(qualifiedThirds) {
+    const matchGroups = {
+        "M74": ["A", "B", "C", "D", "F"],
+        "M77": ["C", "D", "F", "G", "H"],
+        "M79": ["C", "E", "F", "H", "I"],
+        "M80": ["E", "H", "I", "J", "K"],
+        "M81": ["B", "E", "F", "I", "J"],
+        "M82": ["A", "E", "H", "I", "J"],
+        "M85": ["E", "F", "G", "I", "J"],
+        "M87": ["D", "E", "I", "J", "L"]
+    };
+    
+    const matches = Object.keys(matchGroups);
+    const assigned = {};
+    const used = new Set();
+    
+    function solve(matchIdx) {
+        if (matchIdx === matches.length) return true;
+        const m = matches[matchIdx];
+        const allowed = matchGroups[m];
+        
+        for (let i = 0; i < qualifiedThirds.length; i++) {
+            if (used.has(i)) continue;
+            const t = qualifiedThirds[i];
+            if (allowed.includes(t.group)) {
+                assigned[m] = t.team;
+                used.add(i);
+                if (solve(matchIdx + 1)) return true;
+                used.delete(i);
+                delete assigned[m];
+            }
+        }
+        return false;
+    }
+    
+    if (solve(0)) {
+        return assigned;
+    }
+    
+    const fallbackAssigned = {};
+    const remaining = [...qualifiedThirds];
+    matches.forEach(m => {
+        const allowed = matchGroups[m];
+        const idx = remaining.findIndex(t => allowed.includes(t.group));
+        if (idx !== -1) {
+            fallbackAssigned[m] = remaining[idx].team;
+            remaining.splice(idx, 1);
+        } else {
+            fallbackAssigned[m] = remaining[0].team;
+            remaining.splice(0, 1);
+        }
+    });
+    return fallbackAssigned;
 }

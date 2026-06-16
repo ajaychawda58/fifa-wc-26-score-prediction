@@ -35,7 +35,7 @@ PYTHONPATH=. $PYTHON_CMD tests/validate_pipeline.py
 echo "5. Checking for modifications to commit..."
 git add data/model_parameters.json data/wc_2026_matches.json src/data_collector.py
 
-if ! git diff-index --quiet HEAD --; then
+if ! git diff --cached --quiet; then
   echo "   Modifications detected. Committing changes..."
   git commit -m "data: Daily match results update and model retraining"
   echo "6. Pushing updates to GitHub..."

@@ -31,7 +31,6 @@
                 <label for="model-select" style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">Active Model Selector</label>
                 <div class="select-wrapper">
                     <select id="model-select" style="padding:0.6rem 2.5rem 0.6rem 1rem; font-size:0.95rem;">
-                        <option value="ensemble">Weighted Ensemble Model</option>
                         <option value="dixon_coles" selected>Bayesian Dixon-Coles Model</option>
                         <option value="bivariate">Bivariate Poisson Model</option>
                         <option value="elo">Elo-Poisson Model</option>
@@ -68,6 +67,9 @@
             </button>
             <button class="nav-btn" data-tab="squads-tab">
                 <i class="fa-solid fa-users"></i> Squad Profiles
+            </button>
+            <button class="nav-btn" data-tab="bracket-tab">
+                <i class="fa-solid fa-sitemap"></i> Knockout Bracket
             </button>
         </nav>
 
@@ -311,6 +313,54 @@
                                 </thead>
                                 <tbody id="squad-table-body"></tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: Knockout Bracket -->
+            <section id="bracket-tab" class="tab-pane animate-fade-in">
+                <div class="glass-card bracket-control-panel" style="display:flex; justify-content:space-between; align-items:center; gap:2rem; padding:1.5rem;">
+                    <div class="control-text">
+                        <h2 style="margin:0 0 0.5rem 0; font-size:1.4rem; color:#fff;"><i class="fa-solid fa-sitemap text-accent"></i> Knockout Bracket Simulator</h2>
+                        <p style="margin:0; font-size:0.9rem; color:var(--text-muted);">Simulate the entire knockout stage from the Round of 32 to the Final using the selected predictive model. The simulation dynamically calculates group standings and seeds third-placed qualifiers automatically.</p>
+                    </div>
+                    <button id="btn-simulate-bracket" class="btn btn-accent" style="flex-shrink:0;">
+                        <i class="fa-solid fa-arrows-spin"></i> Simulate Knockout Bracket
+                    </button>
+                </div>
+                
+                <div class="bracket-wrapper glass-card" style="padding:1.5rem; overflow-x:auto;">
+                    <div class="bracket-container" id="bracket-container" style="display:flex; align-items:center; justify-content:center; min-width:1400px; height:850px; position:relative;">
+                        <!-- Left Bracket (Top Half Path) -->
+                        <div class="bracket-side" id="bracket-left" style="display:flex; justify-content:space-between; flex:4; height:100%;">
+                            <div class="bracket-col round-32" id="left-r32" style="display:flex; flex-direction:column; justify-content:space-around; height:100%; flex:1;"></div>
+                            <div class="bracket-col round-16" id="left-r16" style="display:flex; flex-direction:column; justify-content:space-around; height:100%; flex:1;"></div>
+                            <div class="bracket-col round-qf" id="left-qf" style="display:flex; flex-direction:column; justify-content:space-around; height:100%; flex:1;"></div>
+                            <div class="bracket-col round-sf" id="left-sf" style="display:flex; flex-direction:column; justify-content:space-around; height:100%; flex:1;"></div>
+                        </div>
+                        
+                        <!-- Center (Final and Champion) -->
+                        <div class="bracket-center" style="display:flex; flex-direction:column; align-items:center; justify-content:center; flex:2.5; height:100%; gap:2rem;">
+                            <div class="champion-display" id="champion-display" style="text-align:center; padding:1.5rem; border-radius:12px; background:rgba(255,215,0,0.08); border:1px solid rgba(255,215,0,0.3); box-shadow:0 0 25px rgba(255,215,0,0.1); width:200px; display:flex; flex-direction:column; gap:0.5rem; align-items:center;">
+                                <div class="trophy-icon" style="font-size:2.5rem; color:#ffd700; filter:drop-shadow(0 0 10px rgba(255,215,0,0.5)); animate: pulse 2s infinite;"><i class="fa-solid fa-trophy"></i></div>
+                                <div class="champ-label" style="font-size:0.75rem; font-weight:700; color:rgba(255,215,0,0.8); letter-spacing:1px; text-transform:uppercase;">World Champion</div>
+                                <div class="champ-team" id="champ-team-name" style="font-size:1.2rem; font-weight:800; color:#fff; text-shadow:0 2px 4px rgba(0,0,0,0.5);">-</div>
+                            </div>
+                            <div class="center-final" style="display:flex; flex-direction:column; align-items:center; gap:0.5rem;">
+                                <div class="round-title" style="font-size:0.75rem; font-weight:700; letter-spacing:1.5px; color:var(--text-muted); text-transform:uppercase;">Final</div>
+                                <div class="match-card final-match-card" id="match-final" style="width:230px; padding:1rem; border:2px solid var(--primary-light); box-shadow:0 0 20px var(--primary-glow);">
+                                    <!-- Populated dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Bracket (Bottom Half Path) -->
+                        <div class="bracket-side" id="bracket-right" style="display:flex; justify-content:space-between; flex:4; height:100%;">
+                            <div class="bracket-col round-sf" id="right-sf" style="display:flex; flex-direction:column; justify-content:space-around; height:100%; flex:1;"></div>
+                            <div class="bracket-col round-qf" id="right-qf" style="display:flex; flex-direction:column; justify-content:space-around; height:100%; flex:1;"></div>
+                            <div class="bracket-col round-16" id="right-r16" style="display:flex; flex-direction:column; justify-content:space-around; height:100%; flex:1;"></div>
+                            <div class="bracket-col round-32" id="right-r32" style="display:flex; flex-direction:column; justify-content:space-around; height:100%; flex:1;"></div>
                         </div>
                     </div>
                 </div>

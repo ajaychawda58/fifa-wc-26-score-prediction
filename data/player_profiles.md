@@ -795,7 +795,7 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 | 6 | 3MF | Saeid Ezatolahi | 29 | 83 | 2 | Shabab Al Ahli |
 | 7 | 3MF | Alireza Jahanbakhsh | 32 | 98 | 17 | Dender |
 | 8 | 3MF | Mohammad Mohebi | 27 | 36 | 14 | Rostov |
-| 9 | 4FW | Mehdi Taremi | 33 | 105 | 60 | Olympiacos |
+| 9 | 4FW | Mehdi Taremi | 33 | 106 | 60 | Olympiacos |
 | 10 | 4FW | Mehdi Ghayedi | 27 | 30 | 10 | Al Nasr |
 | 11 | 4FW | Ali Alipour | 30 | 14 | 1 | Persepolis |
 | 12 | 1GK | Payam Niazmand | 31 | 15 | 0 | Persepolis |
@@ -1089,7 +1089,7 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 | 4 | 2DF | Tyler Bindon | 21 | 25 | 3 | Sheffield United |
 | 5 | 2DF | Michael Boxall | 37 | 63 | 1 | Minnesota United FC |
 | 6 | 3MF | Joe Bell | 27 | 32 | 1 | Viking |
-| 7 | 3MF | Matthew Garbett | 24 | 37 | 5 | Peterborough United |
+| 7 | 4FW | Logan Rogerson | 28 | 18 | 2 | Auckland FC |
 | 8 | 3MF | Marko Stamenić | 24 | 39 | 3 | Swansea City |
 | 9 | 4FW | Chris Wood | 34 | 90 | 45 | Nottingham Forest |
 | 10 | 3MF | Sarpreet Singh | 27 | 28 | 3 | Wellington Phoenix |
@@ -1513,7 +1513,7 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 | 21 | 4FW | Mikel Oyarzabal | 29 | 53 | 25 | Real Sociedad |
 | 22 | 2DF | Pau Cubarsí | 19 | 12 | 0 | Barcelona |
 | 23 | 1GK | Unai Simón | 29 | 58 | 0 | Athletic Bilbao |
-| 24 | 2DF | Marc Cucurella | 27 | 24 | 1 | Chelsea |
+| 24 | 2DF | Marc Cucurella | 27 | 24 | 1 | Real Madrid |
 | 25 | 4FW | Víctor Muñoz | 22 | 2 | 1 | Osasuna |
 | 26 | 4FW | Borja Iglesias | 33 | 8 | 0 | Celta Vigo |
 
