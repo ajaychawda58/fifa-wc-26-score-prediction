@@ -86,23 +86,29 @@ def load_data(results_csv_path, wc_json_path):
         for key, val in NAME_MAP.items():
             expr = expr.replace(val, key)
         return expr
-        
+    
     df_hist = df_hist.with_columns([
         map_team_names_expr("home_team").alias("home_team"),
         map_team_names_expr("away_team").alias("away_team")
-    ])
+    ]).rename({
+        "home_team": "team_a",
+        "away_team": "team_b",
+        "home_score": "team_a_score",
+        "away_score": "team_b_score"
+    })
     
     # 2. Add deterministic weather variables for historical matches
     from src.data_collector import get_deterministic_weather_historical
     
     dates = df_hist["date"].to_list()
-    homes = df_hist["home_team"].to_list()
-    aways = df_hist["away_team"].to_list()
+    teams_a = df_hist["team_a"].to_list()
+    teams_b = df_hist["team_b"].to_list()
+    countries = df_hist["country"].to_list()
     
     temps = []
     is_hots = []
-    for d, h, a in zip(dates, homes, aways):
-        t, ih = get_deterministic_weather_historical(d, h, a)
+    for d, ta, tb, c in zip(dates, teams_a, teams_b, countries):
+        t, ih = get_deterministic_weather_historical(d, ta, tb, c)
         temps.append(t)
         is_hots.append(ih)
         
@@ -115,12 +121,12 @@ def load_data(results_csv_path, wc_json_path):
     injury_rates_path = "data/player_profiles.md"
     injury_rates = load_injury_rates(injury_rates_path)
     
-    home_injury_rates = [injury_rates.get(team, 0.0) for team in homes]
-    away_injury_rates = [injury_rates.get(team, 0.0) for team in aways]
+    team_a_injury_rates = [injury_rates.get(team, 0.0) for team in teams_a]
+    team_b_injury_rates = [injury_rates.get(team, 0.0) for team in teams_b]
     
     df_hist = df_hist.with_columns([
-        pl.Series("home_injury_rate", home_injury_rates, dtype=pl.Float64),
-        pl.Series("away_injury_rate", away_injury_rates, dtype=pl.Float64)
+        pl.Series("team_a_injury_rate", team_a_injury_rates, dtype=pl.Float64),
+        pl.Series("team_b_injury_rate", team_b_injury_rates, dtype=pl.Float64)
     ])
     
     # 3. Load World Cup 2026 matches played so far
@@ -129,43 +135,43 @@ def load_data(results_csv_path, wc_json_path):
         wc_matches = json.load(f)
         
     # Filter to matches that have scores (actually played)
-    wc_played = [m for m in wc_matches if m["home_score"] is not_null_score(m)]
+    wc_played = [m for m in wc_matches if not_null_score(m)]
     
     if wc_played:
         # Create a Polars DataFrame for played WC matches
         wc_records = []
         for m in wc_played:
-            home = m["home"]
-            away = m["away"]
+            team_a = m["team_a"]
+            team_b = m["team_b"]
             wc_records.append({
                 "date": m["date"],
-                "home_team": home,
-                "away_team": away,
-                "home_score": int(m["home_score"]),
-                "away_score": int(m["away_score"]),
+                "team_a": team_a,
+                "team_b": team_b,
+                "team_a_score": int(m["team_a_score"]),
+                "team_b_score": int(m["team_b_score"]),
                 "tournament": "FIFA World Cup",
-                "city": "Unknown",
-                "country": "Co-hosts",
+                "city": m.get("city", "Unknown"),
+                "country": m.get("country", "Co-hosts"),
                 "neutral": True,
                 "temperature_c": float(m.get("temperature_c", 22.0)),
                 "is_hot": bool(m.get("is_hot", False)),
-                "home_injury_rate": injury_rates.get(home, 0.0),
-                "away_injury_rate": injury_rates.get(away, 0.0)
+                "team_a_injury_rate": injury_rates.get(team_a, 0.0),
+                "team_b_injury_rate": injury_rates.get(team_b, 0.0)
             })
         df_wc = pl.DataFrame(wc_records, schema={
             "date": pl.String,
-            "home_team": pl.String,
-            "away_team": pl.String,
-            "home_score": pl.Int64,
-            "away_score": pl.Int64,
+            "team_a": pl.String,
+            "team_b": pl.String,
+            "team_a_score": pl.Int64,
+            "team_b_score": pl.Int64,
             "tournament": pl.String,
             "city": pl.String,
             "country": pl.String,
             "neutral": pl.Boolean,
             "temperature_c": pl.Float64,
             "is_hot": pl.Boolean,
-            "home_injury_rate": pl.Float64,
-            "away_injury_rate": pl.Float64
+            "team_a_injury_rate": pl.Float64,
+            "team_b_injury_rate": pl.Float64
         })
         # Combine historical results and World Cup played matches
         df_all = pl.concat([df_hist, df_wc])
@@ -175,7 +181,7 @@ def load_data(results_csv_path, wc_json_path):
     return df_all
 
 def not_null_score(match):
-    return match.get("home_score") is not None and match.get("away_score") is not None
+    return match.get("team_a_score") is not None and match.get("team_b_score") is not None
 
 def preprocess_for_model(df):
     """Adds weights based on time decay and structures data for training."""
@@ -201,8 +207,8 @@ def preprocess_for_model(df):
     
     # Select final columns needed for modeling
     df_model = df.select([
-        "date", "home_team", "away_team", "home_score", "away_score", "weight", "neutral", "temperature_c", "is_hot",
-        "home_injury_rate", "away_injury_rate"
+        "date", "team_a", "team_b", "team_a_score", "team_b_score", "weight", "neutral", "temperature_c", "is_hot",
+        "team_a_injury_rate", "team_b_injury_rate", "country"
     ])
     
     print(f"Preprocessed {df_model.height} total matches for model training.")

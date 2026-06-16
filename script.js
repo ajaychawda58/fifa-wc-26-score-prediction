@@ -214,18 +214,18 @@ function updateHeaderStats() {
     let correctOutcomeCount = 0;
     
     worldCupMatches.forEach(m => {
-        if (m.home_score !== null && m.away_score !== null) {
+        if (m.team_a_score !== null && m.team_b_score !== null) {
             completedCount++;
             
-            const actualHome = parseInt(m.home_score);
-            const actualAway = parseInt(m.away_score);
+            const actualA = parseInt(m.team_a_score);
+            const actualB = parseInt(m.team_b_score);
             
             const pred = getPredictionRecord(m, selectedModel);
-            const predHome = parseInt(pred.predicted_home_score);
-            const predAway = parseInt(pred.predicted_away_score);
+            const predA = parseInt(pred.predicted_team_a_score);
+            const predB = parseInt(pred.predicted_team_b_score);
             
-            const actualOutcome = actualHome > actualAway ? "H" : actualAway > actualHome ? "A" : "D";
-            const predOutcome = predHome > predAway ? "H" : predAway > predHome ? "A" : "D";
+            const actualOutcome = actualA > actualB ? "H" : actualB > actualA ? "A" : "D";
+            const predOutcome = predA > predB ? "H" : predB > predA ? "A" : "D";
             
             if (actualOutcome === predOutcome) {
                 correctOutcomeCount++;
@@ -372,12 +372,20 @@ function bivariatePoissonPmf(x, y, l1, l2, l3) {
 // --- Client-Side Model Predictors ---
 
 // 1. Dixon-Coles Predictor
-function predictDixonColes(teamA, teamB, maxGoals=5, isHot=false) {
+function predictDixonColes(teamA, teamB, maxGoals=5, isHot=false, country=null) {
     const dc = modelParameters.dixon_coles;
     const ratingsA = dc.teams[teamA];
     const ratingsB = dc.teams[teamB];
-    const isHomeA = ["USA", "Canada", "Mexico"].includes(teamA);
-    const haMult = isHomeA ? dc.home_advantage_multiplier : 1.0;
+    
+    let hasHostAdv = false;
+    if (country) {
+        if (teamA === "USA" && (country === "United States" || country === "USA")) hasHostAdv = true;
+        else if (teamA === "Canada" && country === "Canada") hasHostAdv = true;
+        else if (teamA === "Mexico" && country === "Mexico") hasHostAdv = true;
+    } else {
+        hasHostAdv = ["USA", "Canada", "Mexico"].includes(teamA);
+    }
+    const haMult = hasHostAdv ? dc.home_advantage_multiplier : 1.0;
     const hotMult = isHot ? Math.exp(dc.beta_hot) : 1.0;
     
     const injuryRateA = ratingsA ? (ratingsA.injury_rate || 0.0) : 0.0;
@@ -411,13 +419,21 @@ function predictDixonColes(teamA, teamB, maxGoals=5, isHot=false) {
 }
 
 // 2. Bivariate Poisson Predictor
-function predictBivariate(teamA, teamB, maxGoals=5, isHot=false) {
+function predictBivariate(teamA, teamB, maxGoals=5, isHot=false, country=null) {
     const bp = modelParameters.bivariate;
     const dc = modelParameters.dixon_coles;
     const ratingsA = bp.teams[teamA];
     const ratingsB = bp.teams[teamB];
-    const isHomeA = ["USA", "Canada", "Mexico"].includes(teamA);
-    const haMult = isHomeA ? bp.home_advantage_multiplier : 1.0;
+    
+    let hasHostAdv = false;
+    if (country) {
+        if (teamA === "USA" && (country === "United States" || country === "USA")) hasHostAdv = true;
+        else if (teamA === "Canada" && country === "Canada") hasHostAdv = true;
+        else if (teamA === "Mexico" && country === "Mexico") hasHostAdv = true;
+    } else {
+        hasHostAdv = ["USA", "Canada", "Mexico"].includes(teamA);
+    }
+    const haMult = hasHostAdv ? bp.home_advantage_multiplier : 1.0;
     const hotMult = isHot ? Math.exp(bp.beta_hot) : 1.0;
     
     const injuryRateA = dc.teams[teamA] ? (dc.teams[teamA].injury_rate || 0.0) : 0.0;
@@ -450,19 +466,27 @@ function predictBivariate(teamA, teamB, maxGoals=5, isHot=false) {
 }
 
 // 3. Elo-Poisson Predictor
-function predictEloPoisson(teamA, teamB, maxGoals=5, isHot=false) {
+function predictEloPoisson(teamA, teamB, maxGoals=5, isHot=false, country=null) {
     const elo = modelParameters.elo;
     const dc = modelParameters.dixon_coles;
     const ratingA = elo.teams[teamA].rating;
     const ratingB = elo.teams[teamB].rating;
     const eloDiff = ratingA - ratingB;
-    const isHomeA = ["USA", "Canada", "Mexico"].includes(teamA) ? 1.0 : 0.0;
+    
+    let hostAdv = 0.0;
+    if (country) {
+        if (teamA === "USA" && (country === "United States" || country === "USA")) hostAdv = 1.0;
+        else if (teamA === "Canada" && country === "Canada") hostAdv = 1.0;
+        else if (teamA === "Mexico" && country === "Mexico") hostAdv = 1.0;
+    } else {
+        hostAdv = ["USA", "Canada", "Mexico"].includes(teamA) ? 1.0 : 0.0;
+    }
     const hotVal = isHot ? 1.0 : 0.0;
     
     const injuryRateA = dc.teams[teamA] ? (dc.teams[teamA].injury_rate || 0.0) : 0.0;
     const injuryRateB = dc.teams[teamB] ? (dc.teams[teamB].injury_rate || 0.0) : 0.0;
     
-    const lambda = Math.exp(elo.beta_0 + elo.beta_1 * eloDiff + elo.beta_ha * isHomeA + elo.beta_hot * hotVal + (elo.beta_injury || 0.0) * injuryRateA);
+    const lambda = Math.exp(elo.beta_0 + elo.beta_1 * eloDiff + elo.beta_ha * hostAdv + elo.beta_hot * hotVal + (elo.beta_injury || 0.0) * injuryRateA);
     const mu = Math.exp(elo.beta_0 - elo.beta_1 * eloDiff + elo.beta_hot * hotVal + (elo.beta_injury || 0.0) * injuryRateB);
     
     const grid = [];
@@ -486,7 +510,7 @@ function predictEloPoisson(teamA, teamB, maxGoals=5, isHot=false) {
 }
 
 // 4. Softmax Classifier Predictor
-function predictSoftmaxClassifier(teamA, teamB, maxGoals=5, isHot=false) {
+function predictSoftmaxClassifier(teamA, teamB, maxGoals=5, isHot=false, country=null) {
     const cl = modelParameters.classifier;
     const elo = modelParameters.elo;
     const dc = modelParameters.dixon_coles;
@@ -499,34 +523,41 @@ function predictSoftmaxClassifier(teamA, teamB, maxGoals=5, isHot=false) {
     const rankB = dc.teams[teamB].rank;
     const rankDiff = rankB - rankA;
     
-    const isHomeA = ["USA", "Canada", "Mexico"].includes(teamA) ? 1.0 : 0.0;
+    let hostAdv = 0.0;
+    if (country) {
+        if (teamA === "USA" && (country === "United States" || country === "USA")) hostAdv = 1.0;
+        else if (teamA === "Canada" && country === "Canada") hostAdv = 1.0;
+        else if (teamA === "Mexico" && country === "Mexico") hostAdv = 1.0;
+    } else {
+        hostAdv = ["USA", "Canada", "Mexico"].includes(teamA) ? 1.0 : 0.0;
+    }
     const hotVal = isHot ? 1.0 : 0.0;
     
     const injuryRateA = dc.teams[teamA] ? (dc.teams[teamA].injury_rate || 0.0) : 0.0;
     const injuryRateB = dc.teams[teamB] ? (dc.teams[teamB].injury_rate || 0.0) : 0.0;
     const injuryDiff = injuryRateA - injuryRateB;
     
-    const xVec = [1.0, eloDiff, rankDiff, isHomeA, hotVal, injuryDiff];
-    let zh = 0, zd = 0;
+    const xVec = [1.0, eloDiff, rankDiff, hostAdv, hotVal, injuryDiff];
+    let zA = 0, zd = 0;
     for (let i = 0; i < 6; i++) {
-        zh += xVec[i] * cl.w_home[i];
+        zA += xVec[i] * cl.w_team_a[i];
         zd += xVec[i] * cl.w_draw[i];
     }
     
-    const expH = Math.exp(zh);
+    const expA = Math.exp(zA);
     const expD = Math.exp(zd);
-    const denom = expH + expD + 1.0;
+    const denom = expA + expD + 1.0;
     
-    const pH = expH / denom;
+    const pA = expA / denom;
     const pD = expD / denom;
-    const pA = 1.0 / denom;
+    const pB = 1.0 / denom;
     
     // xG projections borrowed from Elo expected goals
     const eloPred = predictEloPoisson(teamA, teamB, maxGoals, isHot);
-    const l1 = eloPred.home_xG;
-    const l2 = eloPred.away_xG;
+    const l1 = eloPred.team_a_xG;
+    const l2 = eloPred.team_b_xG;
     
-    // Build Poisson grid and scale parts to match pH, pD, pA
+    // Build Poisson grid and scale parts to match pA, pD, pB
     const grid = [];
     let sumW = 0, sumD = 0, sumL = 0;
     for (let x = 0; x <= maxGoals; x++) {
@@ -543,9 +574,9 @@ function predictSoftmaxClassifier(teamA, teamB, maxGoals=5, isHot=false) {
     // Re-scale grid components
     for (let x = 0; x <= maxGoals; x++) {
         for (let y = 0; y <= maxGoals; y++) {
-            if (x > y && sumW > 0) grid[x][y] *= (pH / sumW);
+            if (x > y && sumW > 0) grid[x][y] *= (pA / sumW);
             else if (x === y && sumD > 0) grid[x][y] *= (pD / sumD);
-            else if (y > x && sumL > 0) grid[x][y] *= (pA / sumL);
+            else if (y > x && sumL > 0) grid[x][y] *= (pB / sumL);
         }
     }
     
@@ -562,29 +593,29 @@ function predictSoftmaxClassifier(teamA, teamB, maxGoals=5, isHot=false) {
     }
     
     return {
-        home_xG: l1,
-        away_xG: l2,
-        home_win: pH,
-        away_win: pA,
+        team_a_xG: l1,
+        team_b_xG: l2,
+        team_a_win: pA,
+        team_b_win: pB,
         draw: pD,
         score_probabilities: grid
     };
 }
 
 // 5. Ensemble Predictor
-function predictEnsemble(teamA, teamB, maxGoals=5, isHot=false) {
-    const dc = predictDixonColes(teamA, teamB, maxGoals, isHot);
-    const bp = predictBivariate(teamA, teamB, maxGoals, isHot);
-    const elo = predictEloPoisson(teamA, teamB, maxGoals, isHot);
-    const cl = predictSoftmaxClassifier(teamA, teamB, maxGoals, isHot);
+function predictEnsemble(teamA, teamB, maxGoals=5, isHot=false, country=null) {
+    const dc = predictDixonColes(teamA, teamB, maxGoals, isHot, country);
+    const bp = predictBivariate(teamA, teamB, maxGoals, isHot, country);
+    const elo = predictEloPoisson(teamA, teamB, maxGoals, isHot, country);
+    const cl = predictSoftmaxClassifier(teamA, teamB, maxGoals, isHot, country);
     
     const w_dc = 0.35, w_bp = 0.20, w_elo = 0.30, w_cl = 0.15;
     
-    const home_xG = w_dc * dc.home_xG + w_bp * bp.home_xG + w_elo * elo.home_xG + w_cl * cl.home_xG;
-    const away_xG = w_dc * dc.away_xG + w_bp * bp.away_xG + w_elo * elo.away_xG + w_cl * cl.away_xG;
+    const xGA = w_dc * dc.team_a_xG + w_bp * bp.team_a_xG + w_elo * elo.team_a_xG + w_cl * cl.team_a_xG;
+    const xGB = w_dc * dc.team_b_xG + w_bp * bp.team_b_xG + w_elo * elo.team_b_xG + w_cl * cl.team_b_xG;
     
-    const home_win = w_dc * dc.home_win + w_bp * bp.home_win + w_elo * elo.home_win + w_cl * cl.home_win;
-    const away_win = w_dc * dc.away_win + w_bp * bp.away_win + w_elo * elo.away_win + w_cl * cl.away_win;
+    const winA = w_dc * dc.team_a_win + w_bp * bp.team_a_win + w_elo * elo.team_a_win + w_cl * cl.team_a_win;
+    const winB = w_dc * dc.team_b_win + w_bp * bp.team_b_win + w_elo * elo.team_b_win + w_cl * cl.team_b_win;
     const draw = w_dc * dc.draw + w_bp * bp.draw + w_elo * elo.draw + w_cl * cl.draw;
     
     const grid = [];
@@ -599,10 +630,10 @@ function predictEnsemble(teamA, teamB, maxGoals=5, isHot=false) {
     }
     
     return {
-        home_xG: home_xG,
-        away_xG: away_xG,
-        home_win: home_win,
-        away_win: away_win,
+        team_a_xG: xGA,
+        team_b_xG: xGB,
+        team_a_win: winA,
+        team_b_win: winB,
         draw: draw,
         score_probabilities: grid
     };
@@ -620,10 +651,10 @@ function buildOutcomeRecord(grid, lambda, mu) {
         }
     }
     return {
-        home_xG: lambda,
-        away_xG: mu,
-        home_win: winA,
-        away_win: winB,
+        team_a_xG: lambda,
+        team_b_xG: mu,
+        team_a_win: winA,
+        team_b_win: winB,
         draw: draw,
         score_probabilities: grid
     };
@@ -643,21 +674,21 @@ function runVisualPrediction(teamA, teamB) {
     else if (selectedModel === "classifier") pred = predictSoftmaxClassifier(teamA, teamB, 5, isHot);
     else pred = predictEnsemble(teamA, teamB, 5, isHot);
     
-    const lambda = pred.home_xG;
-    const mu = pred.away_xG;
+    const lambda = pred.team_a_xG;
+    const mu = pred.team_b_xG;
     const grid = pred.score_probabilities;
     
     // Find most likely score
     let maxProb = 0;
-    let scoreHome = 0;
-    let scoreAway = 0;
+    let scoreA = 0;
+    let scoreB = 0;
     const maxGoals = grid.length - 1;
     for (let x = 0; x <= maxGoals; x++) {
         for (let y = 0; y <= maxGoals; y++) {
             if (grid[x][y] > maxProb) {
                 maxProb = grid[x][y];
-                scoreHome = x;
-                scoreAway = y;
+                scoreA = x;
+                scoreB = y;
             }
         }
     }
@@ -668,8 +699,8 @@ function runVisualPrediction(teamA, teamB) {
     document.getElementById("xg-val-a").innerText = lambda.toFixed(2);
     document.getElementById("xg-val-b").innerText = mu.toFixed(2);
     
-    const winAPercent = Math.round(pred.home_win * 100);
-    const winBPercent = Math.round(pred.away_win * 100);
+    const winAPercent = Math.round(pred.team_a_win * 100);
+    const winBPercent = Math.round(pred.team_b_win * 100);
     const drawPercent = 100 - winAPercent - winBPercent;
     
     document.getElementById("prob-lbl-a").innerText = `${teamA}: ${winAPercent}%`;
@@ -678,7 +709,7 @@ function runVisualPrediction(teamA, teamB) {
     document.getElementById("prob-bar-b").style.width = `${winBPercent}%`;
     document.getElementById("prob-bar-draw").style.width = `${drawPercent}%`;
     
-    document.getElementById("predicted-score-text").innerText = `${scoreHome} - ${scoreAway}`;
+    document.getElementById("predicted-score-text").innerText = `${scoreA} - ${scoreB}`;
     document.getElementById("predicted-score-prob").innerText = `Score probability: ${(maxProb * 100).toFixed(1)}%`;
     document.getElementById("prediction-results").style.display = "block";
     
@@ -814,12 +845,12 @@ function renderFixturesTable() {
     document.getElementById("fixtures-status-filter").onchange = renderFixturesTable;
     
     const filteredMatches = worldCupMatches.filter(m => {
-        const home = m.home.toLowerCase();
-        const away = m.away.toLowerCase();
+        const tA = m.team_a.toLowerCase();
+        const tB = m.team_b.toLowerCase();
         const stage = m.stage;
-        const played = m.home_score !== null && m.away_score !== null;
+        const played = m.team_a_score !== null && m.team_b_score !== null;
         
-        if (searchVal && !home.includes(searchVal) && !away.includes(searchVal)) return false;
+        if (searchVal && !tA.includes(searchVal) && !tB.includes(searchVal)) return false;
         if (groupFilter !== "ALL" && !stage.includes(`Group ${groupFilter}`)) return false;
         if (statusFilter === "PLAYED" && !played) return false;
         if (statusFilter === "UPCOMING" && played) return false;
@@ -829,22 +860,22 @@ function renderFixturesTable() {
     
     filteredMatches.forEach(m => {
         const row = document.createElement("tr");
-        const isPlayed = m.home_score !== null && m.away_score !== null;
+        const isPlayed = m.team_a_score !== null && m.team_b_score !== null;
         const pred = getPredictionRecord(m, selectedModel);
         
         let scoreDisplay = "";
         let outcomeBadge = "-";
         
         if (isPlayed) {
-            scoreDisplay = `<span class="score-cell-played">${m.home_score} - ${m.away_score}</span>`;
+            scoreDisplay = `<span class="score-cell-played">${m.team_a_score} - ${m.team_b_score}</span>`;
             
-            const actualHome = parseInt(m.home_score);
-            const actualAway = parseInt(m.away_score);
-            const predHome = parseInt(pred.predicted_home_score);
-            const predAway = parseInt(pred.predicted_away_score);
+            const actualA = parseInt(m.team_a_score);
+            const actualB = parseInt(m.team_b_score);
+            const predA = parseInt(pred.predicted_team_a_score);
+            const predB = parseInt(pred.predicted_team_b_score);
             
-            const actualOutcome = actualHome > actualAway ? "H" : actualAway > actualHome ? "A" : "D";
-            const predOutcome = predHome > predAway ? "H" : predAway > predHome ? "A" : "D";
+            const actualOutcome = actualA > actualB ? "H" : actualB > actualA ? "A" : "D";
+            const predOutcome = predA > predB ? "H" : predB > predA ? "A" : "D";
             
             if (actualOutcome === predOutcome) {
                 outcomeBadge = `<span class="outcome-badge outcome-correct"><i class="fa-solid fa-check"></i></span>`;
@@ -874,15 +905,15 @@ function renderFixturesTable() {
                 ${weatherHtml}
             </td>
             <td><span class="badge badge-group">${m.stage}</span></td>
-            <td class="text-right team-cell">${m.home}</td>
+            <td class="text-right team-cell">${m.team_a}</td>
             <td class="text-center">${scoreDisplay}</td>
-            <td class="text-left team-cell">${m.away}</td>
-            <td class="text-center text-muted" style="font-size:0.8rem;">${pred.home_xG} - ${pred.away_xG}</td>
+            <td class="text-left team-cell">${m.team_b}</td>
+            <td class="text-center text-muted" style="font-size:0.8rem;">${pred.team_a_xG} - ${pred.team_b_xG}</td>
             <td class="text-center font-bold" style="color:var(--primary-light); font-weight:700;">
-                ${pred.predicted_home_score} - ${pred.predicted_away_score}
+                ${pred.predicted_team_a_score} - ${pred.predicted_team_b_score}
             </td>
             <td class="text-center" style="font-size:0.8rem; color:var(--text-muted);">
-                ${Math.round(pred.home_win_prob * 100)}% / ${Math.round(pred.draw_prob * 100)}% / ${Math.round(pred.away_win_prob * 100)}%
+                ${Math.round(pred.team_a_win_prob * 100)}% / ${Math.round(pred.draw_prob * 100)}% / ${Math.round(pred.team_b_win_prob * 100)}%
             </td>
             <td class="text-center">${outcomeBadge}</td>
         `;
@@ -953,40 +984,40 @@ function computeStandings(matchesList) {
     });
     
     matchesList.forEach(m => {
-        if (m.home_score === null || m.away_score === null) return;
+        if (m.team_a_score === null || m.team_b_score === null) return;
         
         const groupLetter = m.stage.replace("Group ", "").trim();
-        const homeScore = parseInt(m.home_score);
-        const awayScore = parseInt(m.away_score);
+        const scoreA = parseInt(m.team_a_score);
+        const scoreB = parseInt(m.team_b_score);
         
         const groupTeams = standings[groupLetter];
         if (!groupTeams) return;
         
-        const homeTeam = groupTeams.find(t => t.team === m.home);
-        const awayTeam = groupTeams.find(t => t.team === m.away);
+        const entryA = groupTeams.find(t => t.team === m.team_a);
+        const entryB = groupTeams.find(t => t.team === m.team_b);
         
-        if (!homeTeam || !awayTeam) return;
+        if (!entryA || !entryB) return;
         
-        homeTeam.p++;
-        awayTeam.p++;
-        homeTeam.gf += homeScore;
-        homeTeam.ga += awayScore;
-        awayTeam.gf += awayScore;
-        awayTeam.ga += homeScore;
+        entryA.p++;
+        entryB.p++;
+        entryA.gf += scoreA;
+        entryA.ga += scoreB;
+        entryB.gf += scoreB;
+        entryB.ga += scoreA;
         
-        if (homeScore > awayScore) {
-            homeTeam.w++;
-            homeTeam.pts += 3;
-            awayTeam.l++;
-        } else if (awayScore > homeScore) {
-            awayTeam.w++;
-            awayTeam.pts += 3;
-            homeTeam.l++;
+        if (scoreA > scoreB) {
+            entryA.w++;
+            entryA.pts += 3;
+            entryB.l++;
+        } else if (scoreB > scoreA) {
+            entryB.w++;
+            entryB.pts += 3;
+            entryA.l++;
         } else {
-            homeTeam.d++;
-            homeTeam.pts += 1;
-            awayTeam.d++;
-            awayTeam.pts += 1;
+            entryA.d++;
+            entryA.pts += 1;
+            entryB.d++;
+            entryB.pts += 1;
         }
     });
     
@@ -1010,10 +1041,10 @@ function simulateRemainingMatches() {
     const simulatedMatches = JSON.parse(JSON.stringify(worldCupMatches));
     
     simulatedMatches.forEach(m => {
-        if (m.home_score === null || m.away_score === null) {
+        if (m.team_a_score === null || m.team_b_score === null) {
             const pred = getPredictionRecord(m, selectedModel);
-            m.home_score = pred.predicted_home_score;
-            m.away_score = pred.predicted_away_score;
+            m.team_a_score = pred.predicted_team_a_score;
+            m.team_b_score = pred.predicted_team_b_score;
         }
     });
     
@@ -1153,10 +1184,10 @@ function simulateAndRenderKnockout(showAlert = false) {
     // 1. Run full group stage simulation
     const simulatedMatches = JSON.parse(JSON.stringify(worldCupMatches));
     simulatedMatches.forEach(m => {
-        if (m.home_score === null || m.away_score === null) {
+        if (m.team_a_score === null || m.team_b_score === null) {
             const pred = getPredictionRecord(m, selectedModel);
-            m.home_score = pred.predicted_home_score;
-            m.away_score = pred.predicted_away_score;
+            m.team_a_score = pred.predicted_team_a_score;
+            m.team_b_score = pred.predicted_team_b_score;
         }
     });
     
@@ -1196,34 +1227,34 @@ function simulateAndRenderKnockout(showAlert = false) {
     
     // 4. Seeding logic for Round of 32
     const r32Seeds = {
-        "M73": { home: qualifiers["2A"], away: qualifiers["2B"], label: "M73 (2A vs 2B)" },
-        "M74": { home: qualifiers["1E"], away: allocatedThirds["M74"], label: "M74 (1E vs 3rd)" },
-        "M75": { home: qualifiers["1F"], away: qualifiers["2C"], label: "M75 (1F vs 2C)" },
-        "M76": { home: qualifiers["1C"], away: qualifiers["2F"], label: "M76 (1C vs 2F)" },
-        "M77": { home: qualifiers["1I"], away: allocatedThirds["M77"], label: "M77 (1I vs 3rd)" },
-        "M78": { home: qualifiers["2E"], away: qualifiers["2I"], label: "M78 (2E vs 2I)" },
-        "M79": { home: qualifiers["1A"], away: allocatedThirds["M79"], label: "M79 (1A vs 3rd)" },
-        "M80": { home: qualifiers["1L"], away: allocatedThirds["M80"], label: "M80 (1L vs 3rd)" },
-        "M81": { home: qualifiers["1D"], away: allocatedThirds["M81"], label: "M81 (1D vs 3rd)" },
-        "M82": { home: qualifiers["1G"], away: allocatedThirds["M82"], label: "M82 (1G vs 3rd)" },
-        "M83": { home: qualifiers["2K"], away: qualifiers["2L"], label: "M83 (2K vs 2L)" },
-        "M84": { home: qualifiers["1H"], away: qualifiers["2J"], label: "M84 (1H vs 2J)" },
-        "M85": { home: qualifiers["1B"], away: allocatedThirds["M85"], label: "M85 (1B vs 3rd)" },
-        "M86": { home: qualifiers["1J"], away: qualifiers["2H"], label: "M86 (1J vs 2H)" },
-        "M87": { home: qualifiers["1K"], away: allocatedThirds["M87"], label: "M87 (1K vs 3rd)" },
-        "M88": { home: qualifiers["2D"], away: qualifiers["2G"], label: "M88 (2D vs 2G)" }
+        "M73": { team_a: qualifiers["2A"], team_b: qualifiers["2B"], label: "M73 (2A vs 2B)" },
+        "M74": { team_a: qualifiers["1E"], team_b: allocatedThirds["M74"], label: "M74 (1E vs 3rd)" },
+        "M75": { team_a: qualifiers["1F"], team_b: qualifiers["2C"], label: "M75 (1F vs 2C)" },
+        "M76": { team_a: qualifiers["1C"], team_b: qualifiers["2F"], label: "M76 (1C vs 2F)" },
+        "M77": { team_a: qualifiers["1I"], team_b: allocatedThirds["M77"], label: "M77 (1I vs 3rd)" },
+        "M78": { team_a: qualifiers["2E"], team_b: qualifiers["2I"], label: "M78 (2E vs 2I)" },
+        "M79": { team_a: qualifiers["1A"], team_b: allocatedThirds["M79"], label: "M79 (1A vs 3rd)" },
+        "M80": { team_a: qualifiers["1L"], team_b: allocatedThirds["M80"], label: "M80 (1L vs 3rd)" },
+        "M81": { team_a: qualifiers["1D"], team_b: allocatedThirds["M81"], label: "M81 (1D vs 3rd)" },
+        "M82": { team_a: qualifiers["1G"], team_b: allocatedThirds["M82"], label: "M82 (1G vs 3rd)" },
+        "M83": { team_a: qualifiers["2K"], team_b: qualifiers["2L"], label: "M83 (2K vs 2L)" },
+        "M84": { team_a: qualifiers["1H"], team_b: qualifiers["2J"], label: "M84 (1H vs 2J)" },
+        "M85": { team_a: qualifiers["1B"], team_b: allocatedThirds["M85"], label: "M85 (1B vs 3rd)" },
+        "M86": { team_a: qualifiers["1J"], team_b: qualifiers["2H"], label: "M86 (1J vs 2H)" },
+        "M87": { team_a: qualifiers["1K"], team_b: allocatedThirds["M87"], label: "M87 (1K vs 3rd)" },
+        "M88": { team_a: qualifiers["2D"], team_b: qualifiers["2G"], label: "M88 (2D vs 2G)" }
     };
     
-    function runKnockoutMatch(home, away, isHot=false) {
+    function runKnockoutMatch(tA, tB, isHot=false) {
         let pred;
-        if (selectedModel === "dixon_coles") pred = predictDixonColes(home, away, 5, isHot);
-        else if (selectedModel === "bivariate") pred = predictBivariate(home, away, 5, isHot);
-        else if (selectedModel === "elo") pred = predictEloPoisson(home, away, 5, isHot);
-        else if (selectedModel === "classifier") pred = predictSoftmaxClassifier(home, away, 5, isHot);
-        else pred = predictEnsemble(home, away, 5, isHot);
+        if (selectedModel === "dixon_coles") pred = predictDixonColes(tA, tB, 5, isHot);
+        else if (selectedModel === "bivariate") pred = predictBivariate(tA, tB, 5, isHot);
+        else if (selectedModel === "elo") pred = predictEloPoisson(tA, tB, 5, isHot);
+        else if (selectedModel === "classifier") pred = predictSoftmaxClassifier(tA, tB, 5, isHot);
+        else pred = predictEnsemble(tA, tB, 5, isHot);
         
-        let scoreHome = 0;
-        let scoreAway = 0;
+        let sA = 0;
+        let sB = 0;
         let maxProb = 0;
         
         if (pred.score_probabilities) {
@@ -1232,36 +1263,36 @@ function simulateAndRenderKnockout(showAlert = false) {
                 for (let y = 0; y < grid[x].length; y++) {
                     if (grid[x][y] > maxProb) {
                         maxProb = grid[x][y];
-                        scoreHome = x;
-                        scoreAway = y;
+                        sA = x;
+                        sB = y;
                     }
                 }
             }
         }
         
         let winner;
-        if (scoreHome > scoreAway) winner = home;
-        else if (scoreAway > scoreHome) winner = away;
+        if (sA > sB) winner = tA;
+        else if (sB > sA) winner = tB;
         else {
-            if (pred.home_win > pred.away_win) winner = home;
-            else if (pred.away_win > pred.home_win) winner = away;
+            if (pred.team_a_win > pred.team_b_win) winner = tA;
+            else if (pred.team_b_win > pred.team_a_win) winner = tB;
             else {
-                const rankA = modelParameters.dixon_coles.teams[home].rank;
-                const rankB = modelParameters.dixon_coles.teams[away].rank;
-                winner = rankA <= rankB ? home : away;
+                const rankA = modelParameters.dixon_coles.teams[tA].rank;
+                const rankB = modelParameters.dixon_coles.teams[tB].rank;
+                winner = rankA <= rankB ? tA : tB;
             }
         }
         
         return {
-            home: home,
-            away: away,
-            scoreHome: scoreHome,
-            scoreAway: scoreAway,
+            team_a: tA,
+            team_b: tB,
+            scoreA: sA,
+            scoreB: sB,
             winner: winner,
-            home_xG: pred.home_xG,
-            away_xG: pred.away_xG,
-            home_win: pred.home_win,
-            away_win: pred.away_win,
+            team_a_xG: pred.team_a_xG,
+            team_b_xG: pred.team_b_xG,
+            team_a_win: pred.team_a_win,
+            team_b_win: pred.team_b_win,
             draw: pred.draw
         };
     }
@@ -1270,48 +1301,48 @@ function simulateAndRenderKnockout(showAlert = false) {
     const r32 = {};
     Object.keys(r32Seeds).forEach(mId => {
         const fixture = r32Seeds[mId];
-        r32[mId] = runKnockoutMatch(fixture.home, fixture.away, isHot);
+        r32[mId] = runKnockoutMatch(fixture.team_a, fixture.team_b, isHot);
     });
     
     // Simulate R16
     const r16Seeds = {
-        "M89": { home: r32["M74"].winner, away: r32["M77"].winner },
-        "M90": { home: r32["M73"].winner, away: r32["M75"].winner },
-        "M91": { home: r32["M76"].winner, away: r32["M78"].winner },
-        "M92": { home: r32["M79"].winner, away: r32["M80"].winner },
-        "M93": { home: r32["M83"].winner, away: r32["M84"].winner },
-        "M94": { home: r32["M81"].winner, away: r32["M82"].winner },
-        "M95": { home: r32["M86"].winner, away: r32["M88"].winner },
-        "M96": { home: r32["M85"].winner, away: r32["M87"].winner }
+        "M89": { team_a: r32["M74"].winner, team_b: r32["M77"].winner },
+        "M90": { team_a: r32["M73"].winner, team_b: r32["M75"].winner },
+        "M91": { team_a: r32["M76"].winner, team_b: r32["M78"].winner },
+        "M92": { team_a: r32["M79"].winner, team_b: r32["M80"].winner },
+        "M93": { team_a: r32["M83"].winner, team_b: r32["M84"].winner },
+        "M94": { team_a: r32["M81"].winner, team_b: r32["M82"].winner },
+        "M95": { team_a: r32["M86"].winner, team_b: r32["M88"].winner },
+        "M96": { team_a: r32["M85"].winner, team_b: r32["M87"].winner }
     };
     const r16 = {};
     Object.keys(r16Seeds).forEach(mId => {
         const fixture = r16Seeds[mId];
-        r16[mId] = runKnockoutMatch(fixture.home, fixture.away, isHot);
+        r16[mId] = runKnockoutMatch(fixture.team_a, fixture.team_b, isHot);
     });
     
     // Simulate QF
     const qfSeeds = {
-        "M97": { home: r16["M89"].winner, away: r16["M90"].winner },
-        "M98": { home: r16["M93"].winner, away: r16["M94"].winner },
-        "M99": { home: r16["M91"].winner, away: r16["M92"].winner },
-        "M100": { home: r16["M95"].winner, away: r16["M96"].winner }
+        "M97": { team_a: r16["M89"].winner, team_b: r16["M90"].winner },
+        "M98": { team_a: r16["M93"].winner, team_b: r16["M94"].winner },
+        "M99": { team_a: r16["M91"].winner, team_b: r16["M92"].winner },
+        "M100": { team_a: r16["M95"].winner, team_b: r16["M96"].winner }
     };
     const qf = {};
     Object.keys(qfSeeds).forEach(mId => {
         const fixture = qfSeeds[mId];
-        qf[mId] = runKnockoutMatch(fixture.home, fixture.away, isHot);
+        qf[mId] = runKnockoutMatch(fixture.team_a, fixture.team_b, isHot);
     });
     
     // Simulate SF
     const sfSeeds = {
-        "M101": { home: qf["M97"].winner, away: qf["M98"].winner },
-        "M102": { home: qf["M99"].winner, away: qf["M100"].winner }
+        "M101": { team_a: qf["M97"].winner, team_b: qf["M98"].winner },
+        "M102": { team_a: qf["M99"].winner, team_b: qf["M100"].winner }
     };
     const sf = {};
     Object.keys(sfSeeds).forEach(mId => {
         const fixture = sfSeeds[mId];
-        sf[mId] = runKnockoutMatch(fixture.home, fixture.away, isHot);
+        sf[mId] = runKnockoutMatch(fixture.team_a, fixture.team_b, isHot);
     });
     
     // Simulate Final
@@ -1342,20 +1373,20 @@ function simulateAndRenderKnockout(showAlert = false) {
         const card = document.createElement("div");
         card.className = "bracket-match-card animate-fade-in";
         
-        const isHomeWinner = matchData.winner === matchData.home;
-        const isAwayWinner = matchData.winner === matchData.away;
+        const isAWinner = matchData.winner === matchData.team_a;
+        const isBWinner = matchData.winner === matchData.team_b;
         
         card.innerHTML = `
-            <div class="bracket-match-team ${isHomeWinner ? 'winner' : 'loser'}">
-                <span>${getTeamFlag(matchData.home)} ${matchData.home}</span>
-                <span class="bracket-match-score">${matchData.scoreHome}</span>
+            <div class="bracket-match-team ${isAWinner ? 'winner' : 'loser'}">
+                <span>${getTeamFlag(matchData.team_a)} ${matchData.team_a}</span>
+                <span class="bracket-match-score">${matchData.scoreA}</span>
             </div>
-            <div class="bracket-match-team ${isAwayWinner ? 'winner' : 'loser'}">
-                <span>${getTeamFlag(matchData.away)} ${matchData.away}</span>
-                <span class="bracket-match-score">${matchData.scoreAway}</span>
+            <div class="bracket-match-team ${isBWinner ? 'winner' : 'loser'}">
+                <span>${getTeamFlag(matchData.team_b)} ${matchData.team_b}</span>
+                <span class="bracket-match-score">${matchData.scoreB}</span>
             </div>
             <div class="bracket-match-info">
-                Match ${matchId.replace("M","")} | xG: ${matchData.home_xG.toFixed(1)}-${matchData.away_xG.toFixed(1)} | Win %: ${Math.round(matchData.home_win*100)}-${Math.round(matchData.draw*100)}-${Math.round(matchData.away_win*100)}
+                Match ${matchId.replace("M","")} | xG: ${matchData.team_a_xG.toFixed(1)}-${matchData.team_b_xG.toFixed(1)} | Win %: ${Math.round(matchData.team_a_win*100)}-${Math.round(matchData.draw*100)}-${Math.round(matchData.team_b_win*100)}
             </div>
         `;
         return card;
@@ -1390,18 +1421,18 @@ function simulateAndRenderKnockout(showAlert = false) {
     if (finalContainer) {
         finalContainer.className = "bracket-match-card final-match-card animate-fade-in";
         finalContainer.innerHTML = "";
-        const finalWinner = finalResult.winner === finalResult.home;
+        const isAWinner = finalResult.winner === finalResult.team_a;
         finalContainer.innerHTML = `
-            <div class="bracket-match-team ${finalWinner ? 'winner' : 'loser'}" style="font-size:0.9rem;">
-                <span>${getTeamFlag(finalResult.home)} ${finalResult.home}</span>
-                <span class="bracket-match-score" style="font-size:1rem;">${finalResult.scoreHome}</span>
+            <div class="bracket-match-team ${isAWinner ? 'winner' : 'loser'}" style="font-size:0.9rem;">
+                <span>${getTeamFlag(finalResult.team_a)} ${finalResult.team_a}</span>
+                <span class="bracket-match-score" style="font-size:1rem;">${finalResult.scoreA}</span>
             </div>
-            <div class="bracket-match-team ${!finalWinner ? 'winner' : 'loser'}" style="font-size:0.9rem;">
-                <span>${getTeamFlag(finalResult.away)} ${finalResult.away}</span>
-                <span class="bracket-match-score" style="font-size:1rem;">${finalResult.scoreAway}</span>
+            <div class="bracket-match-team ${!isAWinner ? 'winner' : 'loser'}" style="font-size:0.9rem;">
+                <span>${getTeamFlag(finalResult.team_b)} ${finalResult.team_b}</span>
+                <span class="bracket-match-score" style="font-size:1rem;">${finalResult.scoreB}</span>
             </div>
             <div class="bracket-match-info">
-                Final | xG: ${finalResult.home_xG.toFixed(1)}-${finalResult.away_xG.toFixed(1)} | Win %: ${Math.round(finalResult.home_win*100)}-${Math.round(finalResult.draw*100)}-${Math.round(finalResult.away_win*100)}
+                Final | xG: ${finalResult.team_a_xG.toFixed(1)}-${finalResult.team_b_xG.toFixed(1)} | Win %: ${Math.round(finalResult.team_a_win*100)}-${Math.round(finalResult.draw*100)}-${Math.round(finalResult.team_b_win*100)}
             </div>
         `;
     }

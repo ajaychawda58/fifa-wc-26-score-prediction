@@ -16,35 +16,35 @@ def get_most_likely_score(score_grid):
     """Finds the scoreline with the highest probability from the grid."""
     score_grid = np.array(score_grid)
     flat_idx = np.argmax(score_grid)
-    home, away = np.unravel_index(flat_idx, score_grid.shape)
-    return int(home), int(away), float(score_grid[home, away])
+    team_a_score, team_b_score = np.unravel_index(flat_idx, score_grid.shape)
+    return int(team_a_score), int(team_b_score), float(score_grid[team_a_score, team_b_score])
 
 def ensemble_predictions(dc_pred, bp_pred, elo_pred, cl_pred):
     """Computes the weighted average prediction of the 4 models."""
     w_dc, w_bp, w_elo, w_cl = 0.35, 0.20, 0.30, 0.15
     
     # 1. Expected goals
-    home_xG = (w_dc * dc_pred["home_xG"] + 
-               w_bp * bp_pred["home_xG"] + 
-               w_elo * elo_pred["home_xG"] + 
-               w_cl * cl_pred["home_xG"])
-               
-    away_xG = (w_dc * dc_pred["away_xG"] + 
-               w_bp * bp_pred["away_xG"] + 
-               w_elo * elo_pred["away_xG"] + 
-               w_cl * cl_pred["away_xG"])
-               
+    team_a_xG = (w_dc * dc_pred["team_a_xG"] + 
+                 w_bp * bp_pred["team_a_xG"] + 
+                 w_elo * elo_pred["team_a_xG"] + 
+                 w_cl * cl_pred["team_a_xG"])
+                 
+    team_b_xG = (w_dc * dc_pred["team_b_xG"] + 
+                 w_bp * bp_pred["team_b_xG"] + 
+                 w_elo * elo_pred["team_b_xG"] + 
+                 w_cl * cl_pred["team_b_xG"])
+                 
     # 2. Outcome probabilities
-    home_win = (w_dc * dc_pred["home_win"] + 
-                w_bp * bp_pred["home_win"] + 
-                w_elo * elo_pred["home_win"] + 
-                w_cl * cl_pred["home_win"])
-                
-    away_win = (w_dc * dc_pred["away_win"] + 
-                w_bp * bp_pred["away_win"] + 
-                w_elo * elo_pred["away_win"] + 
-                w_cl * cl_pred["away_win"])
-                
+    team_a_win = (w_dc * dc_pred["team_a_win"] + 
+                  w_bp * bp_pred["team_a_win"] + 
+                  w_elo * elo_pred["team_a_win"] + 
+                  w_cl * cl_pred["team_a_win"])
+                  
+    team_b_win = (w_dc * dc_pred["team_b_win"] + 
+                  w_bp * bp_pred["team_b_win"] + 
+                  w_elo * elo_pred["team_b_win"] + 
+                  w_cl * cl_pred["team_b_win"])
+                  
     draw = (w_dc * dc_pred["draw"] + 
             w_bp * bp_pred["draw"] + 
             w_elo * elo_pred["draw"] + 
@@ -62,10 +62,10 @@ def ensemble_predictions(dc_pred, bp_pred, elo_pred, cl_pred):
                            w_cl * grid_cl).tolist()
                            
     return {
-        "home_xG": home_xG,
-        "away_xG": away_xG,
-        "home_win": home_win,
-        "away_win": away_win,
+        "team_a_xG": team_a_xG,
+        "team_b_xG": team_b_xG,
+        "team_a_win": team_a_win,
+        "team_b_win": team_b_win,
         "draw": draw,
         "score_probabilities": score_probabilities
     }
@@ -126,30 +126,31 @@ def run_prediction_pipeline():
     correct_outcomes = 0
     
     for m in matches:
-        home = m["home"]
-        away = m["away"]
+        team_a = m["team_a"]
+        team_b = m["team_b"]
         is_hot = bool(m.get("is_hot", False))
-        h_inj = injury_rates.get(home, 0.0)
-        a_inj = injury_rates.get(away, 0.0)
+        a_inj = injury_rates.get(team_a, 0.0)
+        b_inj = injury_rates.get(team_b, 0.0)
+        country = m.get("country")
         
         # Calculate individual predictions
-        dc_p = dc_model.predict_match(home, away, is_hot=is_hot, home_injury_rate=h_inj, away_injury_rate=a_inj)
-        bp_p = bp_model.predict_match(home, away, is_hot=is_hot, home_injury_rate=h_inj, away_injury_rate=a_inj)
-        elo_p = elo_model.predict_match(home, away, is_hot=is_hot, home_injury_rate=h_inj, away_injury_rate=a_inj)
-        cl_p = sm_model.predict_match(home, away, elo_model.elo_ratings, elo_model, is_hot=is_hot, home_injury_rate=h_inj, away_injury_rate=a_inj)
+        dc_p = dc_model.predict_match(team_a, team_b, is_hot=is_hot, team_a_injury_rate=a_inj, team_b_injury_rate=b_inj, country=country)
+        bp_p = bp_model.predict_match(team_a, team_b, is_hot=is_hot, team_a_injury_rate=a_inj, team_b_injury_rate=b_inj, country=country)
+        elo_p = elo_model.predict_match(team_a, team_b, is_hot=is_hot, team_a_injury_rate=a_inj, team_b_injury_rate=b_inj, country=country)
+        cl_p = sm_model.predict_match(team_a, team_b, elo_model.elo_ratings, elo_model, is_hot=is_hot, team_a_injury_rate=a_inj, team_b_injury_rate=b_inj, country=country)
         ens_p = ensemble_predictions(dc_p, bp_p, elo_p, cl_p)
         
         # Helper to structure model outputs
         def format_pred_record(p):
-            pred_home, pred_away, pred_prob = get_most_likely_score(p["score_probabilities"])
+            pred_team_a, pred_team_b, pred_prob = get_most_likely_score(p["score_probabilities"])
             return {
-                "predicted_home_score": pred_home,
-                "predicted_away_score": pred_away,
+                "predicted_team_a_score": pred_team_a,
+                "predicted_team_b_score": pred_team_b,
                 "predicted_score_probability": round(pred_prob, 3),
-                "home_xG": round(p["home_xG"], 2),
-                "away_xG": round(p["away_xG"], 2),
-                "home_win_prob": round(p["home_win"], 3),
-                "away_win_prob": round(p["away_win"], 3),
+                "team_a_xG": round(p["team_a_xG"], 2),
+                "team_b_xG": round(p["team_b_xG"], 2),
+                "team_a_win_prob": round(p["team_a_win"], 3),
+                "team_b_win_prob": round(p["team_b_win"], 3),
                 "draw_prob": round(p["draw"], 3)
             }
             
@@ -165,23 +166,23 @@ def run_prediction_pipeline():
         # Keep legacy columns on the match dict to prevent breaking dashboard backward compatibility
         # We populate these legacy fields with the Ensemble model predictions
         legacy_ref = m["predictions"]["ensemble"]
-        m["predicted_home_score"] = legacy_ref["predicted_home_score"]
-        m["predicted_away_score"] = legacy_ref["predicted_away_score"]
+        m["predicted_team_a_score"] = legacy_ref["predicted_team_a_score"]
+        m["predicted_team_b_score"] = legacy_ref["predicted_team_b_score"]
         m["predicted_score_probability"] = legacy_ref["predicted_score_probability"]
-        m["home_xG"] = legacy_ref["home_xG"]
-        m["away_xG"] = legacy_ref["away_xG"]
-        m["home_win_prob"] = legacy_ref["home_win_prob"]
-        m["away_win_prob"] = legacy_ref["away_win_prob"]
+        m["team_a_xG"] = legacy_ref["team_a_xG"]
+        m["team_b_xG"] = legacy_ref["team_b_xG"]
+        m["team_a_win_prob"] = legacy_ref["team_a_win_prob"]
+        m["team_b_win_prob"] = legacy_ref["team_b_win_prob"]
         m["draw_prob"] = legacy_ref["draw_prob"]
         
         # Evaluate accuracy of Ensemble model
-        if m["home_score"] is not None and m["away_score"] is not None:
-            actual_home = int(m["home_score"])
-            actual_away = int(m["away_score"])
+        if m["team_a_score"] is not None and m["team_b_score"] is not None:
+            actual_team_a = int(m["team_a_score"])
+            actual_team_b = int(m["team_b_score"])
             completed_predictions += 1
             
-            actual_outcome = "H" if actual_home > actual_away else "A" if actual_away > actual_home else "D"
-            pred_outcome = "H" if legacy_ref["predicted_home_score"] > legacy_ref["predicted_away_score"] else "A" if legacy_ref["predicted_away_score"] > legacy_ref["predicted_home_score"] else "D"
+            actual_outcome = "H" if actual_team_a > actual_team_b else "A" if actual_team_b > actual_team_a else "D"
+            pred_outcome = "H" if legacy_ref["predicted_team_a_score"] > legacy_ref["predicted_team_b_score"] else "A" if legacy_ref["predicted_team_b_score"] > legacy_ref["predicted_team_a_score"] else "D"
             
             if actual_outcome == pred_outcome:
                 correct_outcomes += 1

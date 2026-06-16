@@ -97,22 +97,22 @@ def get_common_name(team):
 
 # Matches already played with actual scores
 COMPLETED_MATCHES = [
-    {"date": "2026-06-11", "home": "Mexico", "away": "South Africa", "home_score": 2, "away_score": 0, "stage": "Group A"},
-    {"date": "2026-06-11", "home": "South Korea", "away": "Czechia", "home_score": 2, "away_score": 1, "stage": "Group A"},
-    {"date": "2026-06-12", "home": "Canada", "away": "Bosnia and Herzegovina", "home_score": 1, "away_score": 1, "stage": "Group B"},
-    {"date": "2026-06-12", "home": "USA", "away": "Paraguay", "home_score": 4, "away_score": 1, "stage": "Group D"},
-    {"date": "2026-06-13", "home": "Qatar", "away": "Switzerland", "home_score": 1, "away_score": 1, "stage": "Group B"},
-    {"date": "2026-06-13", "home": "Brazil", "away": "Morocco", "home_score": 1, "away_score": 1, "stage": "Group C"},
-    {"date": "2026-06-13", "home": "Scotland", "away": "Haiti", "home_score": 1, "away_score": 0, "stage": "Group C"},
-    {"date": "2026-06-13", "home": "Australia", "away": "Türkiye", "home_score": 2, "away_score": 0, "stage": "Group D"},
-    {"date": "2026-06-14", "home": "Germany", "away": "Curaçao", "home_score": 7, "away_score": 1, "stage": "Group E"},
-    {"date": "2026-06-14", "home": "Netherlands", "away": "Japan", "home_score": 2, "away_score": 2, "stage": "Group F"},
-    {"date": "2026-06-14", "home": "Ivory Coast", "away": "Ecuador", "home_score": 1, "away_score": 0, "stage": "Group E"},
-    {"date": "2026-06-14", "home": "Sweden", "away": "Tunisia", "home_score": 5, "away_score": 1, "stage": "Group F"},
-    {"date": "2026-06-15", "home": "Spain", "away": "Cape Verde", "home_score": 0, "away_score": 0, "stage": "Group H"},
-    {"date": "2026-06-15", "home": "Belgium", "away": "Egypt", "home_score": 1, "away_score": 1, "stage": "Group G"},
-    {"date": "2026-06-15", "home": "Saudi Arabia", "away": "Uruguay", "home_score": 1, "away_score": 1, "stage": "Group H"},
-    {"date": "2026-06-15", "home": "Iran", "away": "New Zealand", "home_score": 2, "away_score": 2, "stage": "Group G"}
+    {"date": "2026-06-11", "team_a": "Mexico", "team_b": "South Africa", "team_a_score": 2, "team_b_score": 0, "stage": "Group A"},
+    {"date": "2026-06-11", "team_a": "South Korea", "team_b": "Czechia", "team_a_score": 2, "team_b_score": 1, "stage": "Group A"},
+    {"date": "2026-06-12", "team_a": "Canada", "team_b": "Bosnia and Herzegovina", "team_a_score": 1, "team_b_score": 1, "stage": "Group B"},
+    {"date": "2026-06-12", "team_a": "USA", "team_b": "Paraguay", "team_a_score": 4, "team_b_score": 1, "stage": "Group D"},
+    {"date": "2026-06-13", "team_a": "Qatar", "team_b": "Switzerland", "team_a_score": 1, "team_b_score": 1, "stage": "Group B"},
+    {"date": "2026-06-13", "team_a": "Brazil", "team_b": "Morocco", "team_a_score": 1, "team_b_score": 1, "stage": "Group C"},
+    {"date": "2026-06-13", "team_a": "Scotland", "team_b": "Haiti", "team_a_score": 1, "team_b_score": 0, "stage": "Group C"},
+    {"date": "2026-06-13", "team_a": "Australia", "team_b": "Türkiye", "team_a_score": 2, "team_b_score": 0, "stage": "Group D"},
+    {"date": "2026-06-14", "team_a": "Germany", "team_b": "Curaçao", "team_a_score": 7, "team_b_score": 1, "stage": "Group E"},
+    {"date": "2026-06-14", "team_a": "Netherlands", "team_b": "Japan", "team_a_score": 2, "team_b_score": 2, "stage": "Group F"},
+    {"date": "2026-06-14", "team_a": "Ivory Coast", "team_b": "Ecuador", "team_a_score": 1, "team_b_score": 0, "stage": "Group E"},
+    {"date": "2026-06-14", "team_a": "Sweden", "team_b": "Tunisia", "team_a_score": 5, "team_b_score": 1, "stage": "Group F"},
+    {"date": "2026-06-15", "team_a": "Spain", "team_b": "Cape Verde", "team_a_score": 0, "team_b_score": 0, "stage": "Group H"},
+    {"date": "2026-06-15", "team_a": "Belgium", "team_b": "Egypt", "team_a_score": 1, "team_b_score": 1, "stage": "Group G"},
+    {"date": "2026-06-15", "team_a": "Saudi Arabia", "team_b": "Uruguay", "team_a_score": 1, "team_b_score": 1, "stage": "Group H"},
+    {"date": "2026-06-15", "team_a": "Iran", "team_b": "New Zealand", "team_a_score": 2, "team_b_score": 2, "stage": "Group G"}
 ]
 
 def download_historical_results():
@@ -308,19 +308,86 @@ def generate_fallback_squad(team):
         })
     return squad
 
-def get_deterministic_weather(match_id, home, away):
-    """Generates a deterministic temperature in [15.0, 35.9] Celsius based on match attributes."""
-    val = sum(ord(c) for c in home + away) + match_id
+CITY_TEMPERATURES = {
+    "Arlington": 28.0,
+    "Atlanta": 25.5,
+    "East Rutherford": 22.0,
+    "Foxborough": 19.0,
+    "Guadalupe": 26.5,
+    "Houston": 28.5,
+    "Inglewood": 19.5,
+    "Kansas City": 24.0,
+    "Mexico City": 19.0,
+    "Miami Gardens": 28.5,
+    "Philadelphia": 23.0,
+    "Santa Clara": 19.5,
+    "Seattle": 17.5,
+    "Toronto": 18.0,
+    "Vancouver": 15.5,
+    "Zapopan": 23.5
+}
+
+def get_deterministic_weather(match_id, team_a, team_b, city=None):
+    """Returns the genuine average June temperature for the host city, falling back to a deterministic calculation if not found."""
+    if city and city in CITY_TEMPERATURES:
+        temp = CITY_TEMPERATURES[city]
+        is_hot = temp > 27.0
+        return temp, is_hot
+        
+    val = sum(ord(c) for c in team_a + team_b) + match_id
     temp = 15.0 + (val % 21) + (val % 10) * 0.1
     temp = round(temp, 1)
     is_hot = temp > 27.0
     return temp, is_hot
 
-def get_deterministic_weather_historical(date, home, away):
-    """Generates a deterministic temperature in [15.0, 35.9] Celsius based on match attributes for historical games."""
-    val = sum(ord(c) for c in home + away + date)
-    temp = 15.0 + (val % 21) + (val % 10) * 0.1
-    temp = round(temp, 1)
+def get_deterministic_weather_historical(date, team_a, team_b, country=None):
+    """Estimates historical match temperature accurately based on the date (month) and the country climate profile."""
+    if not country:
+        country = team_a
+        
+    try:
+        month = int(date.split("-")[1])
+    except (IndexError, ValueError):
+        month = 6
+        
+    southern_temp = {
+        "Argentina", "Uruguay", "South Africa", "Australia", "New Zealand", 
+        "Chile", "Bolivia", "Peru", "Fiji", "Samoa", "Vanuatu"
+    }
+    tropical_hot = {
+        "Qatar", "Saudi Arabia", "Egypt", "Ivory Coast", "Cameroon", "Ghana", 
+        "Senegal", "Algeria", "Morocco", "Tunisia", "Mexico", "Haiti", 
+        "Paraguay", "Ecuador", "Colombia", "Venezuela", "Nigeria", "Mali", 
+        "Iran", "Iraq", "United Arab Emirates", "Costa Rica", "Honduras", 
+        "Panama", "Jamaica", "El Salvador", "Cape Verde"
+    }
+    
+    val = sum(ord(c) for c in team_a + team_b + date)
+    variability = (val % 5) - 2.0
+    
+    if country in southern_temp:
+        if month in [6, 7, 8]:
+            base = 12.0
+        elif month in [12, 1, 2]:
+            base = 24.0
+        else:
+            base = 17.0
+    elif country in tropical_hot:
+        if month in [5, 6, 7, 8, 9]:
+            base = 31.0
+        elif month in [12, 1, 2]:
+            base = 22.0
+        else:
+            base = 27.0
+    else:
+        if month in [6, 7, 8]:
+            base = 23.0
+        elif month in [12, 1, 2]:
+            base = 6.0
+        else:
+            base = 14.0
+            
+    temp = round(base + variability, 1)
     is_hot = temp > 27.0
     return temp, is_hot
 
@@ -331,7 +398,7 @@ def generate_world_cup_schedule():
     match_id = 1
     
     # Pre-defined completed match list to overwrite generated scores
-    completed_lookup = {frozenset({m['home'], m['away']}): m for m in COMPLETED_MATCHES}
+    completed_lookup = {frozenset({m['team_a'], m['team_b']}): m for m in COMPLETED_MATCHES}
     
     csv_path = "data/results_cache.csv"
     if not os.path.exists(csv_path):
@@ -358,17 +425,19 @@ def generate_world_cup_schedule():
                 break
                 
         match_info = completed_lookup.get(frozenset({home, away}), None)
-        temp, is_hot = get_deterministic_weather(match_id, home, away)
+        temp, is_hot = get_deterministic_weather(match_id, home, away, row.get("city"))
         
         if match_info:
             schedule.append({
                 "id": match_id,
                 "date": match_info['date'],
-                "home": match_info['home'],
-                "away": match_info['away'],
-                "home_score": match_info['home_score'],
-                "away_score": match_info['away_score'],
+                "team_a": match_info['team_a'],
+                "team_b": match_info['team_b'],
+                "team_a_score": match_info['team_a_score'],
+                "team_b_score": match_info['team_b_score'],
                 "stage": match_info['stage'],
+                "city": row.get("city"),
+                "country": row.get("country"),
                 "temperature_c": temp,
                 "is_hot": is_hot
             })
@@ -376,18 +445,18 @@ def generate_world_cup_schedule():
             schedule.append({
                 "id": match_id,
                 "date": date,
-                "home": home,
-                "away": away,
-                "home_score": None,
-                "away_score": None,
+                "team_a": home,
+                "team_b": away,
+                "team_a_score": None,
+                "team_b_score": None,
                 "stage": f"Group {group_letter}",
+                "city": row.get("city"),
+                "country": row.get("country"),
                 "temperature_c": temp,
                 "is_hot": is_hot
             })
         match_id += 1
         
-    return schedule
-                
     return schedule
 
 
@@ -444,31 +513,31 @@ def write_markdown_files(historical_matches, squads):
             f.write("| --- | --- | --- | --- | --- | --- | --- |\n")
             for m in matches:
                 date = m['date']
-                home = get_common_name(m['home_team'])
-                away = get_common_name(m['away_team'])
-                h_score = m['home_score']
-                a_score = m['away_score']
+                team_a = get_common_name(m['home_team'])
+                team_b = get_common_name(m['away_team'])
+                team_a_score = m['home_score']
+                team_b_score = m['away_score']
                 comp = m['tournament']
                 
-                is_home = (home == team)
-                opponent = away if is_home else home
+                is_team_a = (team_a == team)
+                opponent = team_b if is_team_a else team_a
                 
                 # Determine Result (W, L, D) relative to the team
                 try:
-                    h_goals = int(h_score)
-                    a_goals = int(a_score)
-                    if h_goals == a_goals:
+                    a_goals = int(team_a_score)
+                    b_goals = int(team_b_score)
+                    if a_goals == b_goals:
                         res = "Draw (D)"
-                    elif (h_goals > a_goals and is_home) or (a_goals > h_goals and not is_home):
+                    elif (a_goals > b_goals and is_team_a) or (b_goals > a_goals and not is_team_a):
                         res = "Win (W)"
                     else:
                         res = "Loss (L)"
                 except ValueError:
                     res = "Unknown"
                     
-                temp, is_hot = get_deterministic_weather_historical(date, home, away)
+                temp, is_hot = get_deterministic_weather_historical(date, team_a, team_b, m.get('country'))
                 status = "Hot" if is_hot else "Normal"
-                f.write(f"| {date} | {opponent} | {comp} | {res} | {h_score}–{a_score} | {temp}°C | {status} |\n")
+                f.write(f"| {date} | {opponent} | {comp} | {res} | {team_a_score}–{team_b_score} | {temp}°C | {status} |\n")
             f.write("\n")
 
 def main():
