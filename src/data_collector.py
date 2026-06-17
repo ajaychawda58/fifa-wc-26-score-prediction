@@ -112,7 +112,11 @@ COMPLETED_MATCHES = [
     {"date": "2026-06-15", "team_a": "Spain", "team_b": "Cape Verde", "team_a_score": 0, "team_b_score": 0, "stage": "Group H"},
     {"date": "2026-06-15", "team_a": "Belgium", "team_b": "Egypt", "team_a_score": 1, "team_b_score": 1, "stage": "Group G"},
     {"date": "2026-06-15", "team_a": "Saudi Arabia", "team_b": "Uruguay", "team_a_score": 1, "team_b_score": 1, "stage": "Group H"},
-    {"date": "2026-06-15", "team_a": "Iran", "team_b": "New Zealand", "team_a_score": 2, "team_b_score": 2, "stage": "Group G"}
+    {"date": "2026-06-15", "team_a": "Iran", "team_b": "New Zealand", "team_a_score": 2, "team_b_score": 2, "stage": "Group G"},
+    {"date": "2026-06-16", "team_a": "France", "team_b": "Senegal", "team_a_score": 3, "team_b_score": 1, "stage": "Group I"},
+    {"date": "2026-06-16", "team_a": "Iraq", "team_b": "Norway", "team_a_score": 1, "team_b_score": 4, "stage": "Group I"},
+    {"date": "2026-06-16", "team_a": "Argentina", "team_b": "Algeria", "team_a_score": 3, "team_b_score": 0, "stage": "Group J"},
+    {"date": "2026-06-16", "team_a": "Austria", "team_b": "Jordan", "team_a_score": 3, "team_b_score": 1, "stage": "Group J"}
 ]
 
 def download_historical_results():
