@@ -33,17 +33,17 @@
         "draw_prob": 0.22
       },
       "elo": {
-        "predicted_team_a_score": 1,
+        "predicted_team_a_score": 2,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.108,
         "team_a_xG": 2.0,
         "team_b_xG": 0.93,
-        "team_a_win_prob": 0.615,
+        "team_a_win_prob": 0.616,
         "team_b_win_prob": 0.171,
         "draw_prob": 0.213
       },
       "classifier": {
-        "predicted_team_a_score": 1,
+        "predicted_team_a_score": 2,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.104,
         "team_a_xG": 2.0,
@@ -58,7 +58,7 @@
         "predicted_score_probability": 0.143,
         "team_a_xG": 1.89,
         "team_b_xG": 0.71,
-        "team_a_win_prob": 0.645,
+        "team_a_win_prob": 0.646,
         "team_b_win_prob": 0.146,
         "draw_prob": 0.209
       }
@@ -68,7 +68,7 @@
     "predicted_score_probability": 0.143,
     "team_a_xG": 1.89,
     "team_b_xG": 0.71,
-    "team_a_win_prob": 0.645,
+    "team_a_win_prob": 0.646,
     "team_b_win_prob": 0.146,
     "draw_prob": 0.209
   },
@@ -108,7 +108,7 @@
       "elo": {
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 1,
-        "predicted_score_probability": 0.131,
+        "predicted_score_probability": 0.13,
         "team_a_xG": 1.21,
         "team_b_xG": 1.21,
         "team_a_win_prob": 0.362,
@@ -191,7 +191,7 @@
       "classifier": {
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 0,
-        "predicted_score_probability": 0.128,
+        "predicted_score_probability": 0.127,
         "team_a_xG": 1.58,
         "team_b_xG": 1.04,
         "team_a_win_prob": 0.546,
@@ -474,7 +474,7 @@
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.135,
-        "team_a_xG": 1.8,
+        "team_a_xG": 1.81,
         "team_b_xG": 0.8,
         "team_a_win_prob": 0.609,
         "team_b_win_prob": 0.163,
@@ -484,7 +484,7 @@
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.133,
-        "team_a_xG": 1.8,
+        "team_a_xG": 1.81,
         "team_b_xG": 0.8,
         "team_a_win_prob": 0.6,
         "team_b_win_prob": 0.288,
@@ -496,7 +496,7 @@
         "predicted_score_probability": 0.176,
         "team_a_xG": 1.51,
         "team_b_xG": 0.63,
-        "team_a_win_prob": 0.575,
+        "team_a_win_prob": 0.576,
         "team_b_win_prob": 0.165,
         "draw_prob": 0.259
       }
@@ -506,7 +506,7 @@
     "predicted_score_probability": 0.176,
     "team_a_xG": 1.51,
     "team_b_xG": 0.63,
-    "team_a_win_prob": 0.575,
+    "team_a_win_prob": 0.576,
     "team_b_win_prob": 0.165,
     "draw_prob": 0.259
   },
@@ -569,7 +569,7 @@
         "predicted_score_probability": 0.132,
         "team_a_xG": 1.43,
         "team_b_xG": 0.96,
-        "team_a_win_prob": 0.488,
+        "team_a_win_prob": 0.487,
         "team_b_win_prob": 0.257,
         "draw_prob": 0.256
       }
@@ -579,7 +579,7 @@
     "predicted_score_probability": 0.132,
     "team_a_xG": 1.43,
     "team_b_xG": 0.96,
-    "team_a_win_prob": 0.488,
+    "team_a_win_prob": 0.487,
     "team_b_win_prob": 0.257,
     "draw_prob": 0.256
   },
@@ -969,7 +969,7 @@
         "team_b_xG": 1.05,
         "team_a_win_prob": 0.497,
         "team_b_win_prob": 0.229,
-        "draw_prob": 0.275
+        "draw_prob": 0.274
       },
       "bivariate": {
         "predicted_team_a_score": 1,
@@ -1006,7 +1006,7 @@
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.116,
         "team_a_xG": 1.88,
-        "team_b_xG": 0.86,
+        "team_b_xG": 0.87,
         "team_a_win_prob": 0.591,
         "team_b_win_prob": 0.194,
         "draw_prob": 0.215
@@ -1016,7 +1016,7 @@
     "predicted_team_b_score": 0,
     "predicted_score_probability": 0.116,
     "team_a_xG": 1.88,
-    "team_b_xG": 0.86,
+    "team_b_xG": 0.87,
     "team_a_win_prob": 0.591,
     "team_b_win_prob": 0.194,
     "draw_prob": 0.215
@@ -1052,13 +1052,13 @@
         "team_b_xG": 0.43,
         "team_a_win_prob": 0.609,
         "team_b_win_prob": 0.103,
-        "draw_prob": 0.288
+        "draw_prob": 0.287
       },
       "elo": {
         "predicted_team_a_score": 2,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.155,
-        "team_a_xG": 2.69,
+        "team_a_xG": 2.7,
         "team_b_xG": 0.52,
         "team_a_win_prob": 0.822,
         "team_b_win_prob": 0.052,
@@ -1068,7 +1068,7 @@
         "predicted_team_a_score": 2,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.141,
-        "team_a_xG": 2.69,
+        "team_a_xG": 2.7,
         "team_b_xG": 0.52,
         "team_a_win_prob": 0.749,
         "team_b_win_prob": 0.188,
@@ -1131,7 +1131,7 @@
         "predicted_team_a_score": 0,
         "predicted_team_b_score": 2,
         "predicted_score_probability": 0.146,
-        "team_a_xG": 0.63,
+        "team_a_xG": 0.64,
         "team_b_xG": 2.01,
         "team_a_win_prob": 0.109,
         "team_b_win_prob": 0.693,
@@ -1141,7 +1141,7 @@
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 1,
         "predicted_score_probability": 0.121,
-        "team_a_xG": 0.63,
+        "team_a_xG": 0.64,
         "team_b_xG": 2.01,
         "team_a_win_prob": 0.251,
         "team_b_win_prob": 0.489,
@@ -1206,7 +1206,7 @@
         "predicted_score_probability": 0.135,
         "team_a_xG": 2.22,
         "team_b_xG": 0.71,
-        "team_a_win_prob": 0.71,
+        "team_a_win_prob": 0.711,
         "team_b_win_prob": 0.107,
         "draw_prob": 0.182
       },
@@ -1280,7 +1280,7 @@
         "team_a_xG": 0.84,
         "team_b_xG": 1.59,
         "team_a_win_prob": 0.2,
-        "team_b_win_prob": 0.547,
+        "team_b_win_prob": 0.548,
         "draw_prob": 0.253
       },
       "classifier": {
@@ -1332,7 +1332,7 @@
         "predicted_score_probability": 0.129,
         "team_a_xG": 1.63,
         "team_b_xG": 0.81,
-        "team_a_win_prob": 0.552,
+        "team_a_win_prob": 0.553,
         "team_b_win_prob": 0.173,
         "draw_prob": 0.275
       },
@@ -1350,9 +1350,9 @@
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.14,
-        "team_a_xG": 1.67,
+        "team_a_xG": 1.68,
         "team_b_xG": 0.82,
-        "team_a_win_prob": 0.574,
+        "team_a_win_prob": 0.575,
         "team_b_win_prob": 0.182,
         "draw_prob": 0.243
       },
@@ -1360,7 +1360,7 @@
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.153,
-        "team_a_xG": 1.67,
+        "team_a_xG": 1.68,
         "team_b_xG": 0.82,
         "team_a_win_prob": 0.628,
         "team_b_win_prob": 0.271,
@@ -1413,7 +1413,7 @@
         "predicted_team_a_score": 2,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.128,
-        "team_a_xG": 2.27,
+        "team_a_xG": 2.26,
         "team_b_xG": 0.77,
         "team_a_win_prob": 0.708,
         "team_b_win_prob": 0.108,
@@ -1425,7 +1425,7 @@
         "predicted_score_probability": 0.137,
         "team_a_xG": 2.14,
         "team_b_xG": 0.7,
-        "team_a_win_prob": 0.699,
+        "team_a_win_prob": 0.7,
         "team_b_win_prob": 0.111,
         "draw_prob": 0.189
       },
@@ -1496,7 +1496,7 @@
         "predicted_team_a_score": 2,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.163,
-        "team_a_xG": 2.58,
+        "team_a_xG": 2.59,
         "team_b_xG": 0.49,
         "team_a_win_prob": 0.816,
         "team_b_win_prob": 0.052,
@@ -1506,7 +1506,7 @@
         "predicted_team_a_score": 2,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.147,
-        "team_a_xG": 2.58,
+        "team_a_xG": 2.59,
         "team_b_xG": 0.49,
         "team_a_win_prob": 0.734,
         "team_b_win_prob": 0.198,
@@ -1515,22 +1515,22 @@
       "ensemble": {
         "predicted_team_a_score": 2,
         "predicted_team_b_score": 0,
-        "predicted_score_probability": 0.164,
+        "predicted_score_probability": 0.163,
         "team_a_xG": 2.35,
         "team_b_xG": 0.49,
         "team_a_win_prob": 0.768,
         "team_b_win_prob": 0.081,
-        "draw_prob": 0.152
+        "draw_prob": 0.151
       }
     },
     "predicted_team_a_score": 2,
     "predicted_team_b_score": 0,
-    "predicted_score_probability": 0.164,
+    "predicted_score_probability": 0.163,
     "team_a_xG": 2.35,
     "team_b_xG": 0.49,
     "team_a_win_prob": 0.768,
     "team_b_win_prob": 0.081,
-    "draw_prob": 0.152
+    "draw_prob": 0.151
   },
   {
     "id": 22,
@@ -1561,7 +1561,7 @@
         "predicted_score_probability": 0.172,
         "team_a_xG": 0.57,
         "team_b_xG": 1.83,
-        "team_a_win_prob": 0.102,
+        "team_a_win_prob": 0.103,
         "team_b_win_prob": 0.677,
         "draw_prob": 0.221
       },
@@ -1624,15 +1624,15 @@
         "predicted_score_probability": 0.148,
         "team_a_xG": 1.21,
         "team_b_xG": 0.92,
-        "team_a_win_prob": 0.411,
-        "team_b_win_prob": 0.265,
-        "draw_prob": 0.324
+        "team_a_win_prob": 0.41,
+        "team_b_win_prob": 0.266,
+        "draw_prob": 0.325
       },
       "bivariate": {
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.148,
-        "team_a_xG": 1.19,
+        "team_a_xG": 1.18,
         "team_b_xG": 0.91,
         "team_a_win_prob": 0.419,
         "team_b_win_prob": 0.274,
@@ -1641,18 +1641,18 @@
       "elo": {
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 1,
-        "predicted_score_probability": 0.128,
-        "team_a_xG": 1.37,
+        "predicted_score_probability": 0.129,
+        "team_a_xG": 1.35,
         "team_b_xG": 1.04,
-        "team_a_win_prob": 0.445,
-        "team_b_win_prob": 0.283,
-        "draw_prob": 0.272
+        "team_a_win_prob": 0.438,
+        "team_b_win_prob": 0.287,
+        "draw_prob": 0.274
       },
       "classifier": {
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 0,
-        "predicted_score_probability": 0.134,
-        "team_a_xG": 1.37,
+        "predicted_score_probability": 0.136,
+        "team_a_xG": 1.35,
         "team_b_xG": 1.04,
         "team_a_win_prob": 0.479,
         "team_b_win_prob": 0.363,
@@ -1662,21 +1662,21 @@
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.132,
-        "team_a_xG": 1.28,
+        "team_a_xG": 1.27,
         "team_b_xG": 0.97,
-        "team_a_win_prob": 0.433,
-        "team_b_win_prob": 0.287,
-        "draw_prob": 0.28
+        "team_a_win_prob": 0.431,
+        "team_b_win_prob": 0.289,
+        "draw_prob": 0.281
       }
     },
     "predicted_team_a_score": 1,
     "predicted_team_b_score": 0,
     "predicted_score_probability": 0.132,
-    "team_a_xG": 1.28,
+    "team_a_xG": 1.27,
     "team_b_xG": 0.97,
-    "team_a_win_prob": 0.433,
-    "team_b_win_prob": 0.287,
-    "draw_prob": 0.28
+    "team_a_win_prob": 0.431,
+    "team_b_win_prob": 0.289,
+    "draw_prob": 0.281
   },
   {
     "id": 24,
@@ -1724,7 +1724,7 @@
       "classifier": {
         "predicted_team_a_score": 0,
         "predicted_team_b_score": 1,
-        "predicted_score_probability": 0.137,
+        "predicted_score_probability": 0.136,
         "team_a_xG": 1.43,
         "team_b_xG": 0.94,
         "team_a_win_prob": 0.439,
@@ -1797,7 +1797,7 @@
       "classifier": {
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 0,
-        "predicted_score_probability": 0.14,
+        "predicted_score_probability": 0.139,
         "team_a_xG": 1.47,
         "team_b_xG": 1.05,
         "team_a_win_prob": 0.549,
@@ -1842,7 +1842,7 @@
         "predicted_team_b_score": 1,
         "predicted_score_probability": 0.13,
         "team_a_xG": 1.62,
-        "team_b_xG": 1.23,
+        "team_b_xG": 1.22,
         "team_a_win_prob": 0.45,
         "team_b_win_prob": 0.276,
         "draw_prob": 0.274
@@ -1943,7 +1943,7 @@
       "classifier": {
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 0,
-        "predicted_score_probability": 0.148,
+        "predicted_score_probability": 0.147,
         "team_a_xG": 1.69,
         "team_b_xG": 0.81,
         "team_a_win_prob": 0.611,
@@ -2084,7 +2084,7 @@
         "team_b_xG": 1.62,
         "team_a_win_prob": 0.2,
         "team_b_win_prob": 0.551,
-        "draw_prob": 0.25
+        "draw_prob": 0.249
       },
       "classifier": {
         "predicted_team_a_score": 1,
@@ -2099,7 +2099,7 @@
       "ensemble": {
         "predicted_team_a_score": 0,
         "predicted_team_b_score": 1,
-        "predicted_score_probability": 0.166,
+        "predicted_score_probability": 0.165,
         "team_a_xG": 0.71,
         "team_b_xG": 1.35,
         "team_a_win_prob": 0.205,
@@ -2109,7 +2109,7 @@
     },
     "predicted_team_a_score": 0,
     "predicted_team_b_score": 1,
-    "predicted_score_probability": 0.166,
+    "predicted_score_probability": 0.165,
     "team_a_xG": 0.71,
     "team_b_xG": 1.35,
     "team_a_win_prob": 0.205,
@@ -2155,7 +2155,7 @@
         "predicted_score_probability": 0.15,
         "team_a_xG": 3.01,
         "team_b_xG": 0.49,
-        "team_a_win_prob": 0.858,
+        "team_a_win_prob": 0.859,
         "team_b_win_prob": 0.039,
         "draw_prob": 0.103
       },
@@ -2299,7 +2299,7 @@
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 1,
         "predicted_score_probability": 0.128,
-        "team_a_xG": 1.1,
+        "team_a_xG": 1.11,
         "team_b_xG": 1.35,
         "team_a_win_prob": 0.306,
         "team_b_win_prob": 0.423,
@@ -2309,7 +2309,7 @@
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.146,
-        "team_a_xG": 1.1,
+        "team_a_xG": 1.11,
         "team_b_xG": 1.35,
         "team_a_win_prob": 0.471,
         "team_b_win_prob": 0.371,
@@ -2322,7 +2322,7 @@
         "team_a_xG": 1.19,
         "team_b_xG": 1.35,
         "team_a_win_prob": 0.348,
-        "team_b_win_prob": 0.39,
+        "team_b_win_prob": 0.389,
         "draw_prob": 0.262
       }
     },
@@ -2332,7 +2332,7 @@
     "team_a_xG": 1.19,
     "team_b_xG": 1.35,
     "team_a_win_prob": 0.348,
-    "team_b_win_prob": 0.39,
+    "team_b_win_prob": 0.389,
     "draw_prob": 0.262
   },
   {
@@ -2354,7 +2354,7 @@
         "predicted_score_probability": 0.143,
         "team_a_xG": 1.39,
         "team_b_xG": 1.06,
-        "team_a_win_prob": 0.428,
+        "team_a_win_prob": 0.429,
         "team_b_win_prob": 0.272,
         "draw_prob": 0.3
       },
@@ -2374,7 +2374,7 @@
         "predicted_score_probability": 0.133,
         "team_a_xG": 1.65,
         "team_b_xG": 0.87,
-        "team_a_win_prob": 0.555,
+        "team_a_win_prob": 0.556,
         "team_b_win_prob": 0.198,
         "draw_prob": 0.246
       },
@@ -2520,7 +2520,7 @@
         "predicted_score_probability": 0.144,
         "team_a_xG": 1.61,
         "team_b_xG": 0.81,
-        "team_a_win_prob": 0.561,
+        "team_a_win_prob": 0.562,
         "team_b_win_prob": 0.188,
         "draw_prob": 0.25
       },
@@ -2666,7 +2666,7 @@
         "predicted_score_probability": 0.131,
         "team_a_xG": 1.89,
         "team_b_xG": 0.79,
-        "team_a_win_prob": 0.629,
+        "team_a_win_prob": 0.63,
         "team_b_win_prob": 0.152,
         "draw_prob": 0.219
       },
@@ -2833,7 +2833,7 @@
         "team_a_xG": 1.94,
         "team_b_xG": 0.53,
         "team_a_win_prob": 0.665,
-        "team_b_win_prob": 0.122,
+        "team_b_win_prob": 0.121,
         "draw_prob": 0.214
       }
     },
@@ -2843,7 +2843,7 @@
     "team_a_xG": 1.94,
     "team_b_xG": 0.53,
     "team_a_win_prob": 0.665,
-    "team_b_win_prob": 0.122,
+    "team_b_win_prob": 0.121,
     "draw_prob": 0.214
   },
   {
@@ -2906,7 +2906,7 @@
         "team_a_xG": 1.47,
         "team_b_xG": 0.52,
         "team_a_win_prob": 0.573,
-        "team_b_win_prob": 0.146,
+        "team_b_win_prob": 0.145,
         "draw_prob": 0.281
       }
     },
@@ -2916,7 +2916,7 @@
     "team_a_xG": 1.47,
     "team_b_xG": 0.52,
     "team_a_win_prob": 0.573,
-    "team_b_win_prob": 0.146,
+    "team_b_win_prob": 0.145,
     "draw_prob": 0.281
   },
   {
@@ -2958,7 +2958,7 @@
         "predicted_score_probability": 0.153,
         "team_a_xG": 3.14,
         "team_b_xG": 0.48,
-        "team_a_win_prob": 0.87,
+        "team_a_win_prob": 0.871,
         "team_b_win_prob": 0.035,
         "draw_prob": 0.095
       },
@@ -3038,7 +3038,7 @@
       "classifier": {
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 0,
-        "predicted_score_probability": 0.132,
+        "predicted_score_probability": 0.131,
         "team_a_xG": 1.12,
         "team_b_xG": 1.24,
         "team_a_win_prob": 0.412,
@@ -3250,8 +3250,8 @@
         "predicted_score_probability": 0.157,
         "team_a_xG": 2.37,
         "team_b_xG": 0.55,
-        "team_a_win_prob": 0.773,
-        "team_b_win_prob": 0.071,
+        "team_a_win_prob": 0.774,
+        "team_b_win_prob": 0.07,
         "draw_prob": 0.156
       },
       "classifier": {
@@ -3374,7 +3374,7 @@
         "predicted_team_a_score": 2,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.145,
-        "team_a_xG": 2.57,
+        "team_a_xG": 2.56,
         "team_b_xG": 0.6,
         "team_a_win_prob": 0.779,
         "team_b_win_prob": 0.061,
@@ -3384,27 +3384,27 @@
         "predicted_team_a_score": 2,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.145,
-        "team_a_xG": 2.56,
+        "team_a_xG": 2.55,
         "team_b_xG": 0.62,
         "team_a_win_prob": 0.787,
-        "team_b_win_prob": 0.066,
-        "draw_prob": 0.146
+        "team_b_win_prob": 0.067,
+        "draw_prob": 0.147
       },
       "elo": {
         "predicted_team_a_score": 2,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.144,
-        "team_a_xG": 2.29,
+        "team_a_xG": 2.25,
         "team_b_xG": 0.64,
-        "team_a_win_prob": 0.74,
-        "team_b_win_prob": 0.09,
-        "draw_prob": 0.17
+        "team_a_win_prob": 0.733,
+        "team_b_win_prob": 0.093,
+        "draw_prob": 0.174
       },
       "classifier": {
         "predicted_team_a_score": 2,
         "predicted_team_b_score": 0,
-        "predicted_score_probability": 0.138,
-        "team_a_xG": 2.29,
+        "predicted_score_probability": 0.14,
+        "team_a_xG": 2.25,
         "team_b_xG": 0.64,
         "team_a_win_prob": 0.711,
         "team_b_win_prob": 0.216,
@@ -3414,21 +3414,21 @@
         "predicted_team_a_score": 2,
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.144,
-        "team_a_xG": 2.44,
+        "team_a_xG": 2.42,
         "team_b_xG": 0.62,
-        "team_a_win_prob": 0.759,
-        "team_b_win_prob": 0.094,
-        "draw_prob": 0.147
+        "team_a_win_prob": 0.756,
+        "team_b_win_prob": 0.095,
+        "draw_prob": 0.149
       }
     },
     "predicted_team_a_score": 2,
     "predicted_team_b_score": 0,
     "predicted_score_probability": 0.144,
-    "team_a_xG": 2.44,
+    "team_a_xG": 2.42,
     "team_b_xG": 0.62,
-    "team_a_win_prob": 0.759,
-    "team_b_win_prob": 0.094,
-    "draw_prob": 0.147
+    "team_a_win_prob": 0.756,
+    "team_b_win_prob": 0.095,
+    "draw_prob": 0.149
   },
   {
     "id": 48,
@@ -3450,7 +3450,7 @@
         "team_a_xG": 0.6,
         "team_b_xG": 2.12,
         "team_a_win_prob": 0.084,
-        "team_b_win_prob": 0.712,
+        "team_b_win_prob": 0.711,
         "draw_prob": 0.204
       },
       "bivariate": {
@@ -3468,7 +3468,7 @@
         "predicted_team_b_score": 2,
         "predicted_score_probability": 0.15,
         "team_a_xG": 0.59,
-        "team_b_xG": 2.4,
+        "team_b_xG": 2.41,
         "team_a_win_prob": 0.075,
         "team_b_win_prob": 0.769,
         "draw_prob": 0.156
@@ -3478,7 +3478,7 @@
         "predicted_team_b_score": 1,
         "predicted_score_probability": 0.132,
         "team_a_xG": 0.59,
-        "team_b_xG": 2.4,
+        "team_b_xG": 2.41,
         "team_a_win_prob": 0.216,
         "team_b_win_prob": 0.504,
         "draw_prob": 0.28
@@ -3707,7 +3707,7 @@
         "predicted_team_b_score": 1,
         "predicted_score_probability": 0.128,
         "team_a_xG": 1.09,
-        "team_b_xG": 1.42,
+        "team_b_xG": 1.43,
         "team_a_win_prob": 0.295,
         "team_b_win_prob": 0.434,
         "draw_prob": 0.271
@@ -3717,7 +3717,7 @@
     "predicted_team_b_score": 1,
     "predicted_score_probability": 0.128,
     "team_a_xG": 1.09,
-    "team_b_xG": 1.42,
+    "team_b_xG": 1.43,
     "team_a_win_prob": 0.295,
     "team_b_win_prob": 0.434,
     "draw_prob": 0.271
@@ -3907,7 +3907,7 @@
         "predicted_score_probability": 0.149,
         "team_a_xG": 2.5,
         "team_b_xG": 0.59,
-        "team_a_win_prob": 0.782,
+        "team_a_win_prob": 0.783,
         "team_b_win_prob": 0.07,
         "draw_prob": 0.148
       },
@@ -3960,7 +3960,7 @@
         "predicted_score_probability": 0.108,
         "team_a_xG": 2.39,
         "team_b_xG": 0.92,
-        "team_a_win_prob": 0.679,
+        "team_a_win_prob": 0.678,
         "team_b_win_prob": 0.122,
         "draw_prob": 0.2
       },
@@ -4105,7 +4105,7 @@
         "predicted_team_b_score": 3,
         "predicted_score_probability": 0.135,
         "team_a_xG": 0.62,
-        "team_b_xG": 3.45,
+        "team_b_xG": 3.44,
         "team_a_win_prob": 0.035,
         "team_b_win_prob": 0.864,
         "draw_prob": 0.101
@@ -4125,7 +4125,7 @@
         "predicted_team_b_score": 2,
         "predicted_score_probability": 0.142,
         "team_a_xG": 0.66,
-        "team_b_xG": 2.22,
+        "team_b_xG": 2.23,
         "team_a_win_prob": 0.098,
         "team_b_win_prob": 0.724,
         "draw_prob": 0.178
@@ -4135,7 +4135,7 @@
         "predicted_team_b_score": 1,
         "predicted_score_probability": 0.119,
         "team_a_xG": 0.66,
-        "team_b_xG": 2.22,
+        "team_b_xG": 2.23,
         "team_a_win_prob": 0.262,
         "team_b_win_prob": 0.486,
         "draw_prob": 0.252
@@ -4181,7 +4181,7 @@
         "team_b_xG": 1.41,
         "team_a_win_prob": 0.183,
         "team_b_win_prob": 0.515,
-        "draw_prob": 0.303
+        "draw_prob": 0.302
       },
       "bivariate": {
         "predicted_team_a_score": 0,
@@ -4272,7 +4272,7 @@
         "predicted_score_probability": 0.139,
         "team_a_xG": 1.55,
         "team_b_xG": 0.87,
-        "team_a_win_prob": 0.53,
+        "team_a_win_prob": 0.531,
         "team_b_win_prob": 0.212,
         "draw_prob": 0.257
       },
@@ -4342,9 +4342,9 @@
       "elo": {
         "predicted_team_a_score": 0,
         "predicted_team_b_score": 1,
-        "predicted_score_probability": 0.137,
+        "predicted_score_probability": 0.136,
         "team_a_xG": 0.81,
-        "team_b_xG": 1.74,
+        "team_b_xG": 1.75,
         "team_a_win_prob": 0.173,
         "team_b_win_prob": 0.592,
         "draw_prob": 0.235
@@ -4354,7 +4354,7 @@
         "predicted_team_b_score": 1,
         "predicted_score_probability": 0.119,
         "team_a_xG": 0.81,
-        "team_b_xG": 1.74,
+        "team_b_xG": 1.75,
         "team_a_win_prob": 0.271,
         "team_b_win_prob": 0.477,
         "draw_prob": 0.252
@@ -4482,7 +4482,7 @@
         "team_a_xG": 0.55,
         "team_b_xG": 2.12,
         "team_a_win_prob": 0.078,
-        "team_b_win_prob": 0.738,
+        "team_b_win_prob": 0.739,
         "draw_prob": 0.183
       },
       "elo": {
@@ -4553,7 +4553,7 @@
         "predicted_team_b_score": 0,
         "predicted_score_probability": 0.294,
         "team_a_xG": 0.56,
-        "team_b_xG": 0.72,
+        "team_b_xG": 0.73,
         "team_a_win_prob": 0.234,
         "team_b_win_prob": 0.341,
         "draw_prob": 0.425
@@ -4730,7 +4730,7 @@
         "predicted_score_probability": 0.123,
         "team_a_xG": 0.75,
         "team_b_xG": 2.12,
-        "team_a_win_prob": 0.144,
+        "team_a_win_prob": 0.145,
         "team_b_win_prob": 0.641,
         "draw_prob": 0.215
       }
@@ -4740,7 +4740,7 @@
     "predicted_score_probability": 0.123,
     "team_a_xG": 0.75,
     "team_b_xG": 2.12,
-    "team_a_win_prob": 0.144,
+    "team_a_win_prob": 0.145,
     "team_b_win_prob": 0.641,
     "draw_prob": 0.215
   },
@@ -4785,7 +4785,7 @@
         "team_b_xG": 0.83,
         "team_a_win_prob": 0.582,
         "team_b_win_prob": 0.179,
-        "draw_prob": 0.239
+        "draw_prob": 0.238
       },
       "classifier": {
         "predicted_team_a_score": 1,
@@ -4804,7 +4804,7 @@
         "team_a_xG": 1.59,
         "team_b_xG": 0.74,
         "team_a_win_prob": 0.571,
-        "team_b_win_prob": 0.183,
+        "team_b_win_prob": 0.184,
         "draw_prob": 0.245
       }
     },
@@ -4814,7 +4814,7 @@
     "team_a_xG": 1.59,
     "team_b_xG": 0.74,
     "team_a_win_prob": 0.571,
-    "team_b_win_prob": 0.183,
+    "team_b_win_prob": 0.184,
     "draw_prob": 0.245
   },
   {
@@ -4928,9 +4928,9 @@
         "predicted_team_b_score": 2,
         "predicted_score_probability": 0.158,
         "team_a_xG": 0.49,
-        "team_b_xG": 2.76,
+        "team_b_xG": 2.77,
         "team_a_win_prob": 0.046,
-        "team_b_win_prob": 0.835,
+        "team_b_win_prob": 0.836,
         "draw_prob": 0.119
       },
       "classifier": {
@@ -4938,7 +4938,7 @@
         "predicted_team_b_score": 1,
         "predicted_score_probability": 0.148,
         "team_a_xG": 0.49,
-        "team_b_xG": 2.76,
+        "team_b_xG": 2.77,
         "team_a_win_prob": 0.159,
         "team_b_win_prob": 0.525,
         "draw_prob": 0.316
@@ -5023,7 +5023,7 @@
         "team_a_xG": 1.05,
         "team_b_xG": 1.24,
         "team_a_win_prob": 0.313,
-        "team_b_win_prob": 0.402,
+        "team_b_win_prob": 0.403,
         "draw_prob": 0.284
       }
     },
@@ -5033,7 +5033,7 @@
     "team_a_xG": 1.05,
     "team_b_xG": 1.24,
     "team_a_win_prob": 0.313,
-    "team_b_win_prob": 0.402,
+    "team_b_win_prob": 0.403,
     "draw_prob": 0.284
   },
   {
@@ -5075,7 +5075,7 @@
         "predicted_score_probability": 0.129,
         "team_a_xG": 1.09,
         "team_b_xG": 1.35,
-        "team_a_win_prob": 0.303,
+        "team_a_win_prob": 0.304,
         "team_b_win_prob": 0.424,
         "draw_prob": 0.272
       },
@@ -5127,7 +5127,7 @@
         "predicted_team_b_score": 2,
         "predicted_score_probability": 0.156,
         "team_a_xG": 0.54,
-        "team_b_xG": 2.5,
+        "team_b_xG": 2.49,
         "team_a_win_prob": 0.055,
         "team_b_win_prob": 0.785,
         "draw_prob": 0.16
@@ -5137,27 +5137,27 @@
         "predicted_team_b_score": 2,
         "predicted_score_probability": 0.154,
         "team_a_xG": 0.56,
-        "team_b_xG": 2.52,
+        "team_b_xG": 2.51,
         "team_a_win_prob": 0.06,
-        "team_b_win_prob": 0.795,
+        "team_b_win_prob": 0.794,
         "draw_prob": 0.145
       },
       "elo": {
         "predicted_team_a_score": 0,
         "predicted_team_b_score": 2,
-        "predicted_score_probability": 0.152,
+        "predicted_score_probability": 0.154,
         "team_a_xG": 0.52,
-        "team_b_xG": 2.79,
-        "team_a_win_prob": 0.048,
-        "team_b_win_prob": 0.833,
-        "draw_prob": 0.119
+        "team_b_xG": 2.75,
+        "team_a_win_prob": 0.05,
+        "team_b_win_prob": 0.827,
+        "draw_prob": 0.123
       },
       "classifier": {
         "predicted_team_a_score": 1,
         "predicted_team_b_score": 1,
         "predicted_score_probability": 0.141,
         "team_a_xG": 0.52,
-        "team_b_xG": 2.79,
+        "team_b_xG": 2.75,
         "team_a_win_prob": 0.185,
         "team_b_win_prob": 0.516,
         "draw_prob": 0.298
@@ -5165,22 +5165,22 @@
       "ensemble": {
         "predicted_team_a_score": 0,
         "predicted_team_b_score": 2,
-        "predicted_score_probability": 0.145,
+        "predicted_score_probability": 0.146,
         "team_a_xG": 0.53,
-        "team_b_xG": 2.64,
+        "team_b_xG": 2.61,
         "team_a_win_prob": 0.074,
-        "team_b_win_prob": 0.761,
-        "draw_prob": 0.165
+        "team_b_win_prob": 0.759,
+        "draw_prob": 0.167
       }
     },
     "predicted_team_a_score": 0,
     "predicted_team_b_score": 2,
-    "predicted_score_probability": 0.145,
+    "predicted_score_probability": 0.146,
     "team_a_xG": 0.53,
-    "team_b_xG": 2.64,
+    "team_b_xG": 2.61,
     "team_a_win_prob": 0.074,
-    "team_b_win_prob": 0.761,
-    "draw_prob": 0.165
+    "team_b_win_prob": 0.759,
+    "draw_prob": 0.167
   },
   {
     "id": 72,
