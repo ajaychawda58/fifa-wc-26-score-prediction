@@ -309,7 +309,7 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 | 1 | 1GK | Vozinha | 40 | 90 | 0 | Chaves | 13.0 months |
 | 2 | 2DF | Stopira | 38 | 61 | 4 | Torreense | 14.5 months |
 | 3 | 2DF | Diney | 31 | 32 | 2 | Al Bataeh | 4.5 months |
-| 4 | 2DF | Roberto Lopes | 33 | 45 | 0 | Shamrock Rovers | None |
+| 4 | 2DF | Pico | 33 | 45 | 0 | Shamrock Rovers | 20.5 months |
 | 5 | 2DF | Logan Costa | 25 | 28 | 0 | Villarreal | 21.0 months |
 | 6 | 3MF | Kevin Pina | 29 | 31 | 3 | Krasnodar | 5.5 months |
 | 7 | 3MF | Jovane Cabral | 27 | 29 | 3 | Estrela Amadora | None |
@@ -613,7 +613,7 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 | 9 | 4FW | Harry Kane | 32 | 114 | 79 | Bayern Munich | 5.5 months |
 | 10 | 3MF | Jude Bellingham | 22 | 48 | 6 | Real Madrid | 8.0 months |
 | 11 | 4FW | Marcus Rashford | 28 | 72 | 18 | Barcelona | None |
-| 12 | 2DF | Tino Livramento | 23 | 6 | 0 | Newcastle United | 4.5 months |
+| 12 | 2DF | Trevoh Chalobah | 26 | 1 | 0 | Chelsea | 15.5 months |
 | 13 | 1GK | Dean Henderson | 29 | 5 | 0 | Crystal Palace | 32.5 months |
 | 14 | 3MF | Jordan Henderson | 35 | 90 | 3 | Brentford | None |
 | 15 | 2DF | Dan Burn | 34 | 8 | 0 | Newcastle United | 2.5 months |
@@ -794,18 +794,18 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 | 5 | 2DF | Milad Mohammadi | 32 | 76 | 1 | Persepolis | None |
 | 6 | 3MF | Saeid Ezatolahi | 29 | 83 | 2 | Shabab Al Ahli | 14.0 months |
 | 7 | 3MF | Alireza Jahanbakhsh | 32 | 98 | 17 | Dender | 3.0 months |
-| 8 | 3MF | Mohammad Mohebi | 27 | 36 | 14 | Rostov | None |
-| 9 | 4FW | Mehdi Taremi | 33 | 106 | 60 | Olympiacos | 32.5 months |
+| 8 | 3MF | Mohammad Mohebi | 27 | 37 | 14 | Rostov | None |
+| 9 | 4FW | Mehdi Taremi | 33 | 105 | 60 | Olympiacos | 32.5 months |
 | 10 | 4FW | Mehdi Ghayedi | 27 | 30 | 10 | Al Nasr | 6.0 months |
 | 11 | 4FW | Ali Alipour | 30 | 14 | 1 | Persepolis | 24.5 months |
 | 12 | 1GK | Payam Niazmand | 31 | 15 | 0 | Persepolis | 3.0 months |
 | 13 | 2DF | Hossein Kanaanizadegan | 32 | 65 | 6 | Persepolis | 26.5 months |
 | 14 | 3MF | Saman Ghoddos | 32 | 68 | 3 | Kalba | None |
 | 15 | 3MF | Rouzbeh Cheshmi | 32 | 40 | 3 | Esteghlal | None |
-| 16 | 3MF | Mehdi Torabi | 31 | 52 | 7 | Tractor | None |
-| 17 | 2DF | Aria Yousefi | 24 | 14 | 1 | Sepahan | 9.0 months |
+| 16 | 3MF | Mahdi Torabi | 31 | 52 | 7 | Tractor | None |
+| 17 | 2DF | Arya Yousefi | 24 | 14 | 1 | Sepahan | 17.0 months |
 | 18 | 4FW | Amirhossein Hosseinzadeh | 25 | 18 | 5 | Tractor | 13.0 months |
-| 19 | 2DF | Ali Nemati | 30 | 17 | 0 | Foolad | None |
+| 19 | 2DF | Ali Nemati | 30 | 18 | 0 | Foolad | None |
 | 20 | 4FW | Shahriyar Moghanlou | 31 | 21 | 2 | Kalba | 32.0 months |
 | 21 | 3MF | Mohammad Ghorbani | 24 | 16 | 0 | Al Wahda | 7.0 months |
 | 22 | 1GK | Hossein Hosseini | 33 | 13 | 0 | Sepahan | 17.0 months |
@@ -829,7 +829,7 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 | 3 | 2DF | Hussein Ali | 24 | 27 | 1 | Pogoń Szczecin | 26.0 months |
 | 4 | 2DF | Zaid Tahseen | 25 | 28 | 1 | Pakhtakor | None |
 | 5 | 2DF | Akam Hashim | 27 | 14 | 1 | Al-Zawraa | None |
-| 6 | 2DF | Manaf Younis | 29 | 34 | 1 | Al-Shorta | 13.5 months |
+| 6 | 2DF | Munaf Younis | 29 | 34 | 1 | Al-Shorta | 23.5 months |
 | 7 | 3MF | Youssef Amyn | 22 | 27 | 2 | AEK Larnaca | 26.0 months |
 | 8 | 3MF | Ibrahim Bayesh | 26 | 76 | 8 | Al Dhafra | None |
 | 9 | 4FW | Ali Al-Hamadi | 24 | 20 | 5 | Luton Town | None |
@@ -1017,18 +1017,18 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 | 6 | 3MF | Ayyoub Bouaddi | 18 | 3 | 0 | Lille | 6.5 months |
 | 7 | 3MF | Chemsdine Talbi | 21 | 5 | 0 | Sunderland | None |
 | 8 | 3MF | Azzedine Ounahi | 26 | 49 | 9 | Girona | 25.5 months |
-| 9 | 4FW | Soufiane Rahimi | 30 | 27 | 6 | Al Ain | None |
+| 9 | 4FW | Soufiane Rahimi | 30 | 37 | 12 | Al Ain | None |
 | 10 | 4FW | Brahim Díaz | 26 | 26 | 14 | Real Madrid | 8.0 months |
-| 11 | 3MF | Ismael Saibari | 25 | 31 | 9 | PSV Eindhoven | 28.5 months |
+| 11 | 3MF | Ismael Saibari | 25 | 30 | 9 | PSV Eindhoven | 28.5 months |
 | 12 | 1GK | Munir Mohamedi | 37 | 52 | 0 | RS Berkane | 5.5 months |
 | 13 | 2DF | Zakaria El Ouahdi | 24 | 3 | 0 | Genk | 30.0 months |
 | 14 | 2DF | Issa Diop | 29 | 4 | 0 | Fulham | None |
 | 15 | 3MF | Samir El Mourabet | 20 | 4 | 0 | Strasbourg | None |
-| 16 | 3MF | Gessime Yassine | 20 | 5 | 0 | Strasbourg | 31.0 months |
+| 16 | 3MF | Gessime Yassine | 20 | 4 | 0 | Strasbourg | 31.0 months |
 | 17 | 4FW | Amine Sbaï | 25 | 2 | 0 | Angers | 23.0 months |
 | 18 | 2DF | Chadi Riad | 22 | 6 | 1 | Crystal Palace | 19.0 months |
-| 19 | 2DF | Youssef Belammari | 27 | 11 | 0 | Al Ahly | None |
-| 20 | 4FW | Ayoub El Kaabi | 32 | 58 | 23 | Olympiacos | 9.5 months |
+| 19 | 2DF | Youssef Belammari | 27 | 18 | 0 | Al Ahly | None |
+| 20 | 4FW | Ayoub El Kaabi | 32 | 71 | 35 | Olympiacos | 9.5 months |
 | 21 | 4FW | Ayoube Amaimouni | 21 | 2 | 0 | Eintracht Frankfurt | 6.0 months |
 | 22 | 1GK | Ahmed Reda Tagnaouti | 30 | 3 | 0 | AS FAR | 9.0 months |
 | 23 | 3MF | Bilal El Khannouss | 22 | 37 | 3 | VfB Stuttgart | 23.5 months |
@@ -1269,7 +1269,7 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 | No. | Position | Player Name | Age | Caps | Goals | Club | Time Since Last Injury |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | 1GK | Mahmud Abunada | 26 | 5 | 0 | Al-Rayyan | None |
-| 2 | 2DF | Pedro Miguel | 35 | 99 | 3 | Al-Sadd | 7.0 months |
+| 2 | 2DF | Pedro Miguel | 35 | 105 | 3 | Al-Sadd | 7.0 months |
 | 3 | 2DF | Lucas Mendes | 35 | 25 | 1 | Al-Wakrah | None |
 | 4 | 2DF | Issa Laye | 28 | 4 | 0 | Al-Arabi | 23.5 months |
 | 5 | 2DF | Jassem Gaber | 24 | 32 | 1 | Al-Rayyan | None |
@@ -1758,7 +1758,7 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 | 7 | 3MF | Otabek Shukurov | 29 | 84 | 9 | Baniyas | 5.5 months |
 | 8 | 3MF | Jamshid Iskanderov | 32 | 38 | 4 | Neftchi Fergana | 4.0 months |
 | 9 | 3MF | Odiljon Hamrobekov | 30 | 72 | 1 | Tractor | 7.5 months |
-| 10 | 3MF | Jaloliddin Masharipov | 32 | 74 | 12 | Esteghlal | None |
+| 10 | 3MF | Ruslanbek Jiyanov | 25 | 5 | 0 | Navbahor Namangan | 35.5 months |
 | 11 | 3MF | Oston Urunov | 25 | 42 | 10 | Persepolis | 6.0 months |
 | 12 | 1GK | Abduvohid Nematov | 25 | 8 | 0 | Nasaf | None |
 | 13 | 2DF | Sherzod Nasrullaev | 27 | 31 | 2 | Nasaf | None |
@@ -1770,7 +1770,7 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 | 19 | 3MF | Azizjon Ganiev | 28 | 19 | 0 | Al Bataeh | 13.5 months |
 | 20 | 4FW | Azizbek Amonov | 28 | 12 | 2 | Dinamo Samarqand | None |
 | 21 | 4FW | Igor Sergeev | 33 | 83 | 25 | Persepolis | 9.5 months |
-| 22 | 3MF | Abbosbek Fayzullaev | 22 | 32 | 8 | İstanbul Başakşehir | None |
+| 22 | 3MF | Abbosbek Fayzullaev | 22 | 32 | 9 | İstanbul Başakşehir | None |
 | 23 | 3MF | Sherzod Esanov | 23 | 1 | 0 | Bukhara | 19.5 months |
 | 24 | 2DF | Bekhruz Karimov | 18 | 2 | 0 | Surkhon Termiz | None |
 | 25 | 2DF | Avazbek Ulmasaliev | 26 | 0 | 0 | AGMK | 4.5 months |

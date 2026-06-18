@@ -119,18 +119,24 @@ COMPLETED_MATCHES = [
     {"date": "2026-06-16", "team_a": "Austria", "team_b": "Jordan", "team_a_score": 3, "team_b_score": 1, "stage": "Group J"}
 ]
 
-def download_historical_results():
-    """Download Mart Jürisoo's international football results csv dataset."""
+def download_historical_results(force=False):
+    """Download Mart Jürisoo's international football results csv dataset.
+    If force=True, re-downloads even if a cached copy exists (to get latest scores).
+    """
     url = "https://raw.githubusercontent.com/martj42/international_results/master/results.csv"
     cache_dir = "data"
     os.makedirs(cache_dir, exist_ok=True)
     cache_path = os.path.join(cache_dir, "results_cache.csv")
     
-    if os.path.exists(cache_path):
+    if not force and os.path.exists(cache_path):
         print("Using cached historical results...")
         return cache_path
-        
-    print("Downloading historical international matches...")
+    
+    if force:
+        print("Force re-downloading historical results for latest scores...")
+    else:
+        print("Downloading historical international matches...")
+    
     try:
         headers = {'User-Agent': 'Mozilla/5.0'}
         req = urllib.request.Request(url, headers=headers)
@@ -397,7 +403,12 @@ def get_deterministic_weather_historical(date, team_a, team_b, country=None):
 
 # Generate the full group stage matches schedule (72 matches)
 def generate_world_cup_schedule():
-    """Generates the full schedule for the 12 groups (A-L) by reading from results_cache.csv."""
+    """Generates the full schedule for the 12 groups (A-L) by reading from results_cache.csv.
+    Scores come from three sources, in priority order:
+      1. COMPLETED_MATCHES (manual overrides, highest priority)
+      2. CSV data (auto-updated from the international results dataset)
+      3. None (match not yet played)
+    """
     schedule = []
     match_id = 1
     
@@ -417,6 +428,7 @@ def generate_world_cup_schedule():
                 
     wc_rows = sorted(wc_rows, key=lambda x: x["date"])
     
+    auto_updated = 0
     for row in wc_rows:
         home = get_common_name(row["home_team"])
         away = get_common_name(row["away_team"])
@@ -432,6 +444,7 @@ def generate_world_cup_schedule():
         temp, is_hot = get_deterministic_weather(match_id, home, away, row.get("city"))
         
         if match_info:
+            # Priority 1: Manual COMPLETED_MATCHES override
             schedule.append({
                 "id": match_id,
                 "date": match_info['date'],
@@ -445,7 +458,42 @@ def generate_world_cup_schedule():
                 "temperature_c": temp,
                 "is_hot": is_hot
             })
+        elif row.get("home_score") and row.get("away_score") and row["home_score"].strip() and row["away_score"].strip():
+            # Priority 2: Scores from the CSV dataset (auto-updated)
+            try:
+                csv_team_a_score = int(row["home_score"])
+                csv_team_b_score = int(row["away_score"])
+                schedule.append({
+                    "id": match_id,
+                    "date": date,
+                    "team_a": home,
+                    "team_b": away,
+                    "team_a_score": csv_team_a_score,
+                    "team_b_score": csv_team_b_score,
+                    "stage": f"Group {group_letter}",
+                    "city": row.get("city"),
+                    "country": row.get("country"),
+                    "temperature_c": temp,
+                    "is_hot": is_hot
+                })
+                auto_updated += 1
+            except (ValueError, TypeError):
+                # Scores couldn't be parsed, treat as upcoming
+                schedule.append({
+                    "id": match_id,
+                    "date": date,
+                    "team_a": home,
+                    "team_b": away,
+                    "team_a_score": None,
+                    "team_b_score": None,
+                    "stage": f"Group {group_letter}",
+                    "city": row.get("city"),
+                    "country": row.get("country"),
+                    "temperature_c": temp,
+                    "is_hot": is_hot
+                })
         else:
+            # Priority 3: No scores available (upcoming match)
             schedule.append({
                 "id": match_id,
                 "date": date,
@@ -460,6 +508,9 @@ def generate_world_cup_schedule():
                 "is_hot": is_hot
             })
         match_id += 1
+    
+    if auto_updated > 0:
+        print(f"  Auto-imported {auto_updated} match score(s) from CSV dataset.")
         
     return schedule
 
@@ -546,7 +597,7 @@ def write_markdown_files(historical_matches, squads):
 
 def main():
     print("Starting data collection process...")
-    csv_path = download_historical_results()
+    csv_path = download_historical_results(force=True)
     print("Parsing previous 20 matches...")
     last_20_matches = collect_previous_matches(csv_path)
     print("Scraping player squads...")
