@@ -272,7 +272,7 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 | 1 | 1GK | Dayne St. Clair | 29 | 20 | 0 | Inter Miami CF | 10.0 months |
 | 2 | 2DF | Alistair Johnston | 27 | 58 | 1 | Celtic | None |
 | 3 | 2DF | Alfie Jones | 28 | 2 | 0 | Middlesbrough | None |
-| 4 | 2DF | Luc de Fougerolles | 20 | 13 | 0 | Dender | None |
+| 4 | 2DF | Luc de Fougerolles | 20 | 13 | 0 | Dender EH | None |
 | 5 | 2DF | Joel Waterman | 30 | 17 | 0 | Chicago Fire FC | 25.5 months |
 | 6 | 3MF | Mathieu Choinière | 27 | 23 | 0 | Los Angeles FC | 12.0 months |
 | 7 | 3MF | Stephen Eustáquio | 29 | 56 | 4 | Los Angeles FC | 1.0 months |
@@ -325,7 +325,7 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 | 17 | 3MF | Willy Semedo | 32 | 38 | 3 | Omonia | 15.5 months |
 | 18 | 3MF | Telmo Arcanjo | 24 | 16 | 1 | Vitória de Guimarães | 20.5 months |
 | 19 | 4FW | Dailon Livramento | 25 | 22 | 7 | Casa Pia | None |
-| 20 | 4FW | Ryan Mendes | 36 | 98 | 22 | Iğdır | 26.5 months |
+| 20 | 4FW | Ryan Mendes | 36 | 97 | 22 | Iğdır | 26.5 months |
 | 21 | 3MF | Nuno da Costa | 35 | 9 | 2 | İstanbul Başakşehir | 24.0 months |
 | 22 | 2DF | Steven Moreira | 31 | 20 | 0 | Columbus Crew | None |
 | 23 | 1GK | CJ dos Santos | 25 | 1 | 0 | San Diego FC | 14.0 months |
@@ -793,7 +793,7 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 | 4 | 2DF | Shojae Khalilzadeh | 37 | 58 | 2 | Tractor | 26.0 months |
 | 5 | 2DF | Milad Mohammadi | 32 | 76 | 1 | Persepolis | None |
 | 6 | 3MF | Saeid Ezatolahi | 29 | 83 | 2 | Shabab Al Ahli | 14.0 months |
-| 7 | 3MF | Alireza Jahanbakhsh | 32 | 98 | 17 | Dender | 3.0 months |
+| 7 | 3MF | Alireza Jahanbakhsh | 32 | 98 | 17 | Dender EH | 3.0 months |
 | 8 | 3MF | Mohammad Mohebi | 27 | 37 | 14 | Rostov | None |
 | 9 | 4FW | Mehdi Taremi | 33 | 105 | 60 | Olympiacos | 32.5 months |
 | 10 | 4FW | Mehdi Ghayedi | 27 | 30 | 10 | Al Nasr | 6.0 months |
@@ -829,7 +829,7 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 | 3 | 2DF | Hussein Ali | 24 | 27 | 1 | Pogoń Szczecin | 26.0 months |
 | 4 | 2DF | Zaid Tahseen | 25 | 28 | 1 | Pakhtakor | None |
 | 5 | 2DF | Akam Hashim | 27 | 14 | 1 | Al-Zawraa | None |
-| 6 | 2DF | Munaf Younis | 29 | 34 | 1 | Al-Shorta | 23.5 months |
+| 6 | 2DF | Manaf Younis | 29 | 34 | 1 | Al-Shorta | 13.5 months |
 | 7 | 3MF | Youssef Amyn | 22 | 27 | 2 | AEK Larnaca | 26.0 months |
 | 8 | 3MF | Ibrahim Bayesh | 26 | 76 | 8 | Al Dhafra | None |
 | 9 | 4FW | Ali Al-Hamadi | 24 | 20 | 5 | Luton Town | None |

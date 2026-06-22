@@ -46,7 +46,8 @@ def load_injury_rates(player_profiles_path):
 
 # Define start date for training data (e.g., last 5 years to keep it relevant to current squads)
 TRAINING_START_DATE = "2021-01-01"
-CURRENT_DATE_STR = "2026-06-15"
+# Use today's date so the pipeline always trains on the latest available data
+CURRENT_DATE_STR = datetime.now().strftime("%Y-%m-%d")
 CURRENT_DATE = datetime.strptime(CURRENT_DATE_STR, "%Y-%m-%d")
 
 # Decay factor gamma (half-life of ~3 years: half-life in days = 1095, gamma = ln(2)/1095 ≈ 0.00063)
@@ -117,18 +118,6 @@ def load_data(results_csv_path, wc_json_path):
         pl.Series("is_hot", is_hots, dtype=pl.Boolean)
     ])
     
-    # Load injury rates and map to historical matches
-    injury_rates_path = "data/player_profiles.md"
-    injury_rates = load_injury_rates(injury_rates_path)
-    
-    team_a_injury_rates = [injury_rates.get(team, 0.0) for team in teams_a]
-    team_b_injury_rates = [injury_rates.get(team, 0.0) for team in teams_b]
-    
-    df_hist = df_hist.with_columns([
-        pl.Series("team_a_injury_rate", team_a_injury_rates, dtype=pl.Float64),
-        pl.Series("team_b_injury_rate", team_b_injury_rates, dtype=pl.Float64)
-    ])
-    
     # 3. Load World Cup 2026 matches played so far
     print("Loading World Cup matches...")
     with open(wc_json_path, "r", encoding="utf-8") as f:
@@ -154,9 +143,7 @@ def load_data(results_csv_path, wc_json_path):
                 "country": m.get("country", "Co-hosts"),
                 "neutral": True,
                 "temperature_c": float(m.get("temperature_c", 22.0)),
-                "is_hot": bool(m.get("is_hot", False)),
-                "team_a_injury_rate": injury_rates.get(team_a, 0.0),
-                "team_b_injury_rate": injury_rates.get(team_b, 0.0)
+                "is_hot": bool(m.get("is_hot", False))
             })
         df_wc = pl.DataFrame(wc_records, schema={
             "date": pl.String,
@@ -169,9 +156,7 @@ def load_data(results_csv_path, wc_json_path):
             "country": pl.String,
             "neutral": pl.Boolean,
             "temperature_c": pl.Float64,
-            "is_hot": pl.Boolean,
-            "team_a_injury_rate": pl.Float64,
-            "team_b_injury_rate": pl.Float64
+            "is_hot": pl.Boolean
         })
         # Combine historical results and World Cup played matches
         df_all = pl.concat([df_hist, df_wc])
@@ -208,7 +193,7 @@ def preprocess_for_model(df):
     # Select final columns needed for modeling
     df_model = df.select([
         "date", "team_a", "team_b", "team_a_score", "team_b_score", "weight", "neutral", "temperature_c", "is_hot",
-        "team_a_injury_rate", "team_b_injury_rate", "country"
+        "country"
     ])
     
     print(f"Preprocessed {df_model.height} total matches for model training.")

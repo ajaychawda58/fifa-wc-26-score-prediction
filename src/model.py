@@ -31,7 +31,6 @@ class BayesianDixonColesModel:
         self.log_home_adv = 0.15
         self.rho = -0.05
         self.beta_hot = 0.0
-        self.beta_injury = 0.0
         
     def _dixon_coles_tau(self, x, y, lmbda, mu, rho):
         if x == 0 and y == 0:
@@ -45,21 +44,20 @@ class BayesianDixonColesModel:
         else:
             return 1.0
             
-    def _loss_function(self, params, team_a_idxs, team_b_idxs, team_a_goals, team_b_goals, weights, is_home_adv, is_hot, team_a_injury, team_b_injury):
+    def _loss_function(self, params, team_a_idxs, team_b_idxs, team_a_goals, team_b_goals, weights, is_home_adv, is_hot):
         log_att = params[:self.num_teams]
         log_def = params[self.num_teams:2*self.num_teams]
         log_ha = params[2*self.num_teams]
         rho = params[2*self.num_teams + 1]
         beta_hot = params[2*self.num_teams + 2]
-        beta_injury = params[2*self.num_teams + 3]
         
         att_a = log_att[team_a_idxs]
         def_b = log_def[team_b_idxs]
         att_b = log_att[team_b_idxs]
         def_a = log_def[team_a_idxs]
         
-        lmbda = np.exp(att_a + def_b + log_ha * is_home_adv + beta_hot * is_hot + beta_injury * team_a_injury)
-        mu = np.exp(att_b + def_a + beta_hot * is_hot + beta_injury * team_b_injury)
+        lmbda = np.exp(att_a + def_b + log_ha * is_home_adv + beta_hot * is_hot)
+        mu = np.exp(att_b + def_a + beta_hot * is_hot)
         
         tau = np.ones_like(lmbda)
         cond_00 = (team_a_goals == 0) & (team_b_goals == 0)
@@ -81,9 +79,8 @@ class BayesianDixonColesModel:
         prior_loss_ha = ((log_ha - 0.18) ** 2) / (2 * 0.1 ** 2)
         prior_loss_rho = ((rho - (-0.05)) ** 2) / (2 * 0.05 ** 2)
         prior_loss_hot = (beta_hot ** 2) / (2 * 0.2 ** 2)
-        prior_loss_injury = (beta_injury ** 2) / (2 * 0.2 ** 2)
         
-        return likelihood_loss + prior_loss_att + prior_loss_def + prior_loss_ha + prior_loss_rho + prior_loss_hot + prior_loss_injury
+        return likelihood_loss + prior_loss_att + prior_loss_def + prior_loss_ha + prior_loss_rho + prior_loss_hot
         
     def fit(self, df_matches):
         df_filtered = df_matches.filter(
@@ -106,22 +103,18 @@ class BayesianDixonColesModel:
         is_host = is_usa_home | is_can_home | is_mex_home
         is_home_adv = ((~neutral_val) | is_host).astype(float)
         
-        initial_params = np.concatenate([self.log_attack, self.log_defense, [self.log_home_adv], [self.rho], [self.beta_hot], [self.beta_injury]])
-        bounds = [(None, None)] * (2 * self.num_teams) + [(-1.0, 1.0), (-0.3, 0.3), (-1.0, 1.0), (-1.0, 1.0)]
+        initial_params = np.concatenate([self.log_attack, self.log_defense, [self.log_home_adv], [self.rho], [self.beta_hot]])
+        bounds = [(None, None)] * (2 * self.num_teams) + [(-1.0, 1.0), (-0.3, 0.3), (-1.0, 1.0)]
         
-        team_a_injury = df_filtered["team_a_injury_rate"].to_numpy().astype(float)
-        team_b_injury = df_filtered["team_b_injury_rate"].to_numpy().astype(float)
-        
-        res = minimize(self._loss_function, initial_params, args=(team_a_idxs, team_b_idxs, team_a_goals, team_b_goals, weights, is_home_adv, is_hot, team_a_injury, team_b_injury), method='L-BFGS-B', bounds=bounds)
+        res = minimize(self._loss_function, initial_params, args=(team_a_idxs, team_b_idxs, team_a_goals, team_b_goals, weights, is_home_adv, is_hot), method='L-BFGS-B', bounds=bounds)
         if res.success:
             self.log_attack = res.x[:self.num_teams]
             self.log_defense = res.x[self.num_teams:2*self.num_teams]
             self.log_home_adv = float(res.x[2*self.num_teams])
             self.rho = float(res.x[2*self.num_teams + 1])
             self.beta_hot = float(res.x[2*self.num_teams + 2])
-            self.beta_injury = float(res.x[2*self.num_teams + 3])
             
-    def predict_match(self, team_a, team_b, is_hot=False, team_a_injury_rate=0.0, team_b_injury_rate=0.0, max_goals=5, country=None):
+    def predict_match(self, team_a, team_b, is_hot=False, max_goals=5, country=None):
         team_a_idx = self.team_to_idx[team_a]
         team_b_idx = self.team_to_idx[team_b]
         if country:
@@ -132,11 +125,9 @@ class BayesianDixonColesModel:
             is_home_adv = False
         ha_mult = math.exp(self.log_home_adv) if is_home_adv else 1.0
         hot_mult = math.exp(self.beta_hot) if is_hot else 1.0
-        injury_mult_a = math.exp(self.beta_injury * team_a_injury_rate)
-        injury_mult_b = math.exp(self.beta_injury * team_b_injury_rate)
         
-        lmbda = math.exp(self.log_attack[team_a_idx] + self.log_defense[team_b_idx]) * ha_mult * hot_mult * injury_mult_a
-        mu = math.exp(self.log_attack[team_b_idx] + self.log_defense[team_a_idx]) * hot_mult * injury_mult_b
+        lmbda = math.exp(self.log_attack[team_a_idx] + self.log_defense[team_b_idx]) * ha_mult * hot_mult
+        mu = math.exp(self.log_attack[team_b_idx] + self.log_defense[team_a_idx]) * hot_mult
         
         p_team_a = np.array([self._poisson_pmf(g, lmbda) for g in range(max_goals + 1)])
         p_team_b = np.array([self._poisson_pmf(g, mu) for g in range(max_goals + 1)])
@@ -189,7 +180,6 @@ class BivariatePoissonModel:
         self.log_home_adv = 0.15
         self.log_covariance = math.log(0.05) # Shared covariance parameter lambda_3
         self.beta_hot = 0.0
-        self.beta_injury = 0.0
         
     def _bivariate_poisson_pmf(self, x, y, l1, l2, l3):
         ans = 0.0
@@ -198,16 +188,15 @@ class BivariatePoissonModel:
             ans += term
         return ans * math.exp(-(l1 + l2 + l3))
         
-    def _loss_function(self, params, team_a_idxs, team_b_idxs, team_a_goals, team_b_goals, weights, is_home_adv, is_hot, team_a_injury, team_b_injury):
+    def _loss_function(self, params, team_a_idxs, team_b_idxs, team_a_goals, team_b_goals, weights, is_home_adv, is_hot):
         log_att = params[:self.num_teams]
         log_def = params[self.num_teams:2*self.num_teams]
         log_ha = params[2*self.num_teams]
         log_l3 = params[2*self.num_teams + 1]
         beta_hot = params[2*self.num_teams + 2]
-        beta_injury = params[2*self.num_teams + 3]
         
-        l1 = np.exp(log_att[team_a_idxs] + log_def[team_b_idxs] + log_ha * is_home_adv + beta_hot * is_hot + beta_injury * team_a_injury)
-        l2 = np.exp(log_att[team_b_idxs] + log_def[team_a_idxs] + beta_hot * is_hot + beta_injury * team_b_injury)
+        l1 = np.exp(log_att[team_a_idxs] + log_def[team_b_idxs] + log_ha * is_home_adv + beta_hot * is_hot)
+        l2 = np.exp(log_att[team_b_idxs] + log_def[team_a_idxs] + beta_hot * is_hot)
         l3 = np.exp(log_l3)
         
         # Calculate pmf for each match
@@ -222,9 +211,8 @@ class BivariatePoissonModel:
         prior_loss_ha = ((log_ha - 0.18) ** 2) / (2 * 0.1 ** 2)
         prior_loss_l3 = ((log_l3 - math.log(0.05)) ** 2) / (2 * 0.5 ** 2)
         prior_loss_hot = (beta_hot ** 2) / (2 * 0.2 ** 2)
-        prior_loss_injury = (beta_injury ** 2) / (2 * 0.2 ** 2)
         
-        return likelihood_loss + prior_loss_att + prior_loss_def + prior_loss_ha + prior_loss_l3 + prior_loss_hot + prior_loss_injury
+        return likelihood_loss + prior_loss_att + prior_loss_def + prior_loss_ha + prior_loss_l3 + prior_loss_hot
         
     def fit(self, df_matches):
         df_filtered = df_matches.filter((pl.col("team_a").is_in(self.teams)) & (pl.col("team_b").is_in(self.teams)))
@@ -244,22 +232,18 @@ class BivariatePoissonModel:
         is_host = is_usa_home | is_can_home | is_mex_home
         is_home_adv = ((~neutral_val) | is_host).astype(float)
         
-        initial_params = np.concatenate([self.log_attack, self.log_defense, [self.log_home_adv], [self.log_covariance], [self.beta_hot], [self.beta_injury]])
-        bounds = [(None, None)] * (2 * self.num_teams) + [(-1.0, 1.0), (-4.0, -1.0), (-1.0, 1.0), (-1.0, 1.0)]
+        initial_params = np.concatenate([self.log_attack, self.log_defense, [self.log_home_adv], [self.log_covariance], [self.beta_hot]])
+        bounds = [(None, None)] * (2 * self.num_teams) + [(-1.0, 1.0), (-4.0, -1.0), (-1.0, 1.0)]
         
-        team_a_injury = df_filtered["team_a_injury_rate"].to_numpy().astype(float)
-        team_b_injury = df_filtered["team_b_injury_rate"].to_numpy().astype(float)
-        
-        res = minimize(self._loss_function, initial_params, args=(team_a_idxs, team_b_idxs, team_a_goals, team_b_goals, weights, is_home_adv, is_hot, team_a_injury, team_b_injury), method='L-BFGS-B', bounds=bounds)
+        res = minimize(self._loss_function, initial_params, args=(team_a_idxs, team_b_idxs, team_a_goals, team_b_goals, weights, is_home_adv, is_hot), method='L-BFGS-B', bounds=bounds)
         if res.success:
             self.log_attack = res.x[:self.num_teams]
             self.log_defense = res.x[self.num_teams:2*self.num_teams]
             self.log_home_adv = float(res.x[2*self.num_teams])
             self.log_covariance = float(res.x[2*self.num_teams + 1])
             self.beta_hot = float(res.x[2*self.num_teams + 2])
-            self.beta_injury = float(res.x[2*self.num_teams + 3])
             
-    def predict_match(self, team_a, team_b, is_hot=False, team_a_injury_rate=0.0, team_b_injury_rate=0.0, max_goals=5, country=None):
+    def predict_match(self, team_a, team_b, is_hot=False, max_goals=5, country=None):
         team_a_idx = self.team_to_idx[team_a]
         team_b_idx = self.team_to_idx[team_b]
         if country:
@@ -270,11 +254,9 @@ class BivariatePoissonModel:
             is_home_adv = False
         ha_mult = math.exp(self.log_home_adv) if is_home_adv else 1.0
         hot_mult = math.exp(self.beta_hot) if is_hot else 1.0
-        injury_mult_a = math.exp(self.beta_injury * team_a_injury_rate)
-        injury_mult_b = math.exp(self.beta_injury * team_b_injury_rate)
         
-        l1 = math.exp(self.log_attack[team_a_idx] + self.log_defense[team_b_idx]) * ha_mult * hot_mult * injury_mult_a
-        l2 = math.exp(self.log_attack[team_b_idx] + self.log_defense[team_a_idx]) * hot_mult * injury_mult_b
+        l1 = math.exp(self.log_attack[team_a_idx] + self.log_defense[team_b_idx]) * ha_mult * hot_mult
+        l2 = math.exp(self.log_attack[team_b_idx] + self.log_defense[team_a_idx]) * hot_mult
         l3 = math.exp(self.log_covariance)
         
         grid = np.zeros((max_goals + 1, max_goals + 1))
@@ -311,7 +293,6 @@ class EloModel:
         self.beta_1 = 0.0012
         self.beta_ha = 0.18
         self.beta_hot = 0.0
-        self.beta_injury = 0.0
         
     def fit_elo_history(self, results_csv_path):
         """Walks matches chronologically to estimate Elo ratings."""
@@ -365,10 +346,10 @@ class EloModel:
             
         print("Finished calculating Elo ratings.")
         
-    def _loss_function(self, params, elo_diffs, team_a_goals, team_b_goals, weights, is_home_adv, is_hot, team_a_injury, team_b_injury):
-        b0, b1, bha, beta_hot, beta_injury = params
-        l1 = np.exp(b0 + b1 * elo_diffs + bha * is_home_adv + beta_hot * is_hot + beta_injury * team_a_injury)
-        l2 = np.exp(b0 - b1 * elo_diffs + beta_hot * is_hot + beta_injury * team_b_injury)
+    def _loss_function(self, params, elo_diffs, team_a_goals, team_b_goals, weights, is_home_adv, is_hot):
+        b0, b1, bha, beta_hot = params
+        l1 = np.exp(b0 + b1 * elo_diffs + bha * is_home_adv + beta_hot * is_hot)
+        l2 = np.exp(b0 - b1 * elo_diffs + beta_hot * is_hot)
         
         nll_a = -weights * (team_a_goals * np.log(l1) - l1)
         nll_b = -weights * (team_b_goals * np.log(l2) - l2)
@@ -388,8 +369,6 @@ class EloModel:
         team_b_goals = df_filtered["team_b_score"].to_numpy().astype(int)
         weights = df_filtered["weight"].to_numpy().astype(float)
         is_hot = df_filtered["is_hot"].to_numpy().astype(float)
-        team_a_injury = df_filtered["team_a_injury_rate"].to_numpy().astype(float)
-        team_b_injury = df_filtered["team_b_injury_rate"].to_numpy().astype(float)
         
         neutral_val = df_filtered["neutral"].to_numpy().astype(bool)
         team_names_a = df_filtered["team_a"].to_numpy()
@@ -400,15 +379,15 @@ class EloModel:
         is_host = is_usa_home | is_can_home | is_mex_home
         is_home_adv = ((~neutral_val) | is_host).astype(float)
         
-        initial_params = [self.beta_0, self.beta_1, self.beta_ha, self.beta_hot, self.beta_injury]
-        bounds = [(-2.0, 1.0), (0.0, 0.01), (-1.0, 1.0), (-1.0, 1.0), (-1.0, 1.0)]
+        initial_params = [self.beta_0, self.beta_1, self.beta_ha, self.beta_hot]
+        bounds = [(-2.0, 1.0), (0.0, 0.01), (-1.0, 1.0), (-1.0, 1.0)]
         
-        res = minimize(self._loss_function, initial_params, args=(elo_diffs, team_a_goals, team_b_goals, weights, is_home_adv, is_hot, team_a_injury, team_b_injury), method='L-BFGS-B', bounds=bounds)
+        res = minimize(self._loss_function, initial_params, args=(elo_diffs, team_a_goals, team_b_goals, weights, is_home_adv, is_hot), method='L-BFGS-B', bounds=bounds)
         if res.success:
-            self.beta_0, self.beta_1, self.beta_ha, self.beta_hot, self.beta_injury = res.x
-            print(f"Fitted Elo-Poisson: beta_0={self.beta_0:.4f}, beta_1={self.beta_1:.6f}, beta_ha={self.beta_ha:.4f}, beta_hot={self.beta_hot:.4f}, beta_injury={self.beta_injury:.4f}")
+            self.beta_0, self.beta_1, self.beta_ha, self.beta_hot = res.x
+            print(f"Fitted Elo-Poisson: beta_0={self.beta_0:.4f}, beta_1={self.beta_1:.6f}, beta_ha={self.beta_ha:.4f}, beta_hot={self.beta_hot:.4f}")
             
-    def predict_match(self, team_a, team_b, is_hot=False, team_a_injury_rate=0.0, team_b_injury_rate=0.0, max_goals=5, country=None):
+    def predict_match(self, team_a, team_b, is_hot=False, max_goals=5, country=None):
         r_a = self.elo_ratings[team_a]
         r_b = self.elo_ratings[team_b]
         elo_diff = r_a - r_b
@@ -422,8 +401,8 @@ class EloModel:
         ha_val = 1.0 if is_home_adv else 0.0
         hot_val = 1.0 if is_hot else 0.0
         
-        lmbda = math.exp(self.beta_0 + self.beta_1 * elo_diff + self.beta_ha * ha_val + self.beta_hot * hot_val + self.beta_injury * team_a_injury_rate)
-        mu = math.exp(self.beta_0 - self.beta_1 * elo_diff + self.beta_hot * hot_val + self.beta_injury * team_b_injury_rate)
+        lmbda = math.exp(self.beta_0 + self.beta_1 * elo_diff + self.beta_ha * ha_val + self.beta_hot * hot_val)
+        mu = math.exp(self.beta_0 - self.beta_1 * elo_diff + self.beta_hot * hot_val)
         
         # Predict Poisson scores
         p_team_a = np.array([(lmbda ** g) * math.exp(-lmbda) / math.factorial(g) for g in range(max_goals + 1)])
@@ -454,10 +433,10 @@ class SoftmaxClassifierModel:
         self.teams = sorted(team_list)
         self.ranks = team_ranks
         
-        # Softmax coefficients: [Intercept, Elo difference, Rank difference, Home Advantage, Hot, Injury Difference]
-        self.w_team_a = np.array([0.10, 0.0015, 0.015, 0.20, 0.0, 0.0]) # Logits for Team A win
-        self.w_draw = np.array([-0.80, -0.0002, -0.005, -0.05, 0.0, 0.0]) # Logits for draw
-        # baseline: w_team_b = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        # Softmax coefficients: [Intercept, Elo difference, Rank difference, Home Advantage, Hot]
+        self.w_team_a = np.array([0.10, 0.0015, 0.015, 0.20, 0.0]) # Logits for Team A win
+        self.w_draw = np.array([-0.80, -0.0002, -0.005, -0.05, 0.0]) # Logits for draw
+        # baseline: w_team_b = [0.0, 0.0, 0.0, 0.0, 0.0]
         
     def _softmax(self, za, zd):
         # baseline zb = 0
@@ -467,9 +446,9 @@ class SoftmaxClassifierModel:
         return exp_a / denom, exp_d / denom, 1.0 / denom
         
     def _loss_function(self, params, X, outcomes, weights):
-        # params: [w_team_a (6), w_draw (6)]
-        w_a = params[:6]
-        w_d = params[6:]
+        # params: [w_team_a (5), w_draw (5)]
+        w_a = params[:5]
+        w_d = params[5:]
         
         za = X.dot(w_a)
         zd = X.dot(w_d)
@@ -521,19 +500,16 @@ class SoftmaxClassifierModel:
         is_host = is_usa_home | is_can_home | is_mex_home
         is_home_adv = ((~neutral_val) | is_host).astype(float)
         is_hot = df_filtered["is_hot"].to_numpy().astype(float)
-        team_a_injury = df_filtered["team_a_injury_rate"].to_numpy().astype(float)
-        team_b_injury = df_filtered["team_b_injury_rate"].to_numpy().astype(float)
-        injury_diffs = team_a_injury - team_b_injury
+        is_hot = df_filtered["is_hot"].to_numpy().astype(float)
         
-        # Design matrix X: [Intercept, Elo difference, Rank difference, Home Advantage, Is Hot, Injury Difference]
+        # Design matrix X: [Intercept, Elo difference, Rank difference, Home Advantage, Is Hot]
         N = len(df_filtered)
         X = np.column_stack([
             np.ones(N),
             elo_diffs,
             rank_diffs,
             is_home_adv,
-            is_hot,
-            injury_diffs
+            is_hot
         ])
         
         # Outcomes: 0=Team A Win, 1=Draw, 2=Team B Win
@@ -555,11 +531,11 @@ class SoftmaxClassifierModel:
         
         res = minimize(self._loss_function, initial_params, args=(X, outcomes, weights), method='BFGS')
         if res.success:
-            self.w_team_a = res.x[:6]
-            self.w_draw = res.x[6:]
+            self.w_team_a = res.x[:5]
+            self.w_draw = res.x[5:]
             print(f"Fitted Softmax Classifier coefficients successfully.")
             
-    def predict_match(self, team_a, team_b, elo_ratings, elo_poisson_model, is_hot=False, team_a_injury_rate=0.0, team_b_injury_rate=0.0, country=None):
+    def predict_match(self, team_a, team_b, elo_ratings, elo_poisson_model, is_hot=False, country=None):
         """Predicts probabilities and generates score grid mapping outcome probs to Elo expected goals."""
         r_a = elo_ratings[team_a]
         r_b = elo_ratings[team_b]
@@ -576,9 +552,8 @@ class SoftmaxClassifierModel:
         else:
             is_home_adv = False
         hot_val = 1.0 if is_hot else 0.0
-        injury_diff = team_a_injury_rate - team_b_injury_rate
         
-        x_vec = np.array([1.0, elo_diff, rank_diff, is_home_adv, hot_val, injury_diff])
+        x_vec = np.array([1.0, elo_diff, rank_diff, is_home_adv, hot_val])
         
         za = x_vec.dot(self.w_team_a)
         zd = x_vec.dot(self.w_draw)
@@ -586,7 +561,7 @@ class SoftmaxClassifierModel:
         p_a, p_d, p_b = self._softmax(za, zd)
         
         # For the goals projection, we borrow expected goals from the Elo-Poisson model
-        pred_goals = elo_poisson_model.predict_match(team_a, team_b, is_hot=is_hot, team_a_injury_rate=team_a_injury_rate, team_b_injury_rate=team_b_injury_rate, country=country)
+        pred_goals = elo_poisson_model.predict_match(team_a, team_b, is_hot=is_hot, country=country)
         lmbda = pred_goals["team_a_xG"]
         mu = pred_goals["team_b_xG"]
         
@@ -627,22 +602,18 @@ class SoftmaxClassifierModel:
 # --- Unified Parameters Exporter ---
 def export_all_models(file_path, dc_model, bp_model, elo_model, sm_model):
     """Exports all model weights and ratings into a single JSON parameter file."""
-    from src.preprocessor import load_injury_rates
-    injury_rates = load_injury_rates("data/player_profiles.md")
     
     parameters = {
         "dixon_coles": {
             "rho": dc_model.rho,
             "home_advantage_multiplier": math.exp(dc_model.log_home_adv),
             "beta_hot": dc_model.beta_hot,
-            "beta_injury": dc_model.beta_injury,
             "teams": {}
         },
         "bivariate": {
             "log_covariance": bp_model.log_covariance,
             "home_advantage_multiplier": math.exp(bp_model.log_home_adv),
             "beta_hot": bp_model.beta_hot,
-            "beta_injury": bp_model.beta_injury,
             "teams": {}
         },
         "elo": {
@@ -650,7 +621,6 @@ def export_all_models(file_path, dc_model, bp_model, elo_model, sm_model):
             "beta_1": elo_model.beta_1,
             "beta_ha": elo_model.beta_ha,
             "beta_hot": elo_model.beta_hot,
-            "beta_injury": elo_model.beta_injury,
             "teams": {}
         },
         "classifier": {
@@ -665,13 +635,11 @@ def export_all_models(file_path, dc_model, bp_model, elo_model, sm_model):
         dc_idx = dc_model.team_to_idx[team]
         dc_att = math.exp(dc_model.log_attack[dc_idx])
         dc_dfn = math.exp(dc_model.log_defense[dc_idx])
-        injury_rate = injury_rates.get(team, 0.0)
         parameters["dixon_coles"]["teams"][team] = {
             "attack": dc_att,
             "defense": dc_dfn,
             "formation": dc_model.formations.get(team, "4-3-3"),
-            "rank": dc_model.ranks.get(team, 30),
-            "injury_rate": injury_rate
+            "rank": dc_model.ranks.get(team, 30)
         }
         
         # 2. Bivariate Poisson team ratings

@@ -388,13 +388,8 @@ function predictDixonColes(teamA, teamB, maxGoals=5, isHot=false, country=null) 
     const haMult = hasHostAdv ? dc.home_advantage_multiplier : 1.0;
     const hotMult = isHot ? Math.exp(dc.beta_hot) : 1.0;
     
-    const injuryRateA = ratingsA ? (ratingsA.injury_rate || 0.0) : 0.0;
-    const injuryRateB = ratingsB ? (ratingsB.injury_rate || 0.0) : 0.0;
-    const injuryMultA = Math.exp((dc.beta_injury || 0.0) * injuryRateA);
-    const injuryMultB = Math.exp((dc.beta_injury || 0.0) * injuryRateB);
-    
-    const lambda = ratingsA.attack * ratingsB.defense * haMult * hotMult * injuryMultA;
-    const mu = ratingsB.attack * ratingsA.defense * hotMult * injuryMultB;
+    const lambda = ratingsA.attack * ratingsB.defense * haMult * hotMult;
+    const mu = ratingsB.attack * ratingsA.defense * hotMult;
     const rho = dc.rho;
     
     const grid = [];
@@ -436,13 +431,8 @@ function predictBivariate(teamA, teamB, maxGoals=5, isHot=false, country=null) {
     const haMult = hasHostAdv ? bp.home_advantage_multiplier : 1.0;
     const hotMult = isHot ? Math.exp(bp.beta_hot) : 1.0;
     
-    const injuryRateA = dc.teams[teamA] ? (dc.teams[teamA].injury_rate || 0.0) : 0.0;
-    const injuryRateB = dc.teams[teamB] ? (dc.teams[teamB].injury_rate || 0.0) : 0.0;
-    const injuryMultA = Math.exp((bp.beta_injury || 0.0) * injuryRateA);
-    const injuryMultB = Math.exp((bp.beta_injury || 0.0) * injuryRateB);
-    
-    const l1 = ratingsA.attack * ratingsB.defense * haMult * hotMult * injuryMultA;
-    const l2 = ratingsB.attack * ratingsA.defense * hotMult * injuryMultB;
+    const l1 = ratingsA.attack * ratingsB.defense * haMult * hotMult;
+    const l2 = ratingsB.attack * ratingsA.defense * hotMult;
     const l3 = Math.exp(bp.log_covariance);
     
     const grid = [];
@@ -483,11 +473,9 @@ function predictEloPoisson(teamA, teamB, maxGoals=5, isHot=false, country=null) 
     }
     const hotVal = isHot ? 1.0 : 0.0;
     
-    const injuryRateA = dc.teams[teamA] ? (dc.teams[teamA].injury_rate || 0.0) : 0.0;
-    const injuryRateB = dc.teams[teamB] ? (dc.teams[teamB].injury_rate || 0.0) : 0.0;
     
-    const lambda = Math.exp(elo.beta_0 + elo.beta_1 * eloDiff + elo.beta_ha * hostAdv + elo.beta_hot * hotVal + (elo.beta_injury || 0.0) * injuryRateA);
-    const mu = Math.exp(elo.beta_0 - elo.beta_1 * eloDiff + elo.beta_hot * hotVal + (elo.beta_injury || 0.0) * injuryRateB);
+    const lambda = Math.exp(elo.beta_0 + elo.beta_1 * eloDiff + elo.beta_ha * hostAdv + elo.beta_hot * hotVal);
+    const mu = Math.exp(elo.beta_0 - elo.beta_1 * eloDiff + elo.beta_hot * hotVal);
     
     const grid = [];
     let sum = 0;
@@ -533,13 +521,10 @@ function predictSoftmaxClassifier(teamA, teamB, maxGoals=5, isHot=false, country
     }
     const hotVal = isHot ? 1.0 : 0.0;
     
-    const injuryRateA = dc.teams[teamA] ? (dc.teams[teamA].injury_rate || 0.0) : 0.0;
-    const injuryRateB = dc.teams[teamB] ? (dc.teams[teamB].injury_rate || 0.0) : 0.0;
-    const injuryDiff = injuryRateA - injuryRateB;
     
-    const xVec = [1.0, eloDiff, rankDiff, hostAdv, hotVal, injuryDiff];
+    const xVec = [1.0, eloDiff, rankDiff, hostAdv, hotVal];
     let zA = 0, zd = 0;
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 5; i++) {
         zA += xVec[i] * cl.w_team_a[i];
         zd += xVec[i] * cl.w_draw[i];
     }
@@ -738,10 +723,7 @@ function runVisualPrediction(teamA, teamB) {
     document.getElementById("comp-formation-a").innerText = ratingsA.formation;
     document.getElementById("comp-formation-b").innerText = ratingsB.formation;
     
-    const injuryRateA = (ratingsA.injury_rate || 0.0) * 100;
-    const injuryRateB = (ratingsB.injury_rate || 0.0) * 100;
-    document.getElementById("comp-injury-a").innerText = `${injuryRateA.toFixed(1)}%`;
-    document.getElementById("comp-injury-b").innerText = `${injuryRateB.toFixed(1)}%`;
+
     
     renderFormationOnPitch("pitch-team-a", ratingsA.formation);
     renderFormationOnPitch("pitch-team-b", ratingsB.formation);

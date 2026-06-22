@@ -115,29 +115,80 @@ def run_prediction_pipeline():
     # 5. Predict all World Cup matches for each model
     with open(wc_matches_json, "r", encoding="utf-8") as f:
         matches = json.load(f)
+    
+    # Load existing predictions from the JSON so we can preserve them for past matches
+    # (avoids retroactively changing predictions after new training data is incorporated)
+    existing_preds = {}
+    for m in matches:
+        mid = m["id"]
+        if "predictions" in m:
+            existing_preds[mid] = {
+                "predictions": m["predictions"],
+                "predicted_team_a_score": m.get("predicted_team_a_score"),
+                "predicted_team_b_score": m.get("predicted_team_b_score"),
+                "predicted_score_probability": m.get("predicted_score_probability"),
+                "team_a_xG": m.get("team_a_xG"),
+                "team_b_xG": m.get("team_b_xG"),
+                "team_a_win_prob": m.get("team_a_win_prob"),
+                "team_b_win_prob": m.get("team_b_win_prob"),
+                "draw_prob": m.get("draw_prob")
+            }
         
-    from src.preprocessor import load_injury_rates
-    injury_rates = load_injury_rates("data/player_profiles.md")
+    # Determine today's date to decide which matches to re-predict
+    from datetime import date
+    today = date.today().isoformat()  # e.g. "2026-06-17"
+    
+    total_predicted = 0
+    total_preserved = 0
     
     print(f"Generating predictions for {len(matches)} World Cup matches across 5 model options...")
+    print(f"  Today's date: {today} — preserving existing predictions for matches before today.")
     
     # Accuracy counters for statistics logging (using Ensemble model for master stats)
     completed_predictions = 0
     correct_outcomes = 0
     
     for m in matches:
+        match_date = m["date"]  # e.g. "2026-06-17"
+        mid = m["id"]
+        
+        # For past matches (before today): preserve existing predictions if available
+        if match_date < today and mid in existing_preds:
+            old = existing_preds[mid]
+            m["predictions"] = old["predictions"]
+            m["predicted_team_a_score"] = old["predicted_team_a_score"]
+            m["predicted_team_b_score"] = old["predicted_team_b_score"]
+            m["predicted_score_probability"] = old["predicted_score_probability"]
+            m["team_a_xG"] = old["team_a_xG"]
+            m["team_b_xG"] = old["team_b_xG"]
+            m["team_a_win_prob"] = old["team_a_win_prob"]
+            m["team_b_win_prob"] = old["team_b_win_prob"]
+            m["draw_prob"] = old["draw_prob"]
+            total_preserved += 1
+            
+            # Still evaluate accuracy for preserved predictions
+            legacy_ref = m["predictions"]["ensemble"]
+            if m["team_a_score"] is not None and m["team_b_score"] is not None:
+                actual_team_a = int(m["team_a_score"])
+                actual_team_b = int(m["team_b_score"])
+                completed_predictions += 1
+                actual_outcome = "H" if actual_team_a > actual_team_b else "A" if actual_team_b > actual_team_a else "D"
+                pred_outcome = "H" if legacy_ref["predicted_team_a_score"] > legacy_ref["predicted_team_b_score"] else "A" if legacy_ref["predicted_team_b_score"] > legacy_ref["predicted_team_a_score"] else "D"
+                if actual_outcome == pred_outcome:
+                    correct_outcomes += 1
+            continue
+        
+        # For today's and future matches: compute fresh predictions
         team_a = m["team_a"]
         team_b = m["team_b"]
         is_hot = bool(m.get("is_hot", False))
-        a_inj = injury_rates.get(team_a, 0.0)
-        b_inj = injury_rates.get(team_b, 0.0)
         country = m.get("country")
         
         # Calculate individual predictions
-        dc_p = dc_model.predict_match(team_a, team_b, is_hot=is_hot, team_a_injury_rate=a_inj, team_b_injury_rate=b_inj, country=country)
-        bp_p = bp_model.predict_match(team_a, team_b, is_hot=is_hot, team_a_injury_rate=a_inj, team_b_injury_rate=b_inj, country=country)
-        elo_p = elo_model.predict_match(team_a, team_b, is_hot=is_hot, team_a_injury_rate=a_inj, team_b_injury_rate=b_inj, country=country)
-        cl_p = sm_model.predict_match(team_a, team_b, elo_model.elo_ratings, elo_model, is_hot=is_hot, team_a_injury_rate=a_inj, team_b_injury_rate=b_inj, country=country)
+        dc_p = dc_model.predict_match(team_a, team_b, is_hot=is_hot, country=country)
+        bp_p = bp_model.predict_match(team_a, team_b, is_hot=is_hot, country=country)
+        elo_p = elo_model.predict_match(team_a, team_b, is_hot=is_hot, country=country)
+        cl_p = sm_model.predict_match(team_a, team_b, elo_model.elo_ratings, elo_model, is_hot=is_hot, country=country)
         ens_p = ensemble_predictions(dc_p, bp_p, elo_p, cl_p)
         
         # Helper to structure model outputs
@@ -163,8 +214,7 @@ def run_prediction_pipeline():
             "ensemble": format_pred_record(ens_p)
         }
         
-        # Keep legacy columns on the match dict to prevent breaking dashboard backward compatibility
-        # We populate these legacy fields with the Ensemble model predictions
+        # Keep legacy columns on the match dict for dashboard compatibility
         legacy_ref = m["predictions"]["ensemble"]
         m["predicted_team_a_score"] = legacy_ref["predicted_team_a_score"]
         m["predicted_team_b_score"] = legacy_ref["predicted_team_b_score"]
@@ -174,6 +224,7 @@ def run_prediction_pipeline():
         m["team_a_win_prob"] = legacy_ref["team_a_win_prob"]
         m["team_b_win_prob"] = legacy_ref["team_b_win_prob"]
         m["draw_prob"] = legacy_ref["draw_prob"]
+        total_predicted += 1
         
         # Evaluate accuracy of Ensemble model
         if m["team_a_score"] is not None and m["team_b_score"] is not None:
@@ -194,7 +245,8 @@ def run_prediction_pipeline():
     print("\n--------------------------------------------------")
     print("Multi-Model Pipeline Completed!")
     print("--------------------------------------------------")
-    print(f"Total Matches Predicted: {len(matches)}")
+    print(f"Predictions preserved (past matches): {total_preserved}")
+    print(f"Predictions generated (today & future): {total_predicted}")
     print(f"Completed Matches Evaluated (Ensemble): {completed_predictions}")
     if completed_predictions > 0:
         print(f"Ensemble Win/Draw/Loss Accuracy: {(correct_outcomes/completed_predictions)*100:.1f}%")
