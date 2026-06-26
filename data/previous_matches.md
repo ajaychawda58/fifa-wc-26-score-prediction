@@ -7,7 +7,7 @@ This file documents the results and scores of the last 20 international matches 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-06-27 | Austria | FIFA World Cup | Unknown | NA–NA | 22.0°C | Normal |
-| 2026-06-22 | Jordan | FIFA World Cup | Unknown | NA–NA | 24.0°C | Normal |
+| 2026-06-22 | Jordan | FIFA World Cup | Win (W) | 1–2 | 24.0°C | Normal |
 | 2026-06-16 | Argentina | FIFA World Cup | Loss (L) | 3–0 | 22.0°C | Normal |
 | 2026-06-10 | Bolivia | Friendly | Win (W) | 0–4 | 25.0°C | Normal |
 | 2026-06-03 | Netherlands | Friendly | Win (W) | 0–1 | 21.0°C | Normal |
@@ -32,7 +32,7 @@ This file documents the results and scores of the last 20 international matches 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-06-27 | Jordan | FIFA World Cup | Unknown | NA–NA | 22.0°C | Normal |
-| 2026-06-22 | Austria | FIFA World Cup | Unknown | NA–NA | 25.0°C | Normal |
+| 2026-06-22 | Austria | FIFA World Cup | Win (W) | 2–0 | 25.0°C | Normal |
 | 2026-06-16 | Algeria | FIFA World Cup | Win (W) | 3–0 | 22.0°C | Normal |
 | 2026-06-09 | Iceland | Friendly | Win (W) | 3–0 | 24.0°C | Normal |
 | 2026-06-06 | Honduras | Friendly | Win (W) | 2–0 | 24.0°C | Normal |
@@ -56,7 +56,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-25 | Paraguay | FIFA World Cup | Unknown | NA–NA | 23.0°C | Normal |
+| 2026-06-25 | Paraguay | FIFA World Cup | Draw (D) | 0–0 | 23.0°C | Normal |
 | 2026-06-19 | USA | FIFA World Cup | Loss (L) | 2–0 | 23.0°C | Normal |
 | 2026-06-13 | Türkiye | FIFA World Cup | Win (W) | 2–0 | 23.0°C | Normal |
 | 2026-06-06 | Switzerland | Friendly | Draw (D) | 1–1 | 21.0°C | Normal |
@@ -82,7 +82,7 @@ This file documents the results and scores of the last 20 international matches 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-06-27 | Algeria | FIFA World Cup | Unknown | NA–NA | 22.0°C | Normal |
-| 2026-06-22 | Argentina | FIFA World Cup | Unknown | NA–NA | 25.0°C | Normal |
+| 2026-06-22 | Argentina | FIFA World Cup | Loss (L) | 2–0 | 25.0°C | Normal |
 | 2026-06-16 | Jordan | FIFA World Cup | Win (W) | 3–1 | 23.0°C | Normal |
 | 2026-06-01 | Tunisia | Friendly | Win (W) | 1–0 | 24.0°C | Normal |
 | 2026-03-31 | South Korea | Friendly | Win (W) | 1–0 | 13.0°C | Normal |
@@ -131,7 +131,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-24 | Qatar | FIFA World Cup | Unknown | NA–NA | 21.0°C | Normal |
+| 2026-06-24 | Qatar | FIFA World Cup | Win (W) | 3–1 | 21.0°C | Normal |
 | 2026-06-18 | Switzerland | FIFA World Cup | Loss (L) | 4–1 | 24.0°C | Normal |
 | 2026-06-12 | Canada | FIFA World Cup | Draw (D) | 1–1 | 21.0°C | Normal |
 | 2026-06-06 | Panama | Friendly | Draw (D) | 1–1 | 21.0°C | Normal |
@@ -156,7 +156,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-24 | Scotland | FIFA World Cup | Unknown | NA–NA | 23.0°C | Normal |
+| 2026-06-24 | Scotland | FIFA World Cup | Win (W) | 0–3 | 23.0°C | Normal |
 | 2026-06-19 | Haiti | FIFA World Cup | Win (W) | 3–0 | 23.0°C | Normal |
 | 2026-06-13 | Morocco | FIFA World Cup | Draw (D) | 1–1 | 24.0°C | Normal |
 | 2026-06-06 | Egypt | Friendly | Win (W) | 2–1 | 25.0°C | Normal |
@@ -181,7 +181,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-24 | Switzerland | FIFA World Cup | Unknown | NA–NA | 25.0°C | Normal |
+| 2026-06-24 | Switzerland | FIFA World Cup | Loss (L) | 1–2 | 25.0°C | Normal |
 | 2026-06-18 | Qatar | FIFA World Cup | Win (W) | 6–0 | 23.0°C | Normal |
 | 2026-06-12 | Bosnia and Herzegovina | FIFA World Cup | Draw (D) | 1–1 | 21.0°C | Normal |
 | 2026-06-05 | Republic of Ireland | Friendly | Draw (D) | 1–1 | 21.0°C | Normal |
@@ -232,7 +232,7 @@ This file documents the results and scores of the last 20 international matches 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-06-27 | Portugal | FIFA World Cup | Unknown | NA–NA | 22.0°C | Normal |
-| 2026-06-23 | DR Congo | FIFA World Cup | Unknown | NA–NA | 29.0°C | Hot |
+| 2026-06-23 | DR Congo | FIFA World Cup | Win (W) | 1–0 | 29.0°C | Hot |
 | 2026-06-17 | Uzbekistan | FIFA World Cup | Win (W) | 1–3 | 29.0°C | Hot |
 | 2026-06-07 | Jordan | Friendly | Win (W) | 0–2 | 25.0°C | Normal |
 | 2026-06-01 | Costa Rica | Friendly | Win (W) | 3–1 | 32.0°C | Hot |
@@ -257,7 +257,7 @@ This file documents the results and scores of the last 20 international matches 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-06-27 | Ghana | FIFA World Cup | Unknown | NA–NA | 21.0°C | Normal |
-| 2026-06-23 | Panama | FIFA World Cup | Unknown | NA–NA | 23.0°C | Normal |
+| 2026-06-23 | Panama | FIFA World Cup | Win (W) | 0–1 | 23.0°C | Normal |
 | 2026-06-17 | England | FIFA World Cup | Loss (L) | 4–2 | 23.0°C | Normal |
 | 2026-06-07 | Slovenia | Friendly | Win (W) | 2–1 | 23.0°C | Normal |
 | 2026-06-02 | Belgium | Friendly | Loss (L) | 0–2 | 24.0°C | Normal |
@@ -281,7 +281,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-25 | Ivory Coast | FIFA World Cup | Unknown | NA–NA | 22.0°C | Normal |
+| 2026-06-25 | Ivory Coast | FIFA World Cup | Loss (L) | 0–2 | 22.0°C | Normal |
 | 2026-06-20 | Ecuador | FIFA World Cup | Draw (D) | 0–0 | 24.0°C | Normal |
 | 2026-06-14 | Germany | FIFA World Cup | Loss (L) | 7–1 | 23.0°C | Normal |
 | 2026-06-06 | Aruba | Friendly | Win (W) | 4–0 | 22.0°C | Normal |
@@ -306,7 +306,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-24 | Mexico | FIFA World Cup | Unknown | NA–NA | 33.0°C | Hot |
+| 2026-06-24 | Mexico | FIFA World Cup | Loss (L) | 3–0 | 33.0°C | Hot |
 | 2026-06-18 | South Africa | FIFA World Cup | Draw (D) | 1–1 | 25.0°C | Normal |
 | 2026-06-11 | South Korea | FIFA World Cup | Loss (L) | 2–1 | 32.0°C | Hot |
 | 2026-06-04 | Guatemala | Friendly | Win (W) | 1–5 | 23.0°C | Normal |
@@ -332,7 +332,7 @@ This file documents the results and scores of the last 20 international matches 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-06-27 | Uzbekistan | FIFA World Cup | Unknown | NA–NA | 25.0°C | Normal |
-| 2026-06-23 | Colombia | FIFA World Cup | Unknown | NA–NA | 29.0°C | Hot |
+| 2026-06-23 | Colombia | FIFA World Cup | Loss (L) | 1–0 | 29.0°C | Hot |
 | 2026-06-17 | Portugal | FIFA World Cup | Draw (D) | 1–1 | 24.0°C | Normal |
 | 2026-06-09 | Chile | Friendly | Loss (L) | 1–2 | 24.0°C | Normal |
 | 2026-06-03 | Denmark | Friendly | Draw (D) | 0–0 | 24.0°C | Normal |
@@ -356,7 +356,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-25 | Germany | FIFA World Cup | Unknown | NA–NA | 23.0°C | Normal |
+| 2026-06-25 | Germany | FIFA World Cup | Win (W) | 2–1 | 23.0°C | Normal |
 | 2026-06-20 | Curaçao | FIFA World Cup | Draw (D) | 0–0 | 24.0°C | Normal |
 | 2026-06-14 | Ivory Coast | FIFA World Cup | Loss (L) | 1–0 | 23.0°C | Normal |
 | 2026-06-07 | Guatemala | Friendly | Win (W) | 3–0 | 23.0°C | Normal |
@@ -407,7 +407,7 @@ This file documents the results and scores of the last 20 international matches 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-06-27 | Panama | FIFA World Cup | Unknown | NA–NA | 22.0°C | Normal |
-| 2026-06-23 | Ghana | FIFA World Cup | Unknown | NA–NA | 22.0°C | Normal |
+| 2026-06-23 | Ghana | FIFA World Cup | Draw (D) | 0–0 | 22.0°C | Normal |
 | 2026-06-17 | Croatia | FIFA World Cup | Win (W) | 4–2 | 23.0°C | Normal |
 | 2026-06-10 | Costa Rica | Friendly | Win (W) | 3–0 | 25.0°C | Normal |
 | 2026-06-06 | New Zealand | Friendly | Win (W) | 1–0 | 22.0°C | Normal |
@@ -432,7 +432,7 @@ This file documents the results and scores of the last 20 international matches 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-06-26 | Norway | FIFA World Cup | Unknown | NA–NA | 25.0°C | Normal |
-| 2026-06-22 | Iraq | FIFA World Cup | Unknown | NA–NA | 23.0°C | Normal |
+| 2026-06-22 | Iraq | FIFA World Cup | Win (W) | 3–0 | 23.0°C | Normal |
 | 2026-06-16 | Senegal | FIFA World Cup | Win (W) | 3–1 | 22.0°C | Normal |
 | 2026-06-08 | Northern Ireland | Friendly | Win (W) | 3–1 | 23.0°C | Normal |
 | 2026-06-04 | Ivory Coast | Friendly | Loss (L) | 1–2 | 21.0°C | Normal |
@@ -456,7 +456,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-25 | Ecuador | FIFA World Cup | Unknown | NA–NA | 23.0°C | Normal |
+| 2026-06-25 | Ecuador | FIFA World Cup | Loss (L) | 2–1 | 23.0°C | Normal |
 | 2026-06-20 | Ivory Coast | FIFA World Cup | Win (W) | 2–1 | 21.0°C | Normal |
 | 2026-06-14 | Curaçao | FIFA World Cup | Win (W) | 7–1 | 23.0°C | Normal |
 | 2026-06-06 | USA | Friendly | Win (W) | 1–2 | 23.0°C | Normal |
@@ -482,7 +482,7 @@ This file documents the results and scores of the last 20 international matches 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-06-27 | Croatia | FIFA World Cup | Unknown | NA–NA | 21.0°C | Normal |
-| 2026-06-23 | England | FIFA World Cup | Unknown | NA–NA | 22.0°C | Normal |
+| 2026-06-23 | England | FIFA World Cup | Draw (D) | 0–0 | 22.0°C | Normal |
 | 2026-06-17 | Panama | FIFA World Cup | Win (W) | 1–0 | 23.0°C | Normal |
 | 2026-06-02 | Wales | Friendly | Draw (D) | 1–1 | 25.0°C | Normal |
 | 2026-05-22 | Mexico | Friendly | Loss (L) | 2–0 | 29.0°C | Hot |
@@ -506,7 +506,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-24 | Morocco | FIFA World Cup | Unknown | NA–NA | 24.0°C | Normal |
+| 2026-06-24 | Morocco | FIFA World Cup | Loss (L) | 4–2 | 24.0°C | Normal |
 | 2026-06-19 | Brazil | FIFA World Cup | Loss (L) | 3–0 | 23.0°C | Normal |
 | 2026-06-13 | Scotland | FIFA World Cup | Loss (L) | 0–1 | 24.0°C | Normal |
 | 2026-06-05 | Peru | Friendly | Loss (L) | 1–2 | 23.0°C | Normal |
@@ -557,7 +557,7 @@ This file documents the results and scores of the last 20 international matches 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-06-26 | Senegal | FIFA World Cup | Unknown | NA–NA | 24.0°C | Normal |
-| 2026-06-22 | France | FIFA World Cup | Unknown | NA–NA | 23.0°C | Normal |
+| 2026-06-22 | France | FIFA World Cup | Loss (L) | 3–0 | 23.0°C | Normal |
 | 2026-06-16 | Norway | FIFA World Cup | Loss (L) | 1–4 | 25.0°C | Normal |
 | 2026-06-09 | Venezuela | Friendly | Loss (L) | 0–2 | 25.0°C | Normal |
 | 2026-06-04 | Spain | Friendly | Draw (D) | 1–1 | 24.0°C | Normal |
@@ -581,7 +581,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-25 | Curaçao | FIFA World Cup | Unknown | NA–NA | 22.0°C | Normal |
+| 2026-06-25 | Curaçao | FIFA World Cup | Win (W) | 0–2 | 22.0°C | Normal |
 | 2026-06-20 | Germany | FIFA World Cup | Loss (L) | 2–1 | 21.0°C | Normal |
 | 2026-06-14 | Ecuador | FIFA World Cup | Win (W) | 1–0 | 23.0°C | Normal |
 | 2026-06-04 | France | Friendly | Win (W) | 1–2 | 21.0°C | Normal |
@@ -606,7 +606,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-25 | Sweden | FIFA World Cup | Unknown | NA–NA | 22.0°C | Normal |
+| 2026-06-25 | Sweden | FIFA World Cup | Draw (D) | 1–1 | 22.0°C | Normal |
 | 2026-06-20 | Tunisia | FIFA World Cup | Win (W) | 0–4 | 29.0°C | Hot |
 | 2026-06-14 | Netherlands | FIFA World Cup | Draw (D) | 2–2 | 25.0°C | Normal |
 | 2026-05-31 | Iceland | Friendly | Win (W) | 1–0 | 13.0°C | Normal |
@@ -632,7 +632,7 @@ This file documents the results and scores of the last 20 international matches 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-06-27 | Argentina | FIFA World Cup | Unknown | NA–NA | 22.0°C | Normal |
-| 2026-06-22 | Algeria | FIFA World Cup | Unknown | NA–NA | 24.0°C | Normal |
+| 2026-06-22 | Algeria | FIFA World Cup | Loss (L) | 1–2 | 24.0°C | Normal |
 | 2026-06-16 | Austria | FIFA World Cup | Loss (L) | 3–1 | 23.0°C | Normal |
 | 2026-06-07 | Colombia | Friendly | Loss (L) | 0–2 | 25.0°C | Normal |
 | 2026-05-31 | Switzerland | Friendly | Loss (L) | 4–1 | 16.0°C | Normal |
@@ -656,7 +656,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-24 | Czechia | FIFA World Cup | Unknown | NA–NA | 33.0°C | Hot |
+| 2026-06-24 | Czechia | FIFA World Cup | Win (W) | 3–0 | 33.0°C | Hot |
 | 2026-06-18 | South Korea | FIFA World Cup | Win (W) | 1–0 | 32.0°C | Hot |
 | 2026-06-11 | South Africa | FIFA World Cup | Win (W) | 2–0 | 29.0°C | Hot |
 | 2026-06-04 | Serbia | Friendly | Win (W) | 5–1 | 29.0°C | Hot |
@@ -681,7 +681,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-24 | Haiti | FIFA World Cup | Unknown | NA–NA | 24.0°C | Normal |
+| 2026-06-24 | Haiti | FIFA World Cup | Win (W) | 4–2 | 24.0°C | Normal |
 | 2026-06-19 | Scotland | FIFA World Cup | Win (W) | 0–1 | 22.0°C | Normal |
 | 2026-06-13 | Brazil | FIFA World Cup | Draw (D) | 1–1 | 24.0°C | Normal |
 | 2026-06-07 | Norway | Friendly | Draw (D) | 1–1 | 25.0°C | Normal |
@@ -706,7 +706,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-25 | Tunisia | FIFA World Cup | Unknown | NA–NA | 25.0°C | Normal |
+| 2026-06-25 | Tunisia | FIFA World Cup | Win (W) | 1–3 | 25.0°C | Normal |
 | 2026-06-20 | Sweden | FIFA World Cup | Win (W) | 5–1 | 21.0°C | Normal |
 | 2026-06-14 | Japan | FIFA World Cup | Draw (D) | 2–2 | 25.0°C | Normal |
 | 2026-06-08 | Uzbekistan | Friendly | Win (W) | 2–1 | 24.0°C | Normal |
@@ -757,7 +757,7 @@ This file documents the results and scores of the last 20 international matches 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-06-26 | France | FIFA World Cup | Unknown | NA–NA | 25.0°C | Normal |
-| 2026-06-22 | Senegal | FIFA World Cup | Unknown | NA–NA | 23.0°C | Normal |
+| 2026-06-22 | Senegal | FIFA World Cup | Win (W) | 3–2 | 23.0°C | Normal |
 | 2026-06-16 | Iraq | FIFA World Cup | Win (W) | 1–4 | 25.0°C | Normal |
 | 2026-06-07 | Morocco | Friendly | Draw (D) | 1–1 | 25.0°C | Normal |
 | 2026-06-01 | Sweden | Friendly | Win (W) | 3–1 | 21.0°C | Normal |
@@ -782,7 +782,7 @@ This file documents the results and scores of the last 20 international matches 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-06-27 | England | FIFA World Cup | Unknown | NA–NA | 22.0°C | Normal |
-| 2026-06-23 | Croatia | FIFA World Cup | Unknown | NA–NA | 23.0°C | Normal |
+| 2026-06-23 | Croatia | FIFA World Cup | Loss (L) | 0–1 | 23.0°C | Normal |
 | 2026-06-17 | Ghana | FIFA World Cup | Loss (L) | 1–0 | 23.0°C | Normal |
 | 2026-06-06 | Bosnia and Herzegovina | Friendly | Draw (D) | 1–1 | 21.0°C | Normal |
 | 2026-06-03 | Dominican Republic | Friendly | Win (W) | 4–2 | 30.0°C | Hot |
@@ -806,7 +806,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-25 | Australia | FIFA World Cup | Unknown | NA–NA | 23.0°C | Normal |
+| 2026-06-25 | Australia | FIFA World Cup | Draw (D) | 0–0 | 23.0°C | Normal |
 | 2026-06-19 | Türkiye | FIFA World Cup | Win (W) | 0–1 | 21.0°C | Normal |
 | 2026-06-12 | USA | FIFA World Cup | Loss (L) | 4–1 | 23.0°C | Normal |
 | 2026-06-05 | Nicaragua | Friendly | Win (W) | 4–0 | 32.0°C | Hot |
@@ -832,7 +832,7 @@ This file documents the results and scores of the last 20 international matches 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-06-27 | Colombia | FIFA World Cup | Unknown | NA–NA | 22.0°C | Normal |
-| 2026-06-23 | Uzbekistan | FIFA World Cup | Unknown | NA–NA | 23.0°C | Normal |
+| 2026-06-23 | Uzbekistan | FIFA World Cup | Win (W) | 5–0 | 23.0°C | Normal |
 | 2026-06-17 | DR Congo | FIFA World Cup | Draw (D) | 1–1 | 24.0°C | Normal |
 | 2026-06-10 | Nigeria | Friendly | Win (W) | 2–1 | 21.0°C | Normal |
 | 2026-06-06 | Chile | Friendly | Win (W) | 2–1 | 23.0°C | Normal |
@@ -856,7 +856,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-24 | Bosnia and Herzegovina | FIFA World Cup | Unknown | NA–NA | 21.0°C | Normal |
+| 2026-06-24 | Bosnia and Herzegovina | FIFA World Cup | Loss (L) | 3–1 | 21.0°C | Normal |
 | 2026-06-18 | Canada | FIFA World Cup | Loss (L) | 6–0 | 23.0°C | Normal |
 | 2026-06-13 | Switzerland | FIFA World Cup | Draw (D) | 1–1 | 25.0°C | Normal |
 | 2026-06-06 | El Salvador | Friendly | Draw (D) | 0–0 | 24.0°C | Normal |
@@ -906,7 +906,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-24 | Brazil | FIFA World Cup | Unknown | NA–NA | 23.0°C | Normal |
+| 2026-06-24 | Brazil | FIFA World Cup | Loss (L) | 0–3 | 23.0°C | Normal |
 | 2026-06-19 | Morocco | FIFA World Cup | Loss (L) | 0–1 | 22.0°C | Normal |
 | 2026-06-13 | Haiti | FIFA World Cup | Win (W) | 0–1 | 24.0°C | Normal |
 | 2026-06-06 | Bolivia | Friendly | Win (W) | 0–4 | 21.0°C | Normal |
@@ -932,7 +932,7 @@ This file documents the results and scores of the last 20 international matches 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-06-26 | Iraq | FIFA World Cup | Unknown | NA–NA | 24.0°C | Normal |
-| 2026-06-22 | Norway | FIFA World Cup | Unknown | NA–NA | 23.0°C | Normal |
+| 2026-06-22 | Norway | FIFA World Cup | Loss (L) | 3–2 | 23.0°C | Normal |
 | 2026-06-16 | France | FIFA World Cup | Loss (L) | 3–1 | 22.0°C | Normal |
 | 2026-06-09 | Saudi Arabia | Friendly | Draw (D) | 0–0 | 23.0°C | Normal |
 | 2026-05-31 | USA | Friendly | Loss (L) | 3–2 | 16.0°C | Normal |
@@ -956,7 +956,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-24 | South Korea | FIFA World Cup | Unknown | NA–NA | 31.0°C | Hot |
+| 2026-06-24 | South Korea | FIFA World Cup | Win (W) | 1–0 | 31.0°C | Hot |
 | 2026-06-18 | Czechia | FIFA World Cup | Draw (D) | 1–1 | 25.0°C | Normal |
 | 2026-06-11 | Mexico | FIFA World Cup | Loss (L) | 2–0 | 29.0°C | Hot |
 | 2026-06-06 | Jamaica | Friendly | Win (W) | 0–1 | 33.0°C | Hot |
@@ -981,7 +981,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-24 | South Africa | FIFA World Cup | Unknown | NA–NA | 31.0°C | Hot |
+| 2026-06-24 | South Africa | FIFA World Cup | Loss (L) | 1–0 | 31.0°C | Hot |
 | 2026-06-18 | Mexico | FIFA World Cup | Loss (L) | 1–0 | 32.0°C | Hot |
 | 2026-06-11 | Czechia | FIFA World Cup | Win (W) | 2–1 | 32.0°C | Hot |
 | 2026-06-03 | El Salvador | Friendly | Win (W) | 1–0 | 22.0°C | Normal |
@@ -1031,7 +1031,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-25 | Japan | FIFA World Cup | Unknown | NA–NA | 22.0°C | Normal |
+| 2026-06-25 | Japan | FIFA World Cup | Draw (D) | 1–1 | 22.0°C | Normal |
 | 2026-06-20 | Netherlands | FIFA World Cup | Loss (L) | 5–1 | 21.0°C | Normal |
 | 2026-06-14 | Tunisia | FIFA World Cup | Win (W) | 5–1 | 31.0°C | Hot |
 | 2026-06-04 | Greece | Friendly | Draw (D) | 2–2 | 21.0°C | Normal |
@@ -1056,7 +1056,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-24 | Canada | FIFA World Cup | Unknown | NA–NA | 25.0°C | Normal |
+| 2026-06-24 | Canada | FIFA World Cup | Win (W) | 1–2 | 25.0°C | Normal |
 | 2026-06-18 | Bosnia and Herzegovina | FIFA World Cup | Win (W) | 4–1 | 24.0°C | Normal |
 | 2026-06-13 | Qatar | FIFA World Cup | Draw (D) | 1–1 | 25.0°C | Normal |
 | 2026-06-06 | Australia | Friendly | Draw (D) | 1–1 | 21.0°C | Normal |
@@ -1081,7 +1081,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-25 | Netherlands | FIFA World Cup | Unknown | NA–NA | 25.0°C | Normal |
+| 2026-06-25 | Netherlands | FIFA World Cup | Loss (L) | 1–3 | 25.0°C | Normal |
 | 2026-06-20 | Japan | FIFA World Cup | Loss (L) | 0–4 | 29.0°C | Hot |
 | 2026-06-14 | Sweden | FIFA World Cup | Loss (L) | 5–1 | 31.0°C | Hot |
 | 2026-06-06 | Belgium | Friendly | Loss (L) | 5–0 | 24.0°C | Normal |
@@ -1106,7 +1106,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-25 | USA | FIFA World Cup | Unknown | NA–NA | 25.0°C | Normal |
+| 2026-06-25 | USA | FIFA World Cup | Win (W) | 2–3 | 25.0°C | Normal |
 | 2026-06-19 | Paraguay | FIFA World Cup | Loss (L) | 0–1 | 21.0°C | Normal |
 | 2026-06-13 | Australia | FIFA World Cup | Loss (L) | 2–0 | 23.0°C | Normal |
 | 2026-06-06 | Venezuela | Friendly | Win (W) | 1–2 | 24.0°C | Normal |
@@ -1131,7 +1131,7 @@ This file documents the results and scores of the last 20 international matches 
 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| 2026-06-25 | Türkiye | FIFA World Cup | Unknown | NA–NA | 25.0°C | Normal |
+| 2026-06-25 | Türkiye | FIFA World Cup | Loss (L) | 2–3 | 25.0°C | Normal |
 | 2026-06-19 | Australia | FIFA World Cup | Win (W) | 2–0 | 23.0°C | Normal |
 | 2026-06-12 | Paraguay | FIFA World Cup | Win (W) | 4–1 | 23.0°C | Normal |
 | 2026-06-06 | Germany | Friendly | Loss (L) | 1–2 | 23.0°C | Normal |
@@ -1182,7 +1182,7 @@ This file documents the results and scores of the last 20 international matches 
 | Date | Opponent | Competition | Result | Score | Temp (°C) | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | 2026-06-27 | DR Congo | FIFA World Cup | Unknown | NA–NA | 25.0°C | Normal |
-| 2026-06-23 | Portugal | FIFA World Cup | Unknown | NA–NA | 23.0°C | Normal |
+| 2026-06-23 | Portugal | FIFA World Cup | Loss (L) | 5–0 | 23.0°C | Normal |
 | 2026-06-17 | Colombia | FIFA World Cup | Loss (L) | 1–3 | 29.0°C | Hot |
 | 2026-06-08 | Netherlands | Friendly | Loss (L) | 2–1 | 24.0°C | Normal |
 | 2026-06-01 | Canada | Friendly | Loss (L) | 2–0 | 21.0°C | Normal |

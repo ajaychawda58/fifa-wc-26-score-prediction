@@ -10,32 +10,32 @@ This file documents the player-wise selected squad profiles for each of the 48 q
 
 | No. | Position | Player Name | Age | Caps | Goals | Club | Time Since Last Injury |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 1GK | Melvin Mastil | 26 | 3 | 0 | Stade Nyonnais | 31.5 months |
-| 2 | 2DF | Aïssa Mandi | 34 | 120 | 9 | Lille | None |
+| 1 | 1GK | Melvin Mastil | 26 | 2 | 0 | Stade Nyonnais | 31.5 months |
+| 2 | 2DF | Aïssa Mandi | 34 | 119 | 8 | Lille | None |
 | 3 | 2DF | Achref Abada | 26 | 9 | 1 | USM Alger | 5.0 months |
-| 4 | 2DF | Mohamed Amine Tougai | 26 | 31 | 2 | Espérance de Tunis | 12.5 months |
-| 5 | 2DF | Zineddine Belaïd | 27 | 13 | 1 | JS Kabylie | 16.5 months |
-| 6 | 3MF | Ramiz Zerrouki | 28 | 54 | 3 | Twente | 29.0 months |
-| 7 | 4FW | Riyad Mahrez | 35 | 117 | 38 | Al-Ahli | None |
-| 8 | 3MF | Houssem Aouar | 27 | 23 | 6 | Al-Ittihad | None |
-| 9 | 4FW | Amine Gouiri | 26 | 24 | 12 | Marseille | 5.0 months |
-| 10 | 3MF | Farès Chaïbi | 23 | 32 | 3 | Eintracht Frankfurt | 11.0 months |
-| 11 | 4FW | Anis Hadj Moussa | 24 | 16 | 3 | Feyenoord | 23.5 months |
-| 12 | 4FW | Nadhir Benbouali | 26 | 5 | 1 | Győri ETO | 26.5 months |
-| 13 | 2DF | Jaouen Hadjam | 23 | 19 | 3 | Young Boys | 8.5 months |
-| 14 | 3MF | Hicham Boudaoui | 26 | 35 | 0 | Nice | 11.5 months |
-| 15 | 2DF | Rayan Aït-Nouri | 25 | 31 | 0 | Manchester City | 19.5 months |
-| 16 | 1GK | Oussama Benbot | 31 | 4 | 0 | USM Alger | 7.5 months |
-| 17 | 2DF | Rafik Belghali | 24 | 14 | 1 | Hellas Verona | 20.0 months |
-| 18 | 4FW | Mohamed Amoura | 26 | 48 | 19 | VfL Wolfsburg | None |
-| 19 | 3MF | Nabil Bentaleb | 31 | 62 | 6 | Lille | 19.0 months |
-| 20 | 4FW | Adil Boulbina | 23 | 11 | 4 | Al-Duhail | 8.0 months |
+| 4 | 2DF | Mohamed Amine Tougai | 26 | 30 | 2 | Espérance de Tunis | 12.5 months |
+| 5 | 2DF | Zineddine Belaïd | 27 | 18 | 1 | JS Kabylie | 16.5 months |
+| 6 | 3MF | Ramiz Zerrouki | 28 | 53 | 3 | Twente | 29.0 months |
+| 7 | 4FW | Riyad Mahrez | 35 | 116 | 38 | Al-Ahli | None |
+| 8 | 3MF | Houssem Aouar | 27 | 22 | 6 | Al-Ittihad | None |
+| 9 | 4FW | Amine Gouiri | 26 | 23 | 10 | Marseille | 5.0 months |
+| 10 | 3MF | Farès Chaïbi | 23 | 31 | 3 | Eintracht Frankfurt | 11.0 months |
+| 11 | 4FW | Anis Hadj Moussa | 24 | 15 | 2 | Feyenoord | 23.5 months |
+| 12 | 4FW | Nadhir Benbouali | 26 | 4 | 1 | Győri ETO | 26.5 months |
+| 13 | 2DF | Jaouen Hadjam | 23 | 18 | 3 | Young Boys | 8.5 months |
+| 14 | 3MF | Hicham Boudaoui | 26 | 34 | 0 | Nice | 11.5 months |
+| 15 | 2DF | Rayan Aït-Nouri | 25 | 30 | 0 | Manchester City | 19.5 months |
+| 16 | 1GK | Oussama Benbot | 31 | 5 | 0 | USM Alger | 7.5 months |
+| 17 | 2DF | Rafik Belghali | 24 | 13 | 1 | Hellas Verona | 20.0 months |
+| 18 | 4FW | Mohamed Amoura | 26 | 47 | 19 | VfL Wolfsburg | None |
+| 19 | 3MF | Nabil Bentaleb | 31 | 60 | 6 | Lille | 19.0 months |
+| 20 | 4FW | Adil Boulbina | 23 | 12 | 6 | Al-Duhail | 8.0 months |
 | 21 | 2DF | Ramy Bensebaini | 31 | 82 | 9 | Borussia Dortmund | 15.0 months |
-| 22 | 3MF | Ibrahim Maza | 20 | 18 | 2 | Bayer Leverkusen | 30.5 months |
+| 22 | 3MF | Ibrahim Maza | 20 | 17 | 2 | Bayer Leverkusen | 30.5 months |
 | 23 | 1GK | Luca Zidane | 28 | 7 | 0 | Granada | None |
 | 24 | 3MF | Yacine Titraoui | 22 | 5 | 0 | Charleroi | 31.5 months |
 | 25 | 4FW | Farès Ghedjemis | 23 | 1 | 1 | Frosinone | None |
-| 26 | 2DF | Samir Chergui | 27 | 6 | 0 | Paris FC | 22.5 months |
+| 26 | 2DF | Samir Chergui | 27 | 5 | 0 | Paris FC | 22.5 months |
 
 ---
 
